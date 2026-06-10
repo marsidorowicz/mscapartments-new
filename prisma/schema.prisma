@@ -1,0 +1,995 @@
+model PersonBasedPricing {
+  id               Int      @id @default(autoincrement())
+  property         Property @relation(fields: [propertyId], references: [id])
+  propertyId       Int
+  basePersonCount  Int
+  adjustments      Json     // { [personCount: number]: { enabled: boolean, percent: number } }
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model BrandSettings {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  settings  Json
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  properties Property[]
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                      String                @id @default(cuid())
+  name                    String?
+  email                   String?               @unique
+  emailVerified           DateTime?
+  image                   String?
+  role                    Role                  @default(USER)
+  modules                 String[]
+  accounts                Account[]
+  Availability            Availability[]
+  event                   Event[]
+  Permission              Permission[]
+  place                   Place[]
+  property                Property[]
+  issuedReconciliations   Reconciliation[]      @relation("IssuedReconciliations")
+  receivedReconciliations Reconciliation[]      @relation("ReceivedReconciliations")
+  sessions                Session[]
+  ttLockCredentials       TTLockCredentials?
+  EventsDeleted           EventsDeleted[]
+  emailTemplates          EmailTemplate[]
+  teacher                 Teacher?
+  teacherAvailabilities   TeacherAvailability[]
+  studentBookings         StudentBooking[]      @relation("UserBookings") // Bookings as student
+  activities              UserActivity[]
+  restaurants             Restaurant[]        // A user can own multiple restaurants
+  tables                  Table[]             // A user can own or manage multiple tables
+  restaurantBookings      RestaurantBooking[]
+  payments                Payment[]           // Payments made by the user
+  // Project management relationships
+  createdProjects         Project[]           @relation("CreatedProjects")
+  projectMemberships      ProjectMember[]
+  createdTasks            Task[]              @relation("CreatedTasks")
+  assignedTasks           TaskAssignee[]
+  createdSubtasks         Subtask[]
+  taskComments            TaskComment[]
+  sentInvitations         ProjectInvitation[] @relation("SentInvitations")
+  sentOffers              Offer[]             @relation("SentOffers")
+  discountCampaigns       DiscountCampaign[]  // Kampanie rabatowe utworzone przez użytkownika
+  discountUsages          CampaignUsage[]     // Użycia kodów rabatowych przez użytkownika
+  eventEntries            EventEntryUser[]    // Event entries where user is involved
+}
+
+model Place {
+  id            Int             @id @default(autoincrement())
+  name          String
+  location      String
+  description   String?         // Optional description for the place
+  userId        String
+  event         Event[]
+  Permission    Permission[]
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  properties    Property[]
+  EventsDeleted EventsDeleted[]
+  images        Image[]
+
+  extended      Json?          // Extended data storage for additional fields like title
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  propertyId Int?
+  placeId    Int?
+  path       String
+  filename   String
+  order      Int      @default(0)  // Add order field for drag and drop functionality
+  Property   Property? @relation(fields: [propertyId], references: [id])
+  Place      Place?    @relation(fields: [placeId], references: [id])
+}
+
+model Property {
+  id                Int             @id @default(autoincrement())
+  name              String
+  type              String          @default("apartment")
+  minOccupancy      Int
+  maxOccupancy      Int
+  numSingleBeds     Int
+  numDoubleBeds     Int
+  state             String          @default("active")
+  brand             Brand          @default(MSC)
+  brandId           Int?
+  brandSettings     BrandSettings? @relation(fields: [brandId], references: [id])
+  location          String
+  userId            String
+  placeId           Int
+  cleaningFee       Int             @default(170)
+  cleaningFeeDays   Int             @default(0)      // Number of days after which cleaningFee is reduced to zero
+  cleaningFeeDeducted Boolean       @default(true) // if cleaning fee should be sub from owners income in tables
+  commission        Int             @default(20)
+  room_id           Int?
+  roomId            Int?
+  ttlockId          Int?
+  parkingFee        Int             @default(0)
+  parkingQuantity   Int             @default(0)  
+  roomQuantity      Int             @default(0)
+  localTax          Int             @default(0)
+  size              Int?                            // Property size in m²
+  cityId            Int?   // Optional foreign key, now nullable
+  city              City?  @relation(fields: [cityId], references: [id]) // Optional relation
+  lang              String          @default("pl")  // Default language for notifications is Polish
+  paymentsOn              Boolean          @default(false)
+  
+  // Property filters/amenities
+  filters           String[]        @default([])   // Array of filter tags like "SAUNA", "SWIMMING_POOL", etc.
+  
+  // Last minute offer settings
+  lastMinuteOfferActive Boolean     @default(false)  // Whether last minute offer is active
+  lastMinuteDiscountPercentage Int  @default(15)     // Percentage discount for last minute bookings
+  lastMinuteDaysAhead Int          @default(7)       // How many days in the future the offer applies
+  
+  availabilities    Availability[]
+  event             Event[]
+  Permission        Permission[]
+  place             Place           @relation(fields: [placeId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images            Image[]
+  EventsDeleted     EventsDeleted[]
+  emailTemplates    EmailTemplate[] @relation("PropertyEmailTemplates")
+  emailNotification String[]
+  telegramChatIds   String[]        @default([]) // Array of Telegram chat IDs for notifications
+  sendTelegram      Boolean        @default(false)
+  lastMinuteDiscounts LastMinuteDiscount[] // Relation to LastMinuteDiscount model
+  payments          Payment[]
+  discountPlans     DiscountPlan[]  // Relation to discount plans
+  personBasedPricings PersonBasedPricing[]
+
+  /// The local time (in HH:mm format) when check-in instructions should be sent.
+  checkinInstructionTime   String?     
+  
+  /// The local time (in HH:mm format) when check-out instructions should be sent.
+  checkoutInstructionTime  String?
+  
+  /// Flag to determine if check-in instructions should be sent.
+  sendCheckinInstructions  Boolean        @default(false)
+    /// Flag to determine if check-out instructions should be sent.
+  sendCheckoutInstructions Boolean        @default(false)
+  
+  /// HTML formatted details/description for the property
+  htmlDetails              String?        @db.Text
+
+  /// Whether the owner receives payment for this property
+  ownerReceivePayment      Boolean        @default(true)
+
+  /// Commission and tax settings for calculations
+  commissionSettings        Json           @default("{ \"bookingSubCommission\": true, \"airbnbSubCommission\": true, \"wePayVat\": true, \"wePayCityTax\": true }")
+  
+  /// SEO-friendly URL slugs for different languages (e.g., {"pl": "apartament-z-widokiem", "en": "apartment-with-view"})
+  slugs                     Json?
+  extended                  Json?          // Extended data storage for additional fields like title
+  offerProperties           OfferProperty[] @relation("PropertyOfferProperties")
+}
+
+model WeekPrices {
+  id             Int          @id @default(autoincrement())
+  mondayPrice    Float        @default(0)
+  tuesdayPrice   Float        @default(0)
+  wednesdayPrice Float        @default(0)
+  thursdayPrice  Float        @default(0)
+  fridayPrice    Float        @default(0)
+  saturdayPrice  Float        @default(0)
+  sundayPrice    Float        @default(0)
+  availabilityId Int          @unique
+  Availability   Availability @relation(fields: [availabilityId], references: [id])
+}
+
+model Availability {
+  id                        Int         @id @default(autoincrement())
+  isOpen                    Boolean
+  price                     Float
+  minStay                   Int?
+  maxStay                   Int?
+  quantity                  Int?
+  discountPercentage        Float?
+  discountDaysBeforeArrival Int?
+  propertyId                Int
+  roomId                    Int
+  endDate                   String?
+  startDate                 String?
+  userId                    String
+  weekPrices                WeekPrices? // One-to-one relationship with WeekPrices
+  property                  Property    @relation(fields: [propertyId], references: [id])
+  user                      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  discountAvailabilities    DiscountAvailability[] // Relation to discount plans
+}
+
+// New model for defining discount plans (e.g., Non-refundable, Early Bird, etc.)
+model DiscountPlan {
+  id                Int                    @id @default(autoincrement())
+  name              String                 // e.g., "Non-refundable", "Early Bird"
+  description       String?                // Optional description
+  discountPercentage Float                 // e.g., 10.0 for 10% discount
+  isRefundable      Boolean               @default(true) // false for non-refundable rates
+  cancellationPolicy String?              // Cancellation policy details
+  propertyId        Int
+  isActive          Boolean               @default(true)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  property          Property              @relation(fields: [propertyId], references: [id])
+  discountAvailabilities DiscountAvailability[]
+  
+  @@unique([propertyId, name]) // Prevent duplicate plan names per property
+}
+
+// Junction table linking base availability with discount plans
+model DiscountAvailability {
+  id             Int          @id @default(autoincrement())
+  availabilityId Int
+  discountPlanId Int
+  finalPrice     Float        // Calculated price after discount
+  quantity       Int?         // Specific quantity for this discount plan
+  rid            Int?         // Nobeds record ID for this discount plan
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  availability   Availability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
+  discountPlan   DiscountPlan @relation(fields: [discountPlanId], references: [id], onDelete: Cascade)
+  
+  @@unique([availabilityId, discountPlanId]) // One discount plan per availability
+}
+
+model Event {
+  id                 Int          @id @default(autoincrement())
+  name               String?
+  surname            String?
+  phone              String?
+  email              String?
+  startDate          DateTime
+  endDate            DateTime
+  price              Float?       @default(0)
+  ownerPrice         Float?       @default(0)
+  deposit            String
+  depositReturned    Boolean?
+  paid               Boolean
+  instructionsSent   Boolean?
+  cityTax            Float
+  amountOfPeople     Int
+  reason             String
+  status             String
+  numOfParkingPlaces Int
+  notes              String?
+  source             String
+  sourceDescription  String?  
+  placeId            Int
+  propertyId         Int
+  userId             String
+  createdAt          DateTime     @default(now())
+  updated            String?
+  document           String       @default("receipt")
+  documentDone       Boolean      @default(false)
+  room_id            Int?
+  ttlockPwd          String?
+  ttlockPwdId        String?
+  order_id           Int?  
+  paymentId          String?      // New field to store payment OID
+  extraFees          Float?       @default(0)
+  accessToken        String?      // Access token for magic link security
+  accessTokenExpiry  DateTime?    // Expiration timestamp for the access token
+  ownerStay          Boolean?     // Whether the owner stays during the event
+  parsedRemarks      Json?        // Parsed data from b_remarks b_meal b_info
+  extended           Json?        // Extended data storage for additional fields like internalNotes
+  place              Place        @relation(fields: [placeId], references: [id])
+  property           Property     @relation(fields: [propertyId], references: [id])
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Permission         Permission[] @relation("EventToPermission")
+  payments           Payment[]
+  convertedOffer     Offer? @relation("ConvertedOffer")
+  discountUsages     CampaignUsage[] // Użycia kodów rabatowych dla tej rezerwacji
+}
+
+model EventsDeleted {
+  id                 Int      @id @default(autoincrement())
+  name               String?
+  surname            String?
+  phone              String?
+  email              String?
+  startDate          DateTime
+  endDate            DateTime
+  price              Float?   @default(0)
+  ownerPrice         Float?       @default(0)
+  deposit            String
+  depositReturned    Boolean?
+  paid               Boolean
+  instructionsSent   Boolean?
+  cityTax            Float
+  amountOfPeople     Int
+  reason             String
+  status             String
+  numOfParkingPlaces Int
+  notes              String?
+  source             String
+  sourceDescription  String?
+  placeId            Int
+  propertyId         Int
+  userId             String
+  createdAt          DateTime @default(now())
+  updated            String?
+  document           String   @default("receipt")
+  documentDone       Boolean  @default(false)
+  room_id            Int?
+  ttlockPwd          String?
+  ttlockPwdId        String?
+  deleted_id         Int?
+  order_id           Int?
+  paymentId          String?      // New field to store payment OID
+  extraFees          Float?   @default(0)
+  accessToken        String?      // Access token for magic link security
+  accessTokenExpiry  DateTime?    // Expiration timestamp for the access token
+  ownerStay          Boolean?
+  extended           Json?        // Extended data storage for additional fields like internalNotes
+  parsedRemarks      Json?        // Parsed data from b_remarks b_meal b_info
+  place              Place    @relation(fields: [placeId], references: [id])
+  property           Property @relation(fields: [propertyId], references: [id])
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  convertedOfferId   String?
+  discountUsages     CampaignUsage[] // Użycia kodów rabatowych dla tej rezerwacji
+}
+
+model Permission {
+  id         Int            @id @default(autoincrement())
+  userId     String
+  propertyId Int
+  placeId    Int
+  type       PermissionType
+  owner      String?
+  ownerEmail String?
+  userEmail  String?
+  place      Place          @relation(fields: [placeId], references: [id])
+  property   Property       @relation(fields: [propertyId], references: [id])
+  user       User           @relation(fields: [userId], references: [id])
+  event      Event[]        @relation("EventToPermission")
+}
+
+model Reconciliation {
+  id         Int                  @id @default(autoincrement())
+  issuerId   String
+  receiverId String
+  status     ReconciliationStatus @default(PENDING)
+  amount     Float
+  issuedAt   DateTime             @default(now())
+  resolvedAt DateTime?
+  month      String
+  year       String
+  link       String?
+  issuer     User                 @relation("IssuedReconciliations", fields: [issuerId], references: [id])
+  receiver   User                 @relation("ReceivedReconciliations", fields: [receiverId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model TTLockCredentials {
+  id       String @id @default(cuid())
+  userId   String @unique
+  username String
+  password String @db.VarChar(64)
+  md5Hash  String @db.VarChar(32)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model EmailTemplate {
+  id         Int        @id @default(autoincrement())
+  name       String
+  subject    String
+  body       String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  properties Property[] @relation("PropertyEmailTemplates")
+  userId     String
+  type       String?
+  user       User       @relation(fields: [userId], references: [id])
+}
+
+model Teacher {
+  id             String                @id @default(cuid())
+  userId         String                @unique
+  name           String // Name of the teacher
+  bio            String? // Bio of the teacher, optional
+  specialties    String[]
+  availableTimes TeacherAvailability[] @relation("TeacherToAvailability")
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  StudentBooking StudentBooking[]
+
+  @@index([userId])
+}
+
+model TeacherAvailability {
+  id              Int              @id @default(autoincrement())
+  userId          String
+  startTime       DateTime
+  endTime         DateTime
+  dayOfWeek       String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "TeacherAvailability_User_fkey")
+  teacher         Teacher          @relation("TeacherToAvailability", fields: [userId], references: [userId], map: "TeacherAvailability_Teacher_fkey")
+  studentBookings StudentBooking[] @relation("TeacherAvailabilityBookings")
+
+  @@index([userId])
+}
+
+model StudentBooking {
+  id                    Int                 @id @default(autoincrement())
+  userId                String // Reference to User model
+  teacherAvailabilityId Int
+  bookingStartTime      DateTime
+  bookingEndTime        DateTime
+  comments              String?
+  user                  User                @relation("UserBookings", fields: [userId], references: [id], onDelete: Cascade)
+  teacher               Teacher             @relation(fields: [teacherId], references: [id], map: "StudentBooking_teacherId_fkey")
+  TeacherAvailability   TeacherAvailability @relation("TeacherAvailabilityBookings", fields: [teacherAvailabilityId], references: [id], onDelete: Cascade)
+  teacherId             String              @unique
+
+  @@index([userId, teacherAvailabilityId])
+}
+
+model Country {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  code      String    @unique // Optional ISO code (e.g., "PL" for Poland)
+  cities    City[]    // Relation to cities
+}
+
+model City {
+  id         Int       @id @default(autoincrement())
+  name       String
+  countryId  Int
+  country    Country   @relation(fields: [countryId], references: [id])
+  properties Property[]
+}
+
+model UserActivity {
+  id          Int      @id @default(autoincrement())
+  userId      String      // Ensure this matches the type of `id` in User
+  activity    String   // Description of the activity
+  timestamp   DateTime @default(now()) // When the activity occurred
+  ipAddress   String?  // Optional IP address of the user
+  userAgent   String?  // Optional user agent string
+  metadata    Json?    // Optional additional data about the activity
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, timestamp]) // Index for faster querying
+}
+
+model EventEntry {
+  id          Int       @id @default(autoincrement())
+  type        String    // Type of event: 'new_booking', 'payment_received', 'price_missing', etc.
+  title       String    // Short title for the notification
+  message     String?   // Optional detailed message
+  data        Json      // Flexible JSON data storage for event details
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations - many-to-many with users through junction table
+  userRelations EventEntryUser[]
+  
+  @@index([type, createdAt])
+  @@index([createdAt])
+}
+
+model EventEntryUser {
+  id           Int       @id @default(autoincrement())
+  eventEntryId Int
+  userId       String
+  relationType String    // 'target' or 'seen_by'
+  
+  eventEntry   EventEntry @relation(fields: [eventEntryId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([eventEntryId, userId, relationType])
+  @@index([userId, relationType])
+}
+
+model Restaurant {
+  id           Int           @id @default(autoincrement())
+  name         String
+  address      String
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  tables       Table[]
+  tableGroups  TableGroup[]
+}
+
+model TableGroup {
+  id           Int          @id @default(autoincrement())
+  name         String       @unique
+  restaurantId Int
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  tables       Table[]
+}
+
+model Table {
+  id           Int          @id @default(autoincrement())
+  number       Int
+  capacity     Int
+  restaurantId Int
+  groupId      Int?
+  userId       String?
+  group        TableGroup?  @relation(fields: [groupId], references: [id])
+  user         User?        @relation(fields: [userId], references: [id])
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  bookings     RestaurantBooking[]
+}
+
+model RestaurantBooking {
+  id                Int      @id @default(autoincrement())
+  date              DateTime
+  durationMinutes   Int
+  tableId           Int
+  userId            String   // Foreign key to the User model
+  guests            Int
+  user              User     @relation(fields: [userId], references: [id])
+  table             Table    @relation(fields: [tableId], references: [id])
+}
+
+model LastMinuteDiscount {
+  id                Int       @id @default(autoincrement())
+  propertyId        Int       // The property that received the discount
+  date              String    // The date in YYYY-MM-DD format
+  appliedAt         DateTime  @default(now()) // When the discount was applied
+  originalPrice     Float     // The original price before discount
+  discountedPrice   Float     // The price after discount 
+  discountPercentage Int      // The percentage that was applied
+  property          Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, date]) // Ensure we don't have duplicate entries for the same property and date
+}
+
+model Payment {
+  id                String    @id @default(cuid())
+  orderId           String    @unique // Fiserv's OID, crucial for linking. Corresponds to Fiserv 'oid'
+  amount            Decimal   @db.Decimal(10, 2) // Use Decimal for monetary values
+  currency          String    // e.g., "PLN", "USD" - Standard currency code for the amount
+  status            String    // Internal status, e.g., PENDING, COMPLETED, FAILED
+  paymentMethod     String?   // Internal payment method, e.g., "FISERV_HPP", "STRIPE_CARD"
+  provider          String?   // Specific provider, e.g., "FISERV"
+  providerPaymentId String?   @unique // Fiserv's ipgTransactionId, good for reconciliation. Corresponds to Fiserv 'ipgTransactionId'
+  description       String?
+  
+  // Timestamps
+  initiatedAt       DateTime? @default(now()) // When our system first created the payment record
+  paymentDate       DateTime? // When the payment was actually confirmed/processed
+
+  // User and Context
+  userId            String?   // Optional: Link to the user who made the payment
+  user              User?     @relation(fields: [userId], references: [id], onDelete:Restrict)
+  eventId           Int?      // Optional: Link to an event. Corresponds to Fiserv 'eventId'
+  event             Event?    @relation(fields: [eventId], references: [id], onDelete:SetNull)
+  propertyId        Int?      // Optional: Link to a property
+  property          Property? @relation(fields: [propertyId], references: [id], onDelete:SetNull)
+  
+  // Fields from Fiserv Response
+  failStatus                 Boolean?  // From Fiserv 'fail'
+  hostedDataId               String?   // From Fiserv 'hosteddataid'
+  cardLastFourDigits         String?   // From Fiserv 'cardLastFourDigits'
+  transactionProcessedDate   String?   // From Fiserv 'txndate_processed' (e.g., "11.05.25 08:09:57")
+  cardBin                    String?   // From Fiserv 'ccbin' or 'cardBin'
+  cardTimezone               String?   // From Fiserv 'timezone'
+  cardCountry                String?   // From Fiserv 'cccountry'
+  cardExpiryMonth            String?   // From Fiserv 'expmonth'
+  cardExpiryYear             String?   // From Fiserv 'expyear'
+  hashAlgorithm              String?   // From Fiserv 'hash_algorithm'
+  endpointTransactionId      String?   // From Fiserv 'endpointTransactionId'
+  providerCurrencyCode       String?   // From Fiserv 'currency' (numeric code, e.g., "985")
+  processorResponseCode      String?   // From Fiserv 'processor_response_code'
+  chargeTotal                String?   // From Fiserv 'chargetotal' (e.g., "5,00")
+  terminalId                 String?   // From Fiserv 'terminal_id'
+  approvalCode               String?   // From Fiserv 'approval_code'
+  hostedDataType             String?   // From Fiserv 'hostedDataType'
+  responseHash               String?   // From Fiserv 'response_hash'
+  responseCode3dSecure       String?   // From Fiserv 'response_code_3dsecure'
+  transactionNotificationURL String?   // From Fiserv 'transactionNotificationURL'
+  schemeTransactionId        String?   // From Fiserv 'schemeTransactionId'
+  transactionTimestamp       String?   // From Fiserv 'tdate' (Unix timestamp as string)
+  installmentsInterest       Boolean?  // From Fiserv 'installments_interest'
+  cardBrand                  String?   // From Fiserv 'ccbrand'
+  fundingCardBin             String?   // From Fiserv 'fundingCardNumberBin'
+  referenceNumber            String?   // From Fiserv 'refnumber'
+  fundingCardLast4           String?   // From Fiserv 'fundingCardNumberLast4'
+  transactionType            String?   // From Fiserv 'txntype' (e.g., "sale")
+  providerPaymentMethod      String?   // From Fiserv 'paymentMethod' (e.g., "V")
+  transactionDateTime        String?   // From Fiserv 'txndatetime' (e.g., "2025:05:11-07:55:02")
+  maskedCardNumber           String?   // From Fiserv 'cardnumber' (e.g., "(VISA) ... +7430")
+  providerStatus             String?   // From Fiserv 'status' (e.g., "AKCEPTACJA")
+
+  metadata          Json?     // For storing raw redirect data or other miscellaneous info
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([eventId])
+  @@index([propertyId])
+  @@index([provider, providerPaymentId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([hostedDataId]) // Added index for hostedDataId
+}
+
+// Discount campaign models
+model DiscountCampaign {
+  id          String   @id @default(cuid())
+  name        String   // Nazwa kampanii rabatowej
+  description String?  // Opis kampanii
+
+  // Typ kampanii
+  campaignType CampaignType @default(MULTI_USE)
+
+  // Ustawienia rabatu
+  discountType  DiscountType // PERCENTAGE lub FIXED_AMOUNT
+  discountValue Float        // Wartość rabatu
+
+  // Warunki kampanii
+  conditions     Json?         // Elastyczne warunki w JSON
+
+  // Okres ważności kampanii
+  startDate      String?       // Data rozpoczęcia ważności kampanii (YYYY-MM-DD)
+  endDate        String?       // Data zakończenia ważności kampanii (YYYY-MM-DD)
+
+  // Ograniczenia nieruchomości
+  propertyIds    Int[]         @default([]) // Lista ID nieruchomości dla których kod jest ważny (pusta = wszystkie)
+
+  // Statystyki kampanii
+  totalCodes    Int          @default(0) // Łączna liczba kodów
+  usedCodes     Int          @default(0) // Liczba użytych kodów
+  totalDiscount Float        @default(0) // Łączna wartość udzielonych rabatów
+
+  // Powiązania
+  codes       CampaignCode[]
+  usages      CampaignUsage[]
+
+  // Utworzone przez
+  createdById String
+  createdBy   User @relation(fields: [createdById], references: [id])
+
+  // Status
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([createdById])
+}
+
+model CampaignCode {
+  id            String   @id @default(cuid())
+  campaignId    String
+  campaign      DiscountCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  code          String   @unique // Kod rabatowy
+  isUsed        Boolean  @default(false) // Czy kod został użyty
+
+  // Szczegóły użycia - changed to one-to-many
+  usages        CampaignUsage[] // Powiązanie z użyciami
+
+  createdAt     DateTime @default(now())
+
+  @@index([code])
+  @@index([isUsed])
+}
+
+model CampaignUsage {
+  id             String   @id @default(cuid())
+  campaignId     String
+  codeId         String
+  campaign       DiscountCampaign @relation(fields: [campaignId], references: [id])
+  code           CampaignCode     @relation(fields: [codeId], references: [id])
+
+  // Powiązanie z rezerwacją
+  eventId        Int?     // ID rezerwacji
+  event          Event?   @relation(fields: [eventId], references: [id])
+  deletedEventId Int?    // ID usuniętej rezerwacji
+  deletedEvent   EventsDeleted? @relation(fields: [deletedEventId], references: [id])
+
+  // Dane użytkownika
+  userId         String?  // Zalogowany użytkownik systemu
+  user           User?    @relation(fields: [userId], references: [id])
+
+  // Dane gościa (jeśli niezalogowany)
+  guestEmail     String?  // Email gościa
+  guestName      String?  // Imię gościa
+
+  // Szczegóły finansowe
+  originalPrice  Float    // Cena przed rabatem
+  discountAmount Float    // Kwota rabatu
+  finalPrice     Float    // Cena po rabacie
+
+  // Kontekst użycia
+  appliedAt      DateTime @default(now()) // Kiedy zastosowano rabat
+  ipAddress      String?  // Adres IP dla bezpieczeństwa
+  userAgent      String?  // User agent dla analityki
+
+  // Możliwość anulowania
+  isCancelled    Boolean  @default(false)
+  cancelledAt    DateTime?
+  cancelReason   String?
+
+  @@unique([codeId, eventId, deletedEventId]) // Jeden kod może być użyty tylko raz na rezerwację (aktywną lub usuniętą)
+  @@index([eventId])
+  @@index([deletedEventId])
+  @@index([userId])
+  @@index([appliedAt])
+}
+
+enum PermissionType {
+  CALENDAR
+  CLEANER
+  MANAGER
+  RESIDENT
+  ADMIN
+  OWNER
+}
+
+enum ReconciliationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  REOPENED
+  CLOSED
+  PAID
+  INVOICED
+}
+
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
+// Project management models
+model Project {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  creatorId    String   // User who created the project
+  creator      User     @relation("CreatedProjects", fields: [creatorId], references: [id])
+  tasks        Task[]
+  members      ProjectMember[]
+  invitations  ProjectInvitation[]
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid())
+  projectId String
+  userId    String
+  joinedAt  DateTime @default(now())
+  role      ProjectRole @default(MEMBER)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model Task {
+  id                String   @id @default(cuid())
+  title             String
+  description       String?
+  startDate         DateTime?
+  dueDate           DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  projectId         String
+  creatorId         String
+  status            TaskStatus @default(NEW)
+  completionPercentage Int @default(0)
+  project           Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  creator           User    @relation("CreatedTasks", fields: [creatorId], references: [id])
+  assignees         TaskAssignee[]
+  subtasks          Subtask[]
+  comments          TaskComment[]
+}
+
+model TaskAssignee {
+  id        String   @id @default(cuid())
+  taskId    String
+  userId    String
+  assignedAt DateTime @default(now())
+  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, userId])
+}
+
+model Subtask {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?
+  taskId              String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  creatorId           String
+  status              TaskStatus @default(NEW)
+  completionPercentage Int @default(0)
+  task                Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  creator             User    @relation(fields: [creatorId], references: [id])
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  content   String
+  taskId    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Brand {
+  MSC
+  MOUNTAIN
+}
+
+enum TaskStatus {
+  NEW
+  IN_PROGRESS
+  REVIEW
+  BLOCKED
+  COMPLETED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum OfferStatus {
+  PENDING
+  USED
+  EXPIRED
+}
+
+enum CampaignType {
+  SINGLE_USE    // Każdy kod może być użyty tylko raz
+  MULTI_USE     // Kody mogą być używane wielokrotnie
+  UNLIMITED     // Bez limitu użyć
+}
+
+enum DiscountType {
+  PERCENTAGE    // Procentowy rabat (np. 10%)
+  FIXED_AMOUNT  // Stała kwota rabatu (np. 50 PLN)
+}
+
+model ProjectInvitation {
+  id           String          @id @default(cuid())
+  email        String
+  projectId    String
+  inviterId    String
+  status       InvitationStatus @default(PENDING)
+  role         ProjectRole     @default(MEMBER)
+  createdAt    DateTime        @default(now())
+  expiresAt    DateTime?
+  token        String          @unique
+  project      Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  inviter      User            @relation("SentInvitations", fields: [inviterId], references: [id])
+  
+  @@unique([projectId, email])
+}
+
+model Offer {
+  id            String   @id @default(cuid())
+  offerId       String   @unique // The offer ID like "OFFER_1760454228857_xdhe814p7"
+  senderEmail   String   // Email of the user who sent the offer
+  recipientEmail String  // Email of the guest receiving the offer
+  startDate     DateTime
+  endDate       DateTime
+  guests       Int
+  currency      String   @default("PLN")
+  status        OfferStatus @default(PENDING) // PENDING, USED, EXPIRED
+  expiresAt     DateTime // When the offer expires (7 days from creation)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  sender        User     @relation("SentOffers", fields: [senderEmail], references: [email])
+  
+  // Properties offered with their pricing details
+  offerProperties OfferProperty[]
+  
+  // Link to the event if this offer was converted to a booking
+  convertedEventId Int? @unique
+  convertedEvent   Event? @relation("ConvertedOffer", fields: [convertedEventId], references: [id])
+  
+  @@index([offerId])
+  @@index([senderEmail])
+  @@index([recipientEmail])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model OfferProperty {
+  id            Int      @id @default(autoincrement())
+  offerId       String
+  propertyId    Int
+  originalPrice Float    // Original price before any discounts
+  offerPrice    Float    // Price offered to the guest (after discounts)
+  guests        Int      // Number of guests for this property
+  discountPercentage Float? // Discount percentage applied
+  discountType  String?  // Type of discount: 'PERCENTAGE' or 'AMOUNT'
+
+  offer         Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  property      Property @relation("PropertyOfferProperties", fields: [propertyId], references: [id])
+  
+  @@unique([offerId, propertyId])
+}
+
+
+model NoBedsCache {
+  id          String   @id @default(cuid())
+  propertyId  Int
+  room_id     Int
+  rid         Int?     // Rate ID from NoBeds
+  date        String
+
+  price       Float?
+  available   Boolean?
+  quantity    Int?
+  minStay     Int?
+  maxStay     Int?
+
+  raw         Json
+  channels    Json?
+
+  source      String   @default("nobeds")
+  dirty       Boolean  @default(false)
+  offlineBooking Boolean? @default(false)
+
+  updatedAt   String
+
+  @@unique([propertyId, room_id, rid, date])
+}
