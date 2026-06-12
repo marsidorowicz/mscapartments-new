@@ -15,7 +15,7 @@ type Params = {
 // Fetch properties and filter to show only those with names in ["RAGGI", "TEST"]
 async function getHousesData() {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const response = await fetch(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`, {
 			cache: "no-store",
 		})
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 	const description = `Discover our beautiful houses in the mountains`
 
 	return {
-		title: `${title} - Mountain Apartments`,
+		title: `${title} - MSC Apartments`,
 		description,
 	}
 }

@@ -11,9 +11,9 @@ import MountainApartmentsSchema from "../components/MountainApartmentsSchema"
 
 // Metadata is handled by locale-specific layouts and pages
 export const metadata: Metadata = {
-	title: "Mountain Apartments",
+	title: "MSC Apartments",
 	description: "Znajdź komfortowy apartament w górach dla swojej Rodziny",
-	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"),
+	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"),
 }
 
 type LayoutProps = {

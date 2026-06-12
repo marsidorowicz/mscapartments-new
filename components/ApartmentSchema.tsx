@@ -34,7 +34,7 @@ interface ApartmentSchemaProps {
 }
 
 export default function ApartmentSchema({ property, lang }: ApartmentSchemaProps) {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 
 	// Build the apartment schema
 	const schema = {
@@ -143,11 +143,11 @@ export default function ApartmentSchema({ property, lang }: ApartmentSchemaProps
 		].filter(Boolean),
 		provider: {
 			"@type": "Organization",
-			"@id": "https://mountainapartments.pl/#brand",
-			name: "Mountain Apartments",
-			url: "https://mountainapartments.pl",
-			telephone: "+48 511 000 660",
-			email: "biuro@mountainapartments.pl",
+			"@id": "https://mscapartments.pl/#brand",
+			name: "MSC Apartments",
+			url: "https://mscapartments.pl",
+			telephone: "+48 515 857 609",
+			email: "apartamentymsc@gmail.com",
 		},
 		aggregateRating: property.rating
 			? {

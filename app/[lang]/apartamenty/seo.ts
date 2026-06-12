@@ -41,28 +41,28 @@ const apartmentPageTexts: Record<Locale, { default: ApartmentPageText; zakopane:
 	},
 	en: {
 		default: {
-			title: "Mountain apartments in Zakopane and Kościelisko",
+			title: "MSC Apartments in Zakopane and Kościelisko",
 			description:
-				"Looking for mountain apartments in the Tatras? Browse our Zakopane and Kościelisko offers — mountain apartments, Zakopane apartments, Kościelisko apartments and mountain hotel apartments Zakopane.",
-			keywords: ["mountain apartments", "Zakopane apartments", "Kościelisko apartments", "mountain hotel apartments Zakopane", "mountain accommodation"],
-			heading: "Mountain apartments in Zakopane and Kościelisko",
-			subtitle: "Find comfortable mountain apartments in Zakopane and Kościelisko — mountain apartments and mountain hotel apartments in one place.",
+				"Looking for MSC Apartments in the Tatras? Browse our Zakopane and Kościelisko offers — MSC Apartments, Zakopane apartments, Kościelisko apartments and mountain hotel apartments Zakopane.",
+			keywords: ["MSC Apartments", "Zakopane apartments", "Kościelisko apartments", "mountain hotel apartments Zakopane", "mountain accommodation"],
+			heading: "MSC Apartments in Zakopane and Kościelisko",
+			subtitle: "Find comfortable MSC Apartments in Zakopane and Kościelisko — MSC Apartments and mountain hotel apartments in one place.",
 		},
 		zakopane: {
 			title: "Zakopane apartments",
 			description:
 				"Zakopane apartments — comfortable stays and mountain hotel apartments in Zakopane. Browse our Zakopane apartment offers and ski resort accommodation.",
-			keywords: ["Zakopane apartments", "mountain apartments Zakopane", "apart hotel Zakopane", "Zakopane accommodation", "mountain accommodation"],
+			keywords: ["Zakopane apartments", "MSC Apartments Zakopane", "apart hotel Zakopane", "Zakopane accommodation", "mountain accommodation"],
 			heading: "Zakopane apartments",
-			subtitle: "Looking for mountain apartments in Zakopane? Discover comfortable stays near the town center and the Tatras.",
+			subtitle: "Looking for MSC Apartments in Zakopane? Discover comfortable stays near the town center and the Tatras.",
 		},
 		koscielisko: {
 			title: "Kościelisko apartments",
 			description:
 				"Kościelisko apartments — comfortable mountain stays close to hiking trails and ski slopes. Browse our Kościelisko apartments for the perfect mountain getaway.",
-			keywords: ["Kościelisko apartments", "mountain apartments Kościelisko", "Kościelisko accommodation", "mountain accommodation", "Tatras apartments"],
+			keywords: ["Kościelisko apartments", "MSC Apartments Kościelisko", "Kościelisko accommodation", "mountain accommodation", "Tatras apartments"],
 			heading: "Kościelisko apartments",
-			subtitle: "Discover comfortable mountain apartments in Kościelisko — ideal for hiking and winter stays.",
+			subtitle: "Discover comfortable MSC Apartments in Kościelisko — ideal for hiking and winter stays.",
 		},
 	},
 	de: {

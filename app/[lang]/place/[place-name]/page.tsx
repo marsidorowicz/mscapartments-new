@@ -18,7 +18,7 @@ type Params = {
 // Fetch place data and its properties
 async function getPlaceData(placeName: string) {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		// First get the place info
 		const placesResponse = await fetch(`${baseUrl}/api/properties/places`, {
 			cache: "no-store",
@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		}
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/place/${generateSlug(placeData.place.name)}`
 
 	const title = dictionary.placeDetails?.metadata.title.replace("{{placeName}}", placeData.place.name)
@@ -107,9 +107,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		title,
 		description,
 		keywords,
-		author: "Mountain Apartments - created by Mariusz Sidorowicz, cyberwealth.pro",
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		author: "MSC Apartments - created by Mariusz Sidorowicz, cyberwealth.pro",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -118,13 +118,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 			title,
 			description,
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/apartment-building-default.jpg`,
 					width: 1200,
 					height: 630,
-					alt: `${placeData.place.name} - Mountain Apartments`,
+					alt: `${placeData.place.name} - MSC Apartments`,
 				},
 			],
 			locale: lang,

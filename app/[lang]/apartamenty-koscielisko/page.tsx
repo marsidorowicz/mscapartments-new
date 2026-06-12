@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/apartamenty-koscielisko`
 	const pageText = getApartamentyPageText(lang, "koscielisko")
 
@@ -25,12 +25,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		keywords: pageText.keywords.join(", "),
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,

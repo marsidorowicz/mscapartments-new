@@ -10,8 +10,6 @@ import { format, subDays, eachDayOfInterval, isSameDay } from "date-fns"
 
 import { NextRequest, NextResponse } from "next/server"
 
-import axios from "axios"
-
 import { eventBus } from "@/utilities/events/eventBus"
 import {
 	EmailNotificationHandler,
@@ -559,12 +557,21 @@ export async function POST(req: NextRequest) {
 				// Send Telegram notification for newsletter signup
 				try {
 					const telegramMessage = `Newsletter ma nowego subskrybenta, ${extended.newsletter.email} rezerwacja ${eventSaved.id}`
-					await axios.post("http://localhost:4000/api/send-telegram", {
-						chatIds: ["1691373957"],
-						message: telegramMessage,
-						propertyName: "NEWSLETTER",
+					const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							chatIds: ["1691373957"],
+							message: telegramMessage,
+							propertyName: "NEWSLETTER",
+						}),
 					})
-					console.log(`Sent Telegram notification for newsletter signup: ${telegramMessage}`)
+
+					if (!telegramResponse.ok) {
+						console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+					} else {
+						console.log(`Sent Telegram notification for newsletter signup: ${telegramMessage}`)
+					}
 				} catch (telegramError) {
 					console.error(`Failed to send Telegram notification for newsletter signup:`, telegramError)
 				}
@@ -655,13 +662,21 @@ ${messages.source}: ${source || "msc"}
 `
 
 				// Send to all configured Telegram chat IDs
-				await axios.post("http://localhost:4000/api/send-telegram", {
-					chatIds: propertyWithTelegram.telegramChatIds,
-					message: message,
-					propertyName: propertyWithTelegram.name,
+				const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						chatIds: propertyWithTelegram.telegramChatIds,
+						message: message,
+						propertyName: propertyWithTelegram.name,
+					}),
 				})
 
-				console.log(`Sent Telegram notification for new reservation: ${eventSaved.id}`)
+				if (!telegramResponse.ok) {
+					console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+				} else {
+					console.log(`Sent Telegram notification for new reservation: ${eventSaved.id}`)
+				}
 			}
 		} catch (telegramError) {
 			console.error(`Failed to send Telegram notification for new reservation:`, telegramError)
@@ -1036,13 +1051,21 @@ ${messages.source}: ${event.source || "msc"}
 `
 
 					// Send to all configured Telegram chat IDs
-					await axios.post("http://localhost:4000/api/send-telegram", {
-						chatIds: propertyWithTelegram.telegramChatIds,
-						message: message,
-						propertyName: propertyWithTelegram.name,
+					const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							chatIds: propertyWithTelegram.telegramChatIds,
+							message: message,
+							propertyName: propertyWithTelegram.name,
+						}),
 					})
 
-					console.log(`Sent Telegram notification for event update: ${eventSaved.id}`)
+					if (!telegramResponse.ok) {
+						console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+					} else {
+						console.log(`Sent Telegram notification for event update: ${eventSaved.id}`)
+					}
 				}
 			} catch (telegramError) {
 				console.error(`Failed to send Telegram notification for event update:`, telegramError)

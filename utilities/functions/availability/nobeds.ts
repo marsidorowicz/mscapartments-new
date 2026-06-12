@@ -30,7 +30,6 @@ export const checkNoBedsAvailability = async ({ room_id, fromdate, todate }: { r
 
 		console.log(`NoBeds availability response for room ${room_id}:`, data)
 
-		// Return response in axios-like format for compatibility
 		return {
 			status: response.status,
 			statusText: response.statusText,
@@ -74,7 +73,6 @@ export const checkNoBedsAvailabilityAll = async ({ fromdate, todate }: { fromdat
 
 		const data = await response.json()
 
-		// Return response in axios-like format for compatibility
 		return {
 			status: response.status,
 			statusText: response.statusText,

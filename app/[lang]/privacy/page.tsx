@@ -11,21 +11,21 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/privacy`
 
 	return {
 		title: `${dictionary.navigation.privacy} - ${dictionary.title}`,
-		description: "Polityka prywatności Mountain Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
-		keywords: [dictionary.navigation.privacy, "Mountain Apartments", "polityka prywatności", "RODO", "dane osobowe", "prywatność"].join(", "),
+		description: "Polityka prywatności MSC Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
+		keywords: [dictionary.navigation.privacy, "MSC Apartments", "polityka prywatności", "RODO", "dane osobowe", "prywatność"].join(", "),
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -38,15 +38,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 		},
 		openGraph: {
 			title: `${dictionary.navigation.privacy} - ${dictionary.title}`,
-			description: "Polityka prywatności Mountain Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
+			description: "Polityka prywatności MSC Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/privacy-policy.jpg`,
 					width: 1200,
 					height: 630,
-					alt: "Privacy Policy - Mountain Apartments",
+					alt: "Privacy Policy - MSC Apartments",
 				},
 			],
 			locale: lang,
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 		twitter: {
 			card: "summary_large_image",
 			title: `${dictionary.navigation.privacy} - ${dictionary.title}`,
-			description: "Polityka prywatności Mountain Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
+			description: "Polityka prywatności MSC Apartments - dowiedz się, jak chronimy Twoje dane osobowe i jak przetwarzamy informacje.",
 			images: [`${baseUrl}/images/privacy-policy.jpg`],
 		},
 		robots: {
@@ -110,8 +110,8 @@ const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
 				</li>
 				<li>
 					Zgodę można cofnąć w każdym czasie. Prosimy o kliknięcie w link, lub wysłanie e-maila na adres:{" "}
-					<a href="mailto:biuro@mountainapartments.pl" className="text-blue-600 hover:text-blue-800 underline">
-						biuro@mountainapartments.pl
+					<a href="mailto:apartamentymsc@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
+						apartamentymsc@gmail.com
 					</a>
 					.
 				</li>
@@ -184,8 +184,8 @@ const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
 				</li>
 				<li>
 					Consent may be withdrawn at any time. Please click the link or send an email to:{" "}
-					<a href="mailto:biuro@mountainapartments.pl" className="text-blue-600 hover:text-blue-800 underline">
-						biuro@mountainapartments.pl
+					<a href="mailto:apartamentymsc@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
+						apartamentymsc@gmail.com
 					</a>
 					.
 				</li>
@@ -256,8 +256,8 @@ const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
 				</li>
 				<li>
 					Die Einwilligung kann jederzeit widerrufen werden. Bitte klicken Sie auf den Link oder senden Sie eine E-Mail an:{" "}
-					<a href="mailto:biuro@mountainapartments.pl" className="text-blue-600 hover:text-blue-800 underline">
-						biuro@mountainapartments.pl
+					<a href="mailto:apartamentymsc@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
+						apartamentymsc@gmail.com
 					</a>
 					.
 				</li>
@@ -328,8 +328,8 @@ const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
 				</li>
 				<li>
 					El consentimiento puede retirarse en cualquier momento. Por favor, haga clic en el enlace o envíe un correo electrónico a:{" "}
-					<a href="mailto:biuro@mountainapartments.pl" className="text-blue-600 hover:text-blue-800 underline">
-						biuro@mountainapartments.pl
+					<a href="mailto:apartamentymsc@gmail.com" className="text-blue-600 hover:text-blue-800 underline">
+						apartamentymsc@gmail.com
 					</a>
 					.
 				</li>

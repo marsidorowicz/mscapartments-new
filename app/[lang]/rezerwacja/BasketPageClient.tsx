@@ -402,7 +402,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 					upsertEventDb({
 						event: eventPayload,
 						id: defaultUserId,
-						source: "mountain",
+						source: "msc",
 						offerId: index === 0 ? offerData?.offerId : undefined,
 					}),
 				),

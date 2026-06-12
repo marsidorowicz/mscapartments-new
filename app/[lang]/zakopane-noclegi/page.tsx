@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: ZakopaneRoomsPageProps): Prom
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/zakopane-noclegi`
 
 	return {
@@ -24,12 +24,12 @@ export async function generateMetadata({ params }: ZakopaneRoomsPageProps): Prom
 		keywords: ["Zakopane", "noclegi", "apartamenty", "Tatry", "góry", "wypoczynek", "zakwaterowanie", "Kościelisko", "Tatry"].join(", "),
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -44,13 +44,13 @@ export async function generateMetadata({ params }: ZakopaneRoomsPageProps): Prom
 			title: `${dictionary.zakopaneRooms?.title || "Zakopane Noclegi"} - ${dictionary.title}`,
 			description: dictionary.zakopaneRooms?.heroSubtitle || "Comfortable accommodation in the heart of the Tatra Mountains",
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/zakopane-rooms-hero.jpg`,
 					width: 1200,
 					height: 630,
-					alt: "Zakopane accommodation - Mountain Apartments",
+					alt: "Zakopane accommodation - MSC Apartments",
 				},
 			],
 			locale: lang,

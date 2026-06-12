@@ -10,8 +10,6 @@ import { PublicOfferData, OfferProperty } from "../../../types"
 import ModernNav from "./components/ModernNav"
 import ModernHeroSection from "./components/ModernHeroSection"
 import ModernApartmentCarousel from "./components/ModernApartmentCarousel"
-import ModernOffersSection from "./components/ModernOffersSection"
-import ModernReviewsSection from "./components/ModernReviewsSection"
 import Footer from "./components/Footer"
 import OfferBookingModal from "./components/OfferBookingModal"
 
@@ -107,10 +105,10 @@ export default function HomepagePageClient({ dictionary, lang }: HomepagePageCli
 			{/* <ModernLocationsSection dictionary={dictionary} lang={lang} /> */}
 
 			{/* Offers Section */}
-			<ModernOffersSection dictionary={dictionary} lang={lang} />
+			{/* <ModernOffersSection dictionary={dictionary} lang={lang} /> */}
 
 			{/* Reviews Section */}
-			<ModernReviewsSection dictionary={dictionary} />
+			{/* <ModernReviewsSection dictionary={dictionary} /> */}
 
 			{/* Footer */}
 			<Footer lang={lang} />

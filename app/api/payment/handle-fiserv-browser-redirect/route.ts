@@ -6,7 +6,6 @@ import CryptoJS from "crypto-js" // ADDED for hash verification
 import prisma from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
 import { addAccessTokenToEvent } from "@/utilities/functions/auth/reservationToken"
-import axios from "axios"
 import { createEventEntry } from "@/utilities/functions/eventEntry"
 import { EventEntryType } from "@/utilities/types"
 
@@ -65,7 +64,7 @@ function verifyRedirectHash(params: URLSearchParams, secret: string, receivedHas
 	// Check if all required parameters for the hash are present and not null/empty
 	if (!approvalCode || !chargeTotal || !currency || !txnDatetime || !storename) {
 		console.error(
-			"[verifyRedirectHash] Missing one or more required parameters from redirect for standard hash. Ensure approval_code, chargetotal, currency, txndatetime are present in redirect, and storename is configured."
+			"[verifyRedirectHash] Missing one or more required parameters from redirect for standard hash. Ensure approval_code, chargetotal, currency, txndatetime are present in redirect, and storename is configured.",
 		)
 		return false
 	}
@@ -292,7 +291,7 @@ async function handler(request: NextRequest) {
 							const newDepositString = newDepositAmount.toFixed(2).replace(".", ",")
 
 							console.log(
-								`[Redirect Route] Updating event ${eventId} deposit: current=${event.deposit}, payment=${paymentAmount}, new=${newDepositString}, isFullPayment=${isFullPayment}`
+								`[Redirect Route] Updating event ${eventId} deposit: current=${event.deposit}, payment=${paymentAmount}, new=${newDepositString}, isFullPayment=${isFullPayment}`,
 							)
 
 							// Update event with payment information
@@ -354,12 +353,22 @@ async function handler(request: NextRequest) {
 								const currency = currencyMap[rawCurrency] || rawCurrency
 								const propertyName = event.property?.name || "Unknown Property"
 								const telegramMessage = `💰 Płatność zrealizowana! Kwota: ${paymentAmount} ${currency}, Apartament: ${propertyName}, Rezerwacja: ${event.id}, OID: ${oid}, status: ${finalPaymentStatusForRedirect}`
-								await axios.post("http://localhost:4000/api/send-telegram", {
-									chatIds: ["1691373957"],
-									message: telegramMessage,
-									propertyName: "NOWA PŁATNOŚĆ",
+
+								const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+									method: "POST",
+									headers: { "Content-Type": "application/json" },
+									body: JSON.stringify({
+										chatIds: ["1691373957"],
+										message: telegramMessage,
+										propertyName: "NOWA PŁATNOŚĆ",
+									}),
 								})
-								console.log(`Sent Telegram notification for successful payment: ${telegramMessage}`)
+
+								if (!telegramResponse.ok) {
+									console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+								} else {
+									console.log(`Sent Telegram notification for successful payment: ${telegramMessage}`)
+								}
 							} catch (telegramError) {
 								console.error(`Failed to send Telegram notification for payment:`, telegramError)
 							}

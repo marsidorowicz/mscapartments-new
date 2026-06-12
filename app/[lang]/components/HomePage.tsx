@@ -112,7 +112,7 @@ export default function HomePage({ dictionary }: HomePageProps) {
 	const structuredData = {
 		"@context": "https://schema.org",
 		"@type": "LodgingBusiness",
-		name: dictionary?.title || "Mountain Apartments",
+		name: dictionary?.title || "MSC Apartments",
 		description: dictionary?.description || "Comfortable mountain accommodation",
 		url: typeof window !== "undefined" ? (window as Window).location.origin : "",
 		logo: typeof window !== "undefined" ? `${(window as Window).location.origin}/images/logo.png` : "",
@@ -147,7 +147,7 @@ export default function HomePage({ dictionary }: HomePageProps) {
 				value: true,
 			},
 		],
-		checkinTime: "15:00",
+		checkinTime: "16:00",
 		checkoutTime: "11:00",
 		petsAllowed: false,
 	}

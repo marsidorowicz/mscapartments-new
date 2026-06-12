@@ -6,8 +6,6 @@ import { sendMailSDC } from "../functions/templates"
 import { format, parseISO, startOfDay } from "date-fns"
 import { createMagicLink } from "../functions/auth/magicLink"
 
-import axios from "axios"
-
 const NOBEDS_API: string | undefined = process.env.NOBEDS_API_KEY
 
 export class UserActivityLogger implements EventHandler<EventCreated | EventUpdated | EventDeleted> {
@@ -101,7 +99,7 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 					BRAND_URL = "https://mountainapartments.pl"
 					break
 				case "MSC":
-					BRAND_URL = "https://pms.cyberwealth.pro"
+					BRAND_URL = "https://mscapartments.pl"
 					break
 				default:
 					BRAND_URL = "https://pms.cyberwealth.pro"
@@ -122,7 +120,7 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 						Szczegóły rezerwacji możesz zobaczyć pod tym linkiem: <a href="${reservationLink}">${reservationLink}</a> <br><br>
 			
 						Z poważaniem,<br>
-						Biuro Mountain Apartments
+						Biuro MSC Apartments
 						`
 
 			for (const recipient of eventDetails?.property?.emailNotification || []) {
@@ -134,7 +132,7 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 						html: `Daty: ${format(new Date(event.payload.startDate), "yyyy-MM-dd")} - ${format(new Date(event.payload.endDate), "yyyy-MM-dd")}
 						Miejsce: ${eventDetails.property?.name || "niezdefiniowane"} w ${eventDetails.property?.location || "niezdefiniowanej lokalizacji"}
 						Z poważaniem,<br>
-						Biuro Mountain Apartments
+						Biuro MSC Apartments
 						`,
 					}),
 				])
@@ -178,7 +176,7 @@ export class DeleteNotificationHandler implements EventHandler<EventDeleted> {
             wyjazd ${format(new Date(event.payload.endDate), "yyyy-MM-dd")} <br><br>
 
             Z poważaniem,<br>
-            Biuro Mountain Apartments`
+            Biuro MSC Apartments`
 		for (const recipient of eventDetails?.property?.emailNotification || []) {
 			if (!recipient) continue
 			await Promise.all([
@@ -188,7 +186,7 @@ export class DeleteNotificationHandler implements EventHandler<EventDeleted> {
 					html: `Daty: ${format(new Date(event.payload.startDate), "yyyy-MM-dd")} - ${format(new Date(event.payload.endDate), "yyyy-MM-dd")}
 						Miejsce: ${eventDetails.property?.name || "niezdefiniowane"} w ${eventDetails.property?.location || "niezdefiniowanej lokalizacji"}
 						Z poważaniem,<br>
-						Biuro Mountain Apartments
+						Biuro MSC Apartments
 						`,
 				}),
 			])
@@ -219,28 +217,31 @@ export const checkNoBedsAvailability = async ({ room_id, fromdate, todate }: { r
 	const formattedFromDate = resetHours(fromdate)
 	const formattedToDate = resetHours(todate)
 
-	const options = {
-		method: "GET",
-		url: `https://api.nobeds.com/api/Availability/${NOBEDS_API}`,
-		params: {
-			room_id,
-			fromdate: formattedFromDate,
-			todate: formattedToDate,
-		},
-		headers: { accept: "application/json" },
-	}
+	const url = new URL(`https://api.nobeds.com/api/Availability/${NOBEDS_API}`)
+	url.searchParams.set("room_id", String(room_id))
+	url.searchParams.set("fromdate", formattedFromDate)
+	url.searchParams.set("todate", formattedToDate)
 
 	try {
-		const response = await axios.request(options)
-		return response
+		const response = await fetch(url.toString(), {
+			method: "GET",
+			headers: { accept: "application/json" },
+		})
+
+		const data = await response.json()
+		return {
+			status: response.status,
+			statusText: response.statusText,
+			data,
+		}
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
 		console.error(`Error checking availability for room ${room_id}:`, error)
 		return {
-			status: error.response?.status || 500,
-			statusText: error.response?.statusText || "Error",
+			status: 500,
+			statusText: "Error",
 			data: null,
-			error: error.message || "Unknown error",
+			error: error instanceof Error ? error.message : String(error),
 		}
 	}
 }

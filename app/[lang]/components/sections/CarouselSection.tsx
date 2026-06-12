@@ -38,7 +38,7 @@ export default function CarouselSection({ dictionary }: AboutProps) {
 				</p> */}
 				{/* Apartment Carousel */}
 				<div className="w-full mb-4 sm:mb-6 md:mb-8 relative overflow-hidden rounded-lg bg-gradient-to-r from-[#cc9678] via-[#b8856a] to-[#a3745c] p-4 sm:p-6 md:p-8 shadow-lg">
-					<ApartmentCarousel title="Discover Our Mountain Apartments" dictionary={dictionary} />
+					<ApartmentCarousel title="Discover Our MSC Apartments" dictionary={dictionary} />
 				</div>
 			</div>
 

@@ -14,7 +14,7 @@ type Params = {
 // Fetch property data
 async function getProperty(id: string) {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const response = await fetch(`${baseUrl}/api/properties/mountain/${id}?userId=clok0rd6f0000kkdgyf1pd0t3`, {
 			cache: "no-store",
 		})

@@ -23,190 +23,82 @@ export default function RegulaminPageClient({ dictionary, lang }: RegulaminPageC
 				<div className="container mx-auto px-4 max-w-4xl">
 					<h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">{"Regulamin"}</h1>
 
-					<div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"1. Wprowadzenie"}</h2>
-							<p>
-								{
-									"Niniejszy Regulamin określa warunki, na których można dokonać rezerwacji i wynajmu apartamentów, a dokonanie rezerwacji jest jednoznaczne z zaakceptowaniem postanowień Regulaminu. Mountain Apartments zastrzega sobie Prawo odmowy przyjęcia rezerwacji."
-								}
-							</p>
-						</section>
+					<div className="text-black whitespace-pre-wrap">
+						{`
+REGULAMIN KORZYSTANIA Z APARTAMENTÓW MSCAPARTMENTS
+I. WSTĘP
+1. Regulamin określa warunki rezerwacji i najmu Apartamentów zamieszczonych na stronie www.mscapartments.pl, apartamenty-zakopane-msc.pl, apartamentyzakopane oraz w portalach rezerwacyjnych. Dokonanie rezerwacji stanowi jednocześnie zawarcie Umowy Najmu Apartamentu pomiędzy Właścicielem konkretnie wybranego apartamentu/ów a Gościem, na warunkach określonych w regulaminie. Mscapartments to znak firmy Sidorowicz Mariusz Firma Handlowo Usługowa MSC z siedzibą w Zakopanem, ul. Chłabówka 29, 34-500, NIP: 6272559931.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"2. Rezerwacja zadatkowa"}</h2>
-							<p>
-								{
-									"Rezerwacji zadatkowej obiektu dokonuje się poprzez wypełnienie i przesłanie formularza rezerwacyjnego zamieszczonego na stronie internetowej www.mountainapartments.pl. Rezerwacja zadatkowa wymaga wpłaty zadatku 30% wartości rezerwacji. Zadatek, zależnie od wybranej podczas rezerwacji formy płatności, może być wpłacony przy użyciu karty kredytowej, przelewu on-line lub na podane w e-mail."
-								}
-							</p>
+II. REZERWACJE I PŁATNOŚCI
+1. W momencie dokonania rezerwacji przez Gościa Mscapartments pobiera depozyt 500 zł, który zostaje zwrócony w przypadku opłacenia pobytu w całości po zakończeniu pobytu i zwrocie wynajętego mieszkania/ań w stanie niepogorszonym bez zniszczeń.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"a) Karta kredytowa"}</h3>
-							<p>
-								{
-									"W przypadku płatności kartą kredytową, zadatek należy wpłacić przy użyciu systemu płatności dotpay. Brak dokonania przelewu kartą kredytową spowoduje anulowanie rezerwacji. Wpłacony zadatek nie podlega zwrotowi. Po otrzymaniu zadatku zostanie przesłany klientowi e-mail z potwierdzeniem jego otrzymania a wraz z nim elektroniczny voucher ze wszystkimi danymi koniecznymi do realizacji pobytu. W dniu rozpoczęcia pobytu klient jest zobowiązany zapłacić pozostałą kwotę za rezerwację Rezydentowi."
-								}
-							</p>
+2. Klient dokonuje wyboru metody gwarancji swojej rezerwacji na konkretnej stronie i akceptuje regulamin. Dostępne metody wpłaty depozytu to PRZELEW, KARTA PŁATNICZA, BLIK, PRZELEW BLIK, VOUCHER.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"b) Przelew on-line"}</h3>
-							<p>
-								{
-									"W przypadku wpłaty zadatku przelewem on-line, zadatek należy wpłacić przy użyciu systemu płatności dotpay. Brak dokonania przelewu spowoduje anulowanie rezerwacji."
-								}
-							</p>
+PRZYJMUJEMY PŁATNOŚCI W KRYPTOWALUTACH TAKICH JAK BITCOIN, ETHEREUM, USDT ORAZ INNYCH. W CELU OTRZYMANIA INSTRUKCJI NALEŻY OTRZYMAĆ WCZEŚNIEJ ZGODĘ NA PŁATNOŚĆ KRYPTOWALUTĄ PRZED DOKONANIEM REZERWACJI.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"c) Przelew Bankowy"}</h3>
-							<p>
-								{
-									"W przypadku wpłaty na konto bankowe, w automatycznie wysyłanym e-mailu zatwierdzającym rezerwację zadatkową zostaną zawarte dane konta bankowego, na które należy wpłacić zadatek w ciągu 72 godzin od momentu złożenia rezerwacji. Po wpłaceniu zadatku należy potwierdzenie przelewu przesłać na adres e-mail: "
-								}
-								<a href="mailto:biuro@mountainapartments.pl" className="text-blue-600 hover:text-blue-800 underline">
-									biuro@mountainapartments.pl
-								</a>
-								{
-									". Wpłacony zadatek nie podlega zwrotowi. Po otrzymaniu zadatku zostanie przesłany klientowi e-mail z potwierdzeniem jego otrzymania, a wraz z nim elektroniczny voucher ze wszystkimi danymi koniecznymi do realizacji pobytu. W dniu rozpoczęcia pobytu klient jest zobowiązany zapłacić pozostałą kwotę za rezerwację osobie odpowiedzialnej za przekazanie kluczy."
-								}
-							</p>
+UWAGA!!!
+Prosimy pamiętać, że każda płatność kryptowalutami za usługi tworzy obowiązek podatkowy, jeśli wcześniej nie opłacono podatku od kryptowaluty, w momencie opłacenia usługi należy to zrobić.
+Firma przyjmująca płatność również płaci podatek od przyjęcia płatności w kryptowalucie. Transakcja na firmowy portfel kryptowalut jest zapisana w blockchainie gdzie przedstawia adres płacącego oraz adres opłacanego. Koszt transakcji opłaca zlecający przelew kryptowalutowy, dokładną ilość wymaganej wpłaty podaje MSCAPARTMENTS.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"d) Tokenizacja karty kredytowej/debetowej"}</h3>
-							<p>
-								{
-									"Mountain Apartments zastrzega sobie prawo do tokenizacji karty kredytowej lub debetowej podanej podczas dokonywania rezerwacji. Tokenizacja pozwala na bezpieczne przechowywanie danych karty w systemie płatności bez możliwości ich odczytania. W przypadku przedłużenia pobytu lub konieczności obciążenia karty z tytułu kaucji zwrotnej na poczet ewentualnych szkód, Mountain Apartments może skorzystać z tokenizowanych danych karty do automatycznego obciążenia karty kwotą odpowiadającą dodatkowym kosztom. Klient zostanie poinformowany o każdym obciążeniu karty z wyprzedzeniem, z wyjątkiem przypadków, gdy obciążenie wynika z preautoryzacji kaucji na poczet szkód stwierdzonych podczas odbioru apartamentu."
-								}
-							</p>
-						</section>
+3. W przypadku rezerwacji zaczynającej się tego samego dnia co data rezerwacji, niezbędne jest opłacenie pobytu oraz depozytu przed wydaniem kluczy do mieszkania. Nie przyjmujemy potwierdzeń przelewów od klientów wszystkich Klientów. Dostępne dla wszystkich metody potwierdzenia rezerwacji to PRZELEW NATYCHMIASTOWY, ZWYKŁY (jeśli pieniądze zostaną zaksięgowane przed wydaniem kluczy do apartamentu), PRZELEW NATYCHMIASTOWY BLIK, PŁATNOŚĆ KARTĄ, VOUCHER, PRZELEW BLIK NA TELEFON ORAZ PŁATNOŚCI KRYPTOWALUTAMI JEŚLI KRYPTOWALUTY ZOSTANĄ ZAKSIĘGOWANE W BLOCKCHAINIE PRZED WYDANIEM KLUCZY.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"3. Zakres umowy najmu"}</h2>
-							<p>
-								{
-									"Umowa zawarta pomiędzy Mountain Apartments a klientem obejmuje tylko i wyłącznie wynajem obiektu. Dojazd, wyżywienie oraz organizacja czasu pobytu leżą w gestii klienta. Szczegóły ceny są podane w zestawieniu cenowym przed zatwierdzeniem rezerwacji. W cenę wynajmu wliczone są już opłaty za media oraz opłata serwisowa w kwocie 220 PLN. Mountain Apartments nie będzie pobierał żadnych innych opłat dodatkowych ponad te, które zostały wskazane na stronie internetowej danego obiektu, z wyjątkiem opłaty miejscowej w kwocie 2 lub 3 PLN za każdy dzień pobytu."
-								}
-							</p>
-						</section>
+4. Opłata za przygotowanie mieszkania to w zależności od apartamentu 40 – 170 zł.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"4. Kaucja na czas pobytu"}</h2>
-							<p>
-								{
-									"Mountain Apartments zastrzega sobie prawo do pobrania zwrotnej kaucji w kwocie 300 PLN . Kaucja pobierana jest na poczet szkód stwierdzonych przez Rezydentkę podczas odbioru apartamentu po pobycie ."
-								}
-							</p>
-						</section>
+5. Odbiór kluczy w zależności od wybranego apartamentu odbywa się przez wydanie kodu do sejfu, wydanie kodu do klamki elektronicznej lub przez fizyczne wydanie klucza na miejscu. Metoda różni się a szczegóły wysyłane są po opłaceniu pobytu i depozytu.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"5. Przyjazd, przekazanie kluczy, wyjazd."}</h2>
-							<p>
-								{
-									"Przyjazd powinien nastąpić w godzinach ustalonych z Rezydentem odpowiedzialny za przekazanie kluczy . Klient zobowiązany jest do poinformowania tej osoby najpóźniej dzień przed przyjazdem o planowanej godzinie odbioru kluczy. Standardowo można wprowadzić się od godz. 16.00 w dniu przyjazdu i należy wyprowadzić się do godz. 11.00 w dniu wyjazdu, chyba że inaczej uzgodniono z Rezydentem. W przypadku braku możliwości dotarcia na umówioną wcześniej godzinę klient zobowiązany jest do natychmiastowego powiadomienia telefonicznie Rezydenta. Przyjazd i wyjazd w godzinach nocnych 22 - 6 rano dodatkowo płatny 100 PLN"
-								}
-							</p>
-						</section>
+6. Jeśli Klient po rezerwacji chce dokonać w niej zmian, musi skontaktować się drogą elektroniczną na adres apartamentymsc@gmail.com lub rezerwacje@mscapartments.pl.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"6. Obowiązki klienta"}</h2>
-							<p>
-								{
-									"Liczba osób mających zamieszkać w obiekcie jest ograniczona do podanej na voucherze. Klient zobowiązany jest do poinformowania telefonicznego lub mailowego Mountain Apartments o jakiejkolwiek zmianie tej liczby. Jeśli liczba ta przekroczy liczbę osób podaną na voucherze, osoba odpowiedzialna za klucze może odmówić wydania kluczy do obiektu. Klient zobowiązany jest do dbania o zachowanie zasad dobrego sąsiedztwa i utrzymywania obiektu w stanie zastanym."
-								}
-							</p>
-							<p className="mt-4">
-								{
-									"Do obowiązków klienta należy również pozostawienie umytych naczyń i sprzętów kuchennych przed wyjazdem. Wcześniejszy, nieuzgodniony wyjazd Klienta bez przekazania apartamentu przy udziale przedstawiciela naszej firmy, może spowodować roszczenia ze strony tej firmy."
-								}
-							</p>
-							<p className="mt-4">
-								{
-									"Klient zobowiązany jest do natychmiastowego poinformowania osoby odpowiedzialnej za przekazanie kluczy o ewentualnych uszkodzeniach i brakach zastanych w obiekcie oraz do zgłoszenia szkód wyrządzonych przez siebie podczas pobytu. Równowartość tych szkód i ich usunięcia pokrywa"
-								}
-							</p>
-						</section>
+7. Skrócenie pobytu może skutkować utratą wpłaconej kwoty za niewykorzystane dni.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"7. Zmiany w rezerwacji"}</h2>
+8. Dzieci do lat 3 śpiące z rodzicami na łóżkach znajdujących się w apartamencie mają pobyt bezpłatny.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"a) Zmiana terminu pobytu"}</h3>
-							<p>
-								{
-									"Po dokonaniu wpłaty zadatku jego zwrot nie przysługuje. Istnieje natomiast możliwość zmiany terminu rezerwacji po wpłacie zadatku pod warunkiem, że zmiana taka zostanie dokonana na minimum 14 dni przed pierwotnym terminem rezerwacji i dany apartament jest wolny w nowym terminie. Zmiany można dokonać jedynie z zachowaniem pierwotnej kwoty. W przypadku wybrania nowego terminu przypadającego w droższym sezonie wymagana jest dopłata różnicy w cenie. Zmiany terminu rezerwacji należy anulować pierwotną rezerwację poprzez wysłanie maila na adres recepcja@mountainapartments.pl z podaniem nowego terminu z zachowaniem pobytu w tym samym apartamencie."
-								}
-							</p>
+III. USŁUGA WYNAJMU APARTAMENTU
+1. Cena wynajmu uwzględnia wszystkie podatki i opłaty dodatkowe, oprócz sprzątania, i kosztów pralni (40 – 170 zł)
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"b) Przedłużenie pobytu"}</h3>
-							<p>
-								{
-									"Termin pobytu w danym obiekcie można przedłużyć w przypadku gdy apartament jest wolny. W przypadku przedłużenia pobytu, klient zobowiązany jest zgłosić fakt ten Rezydentowi."
-								}
-							</p>
+2. Miejsce postojowe może być zagwarantowane, koszt określa formularz rezerwacji przed jej dokonaniem, zazwyczaj jest ono bezpłatne.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"c) Zmiana liczby osób"}</h3>
-							<p>
-								{
-									"Liczba osób podana na voucherze może zostać zmieniona. W przypadku zmiany liczby osób, klient zobowiązany jest do poinformowania firmy Mountain Apartments telefonicznie lub mailowo i dopłaty różnicy w cenie."
-								}
-							</p>
+3. Doba hotelowa trwa od godziny 15:00 w dniu przyjazdu, do 11:00 w dniu wyjazdu. W przypadku wykupienia usługi przedłużenia pobytu lub wcześniejszego zakwaterowania udostępnia się Gościom zmianę powyższych godzin zgodnie z ustaleniami indywidualnymi.
 
-							<h3 className="text-xl font-medium text-gray-800 mb-2 mt-4">{"d)"}</h3>
-							<p>
-								{
-									"Mountain Apartments zastrzega sobie prawo do zmiany zarezerwowanego apartamentu na inny o podobnym standardzie z zachowaniem pierwotnej kwoty rezerwacji. W przypadku kiedy, apartament będzie tańszy w zarezerwowanym terminie Moutain Apartments zwróci różnicę w cenie wynajmu, wynikającą z cennika zamieszczonego na stronie www.mountainapartments.pl"
-								}
-							</p>
-						</section>
+4. Jeśli klient stwarza zagrożenie lub jest pod wpływem substancji odurzających, napojów alkoholowych, MSCAPARTMENTS zastrzega sobie prawo do nie wydania kluczy oraz zatrzymania środków za pobyt i/lub za depozyt.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"8. Przeniesienie praw i obowiązków klienta na inną osobę"}</h2>
-							<p>
-								{
-									"W każdej chwili klient może przenieść na inną osobę wszystkie przysługujące mu z tytułu rezerwacji uprawnienia, jeżeli jednocześnie osoba ta przejmuje wszystkie wynikające z tej rezerwacji obowiązki. W takiej sytuacji należy niezwłocznie powiadomić Mountain Apartments a o zmianie rezerwującego podając dane personalne osoby, która przejmie prawa i obowiązki wynikające z umowy."
-								}
-							</p>
-						</section>
+IV) ODPOWIEDZIALNOŚĆ GOŚCIA
+1. W mieszkaniu nie można organizować imprez, spotkań towarzyskich, w szczególności wieczorów panieńskich/ kawalerskich. Gość odpowiada za wyposażenie mieszkania oraz za zachowanie współ-gości, z którymi wynajmuje mieszkanie.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"9. Bezpłatny pobyt dziecka"}</h2>
-							<p>
-								{
-									'Dziecko do lat 3 śpiące z dorosłymi lub we własnym łóżeczku nie ponosi żadnych opłat za pobyt. Kwota za łóżeczko to 50 zł /pobyt.Podczas dokonywania rezerwacji należy w formularzu wybrać liczbę osób nie uwzględniając takiego dziecka, a jedynie w polu "Uwagi" należy podać jego wiek. Pozostałe dzieci płacą normalną cenę.'
-								}
-							</p>
-						</section>
+2. Podczas rezerwacji zgłasza się ilość osób, które jednocześnie mogą przebywać w mieszkaniu. W przypadku przekroczenia tej liczby grozi kara pozbawienia depozytu.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"10. Wystąpienie siły wyższej"}</h2>
-							<p>
-								{
-									"W przypadku wystąpienia niemożliwych do przewidzenia okoliczności, których skutków nie można natychmiast zlikwidować zwyczajnymi środkami, Mountain Apartments rezerwuje sobie prawo zaproponowania klientowi obiektu zastępczego podobnego do obiektu pierwotnie zarezerwowanego. Mountain Apartments ma prawo, w przypadku wystąpienia zjawisk mających charakter siły wyższej anulować umowę. Dotyczy to również przypadków, w których bezpieczeństwo osobiste klienta lub jego majątku, z powodów niezależnych od Mountain Apartments, nie będzie mogło być zagwarantowane. Kwoty wpłacone przez klienta podlegają natychmiastowemu zwrotowi, z potrąceniem kwot należnych za usługi już wyświadczone."
-								}
-							</p>
-						</section>
+3. Cisza nocna obowiązuje od 22.00 do 7.00
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"11. Ochrona danych osobowych"}</h2>
-							<p>
-								{
-									"Dokonując rezerwacji na stronie internetowej mountainapartments.pl, Rezerwujący wyraża zgodę na umieszczenie jego danych osobowych w bazie danych serwisu mountainapartments.pl oraz firm dotpay odpowiedzialnej za sam proces płatności on-line. Dane będą przetwarzane wyłącznie w celu realizacji rezerwacji, ułatwienia dokonywania kolejnych rezerwacji oraz w celach marketingowych zgodnie z przepisami ustawy z dnia 29.08.1997 r. o ochronie danych osobowych. Rezerwującemu przysługuje prawo wglądu do swoich danych osobowych i ich aktualizacji."
-								}
-							</p>
-						</section>
+4. W mieszkaniu obowiązują podobne zasady co w blokach mieszkalnych, zobowiązujące do poszanowania prywatności innych lokatorów, zasady współżycia społecznego, które gwarantują spokojne współistnienie.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"12. Prawo do zmiany rezerwacji z powodu błędów"}</h2>
-							<p>
-								{
-									"Mountain Apartments zastrzega sobie prawo do zmiany rezerwacji, ich anulacji w przypadku wykrycia nieprawidłowych cen i błędów w wyniku ale nie tylko, nieprawidłowego działania kodów rabatowych, systemu rezerwacji lub systemu płatności. Klient ma prawo do otrzymania zwrotu wpłaconej zaliczki lub jej wykorzystania na przyszłe rezerwacje."
-								}
-							</p>
-						</section>
+5. Kaucja ma na celu zabezpieczenie roszczeń MSCAPARTMENTS w przypadku ewentualnych zniszczeń. Mieszkanie jest sprawdzane przez Gościa w dniu zameldowania oraz przez serwis sprzątający po wymeldowaniu, kaucja jest zwracana do 7 dni. W przypadku zastrzeżeń podczas oględzin w dniu zameldowania Gość koniecznie musi je od razu zgłosić, ma na to pierwsze 10h od przekazania możliwości wejścia.
 
-						<section className="mb-8">
-							<h2 className="text-2xl font-semibold text-gray-800 mb-4">{"13. Postanowienia końcowe"}</h2>
-							<p>
-								{
-									"Prawem właściwym dla sporów pomiędzy właścicielem a klientem jest prawo polskie. Spory rozstrzygane będą przez Sąd właściwy dla siedziby Mountain Apartments."
-								}
-							</p>
-						</section>
+6. Na terenie obiektu nie można palić papierosów, w tym elektronicznych, ani korzystać z używek, w szczególności zabronionych prawem. W przypadku nie zastosowania się do zakazu GOŚĆ ZOSTANIE OBCIĄŻONY KOSZTEM 1000 zł.
+
+7. W przypadku powstania szkody, lub wypadku GOŚĆ koniecznie musi niezwłocznie powiadomić MSCAPARTMENTS.
+
+8. W mieszkaniach nie można zmieniać wystroju i rozmieszczenia mebli.
+
+9. Zagubienie kluczy powoduje obciążenie kwotą do 500 zł.
+
+V) AWARIE
+1. Zobowiązujemy się do usuwania na bieżąco wszystkich usterek, chyba że ich charakter to uniemożliwi. Wszelkie awarie niezależne od MSCAPARTMENTS nie są podstawą do anulacji pobytu.
+
+VI) SIŁA WYŻSZA
+1. W sytuacji wystąpienia niemożliwych do przewidzenia okoliczności, których skutków nie można natychmiast zlikwidować zwyczajowymi środkami MSCAPARTMENTS zastrzega sobie prawo do zaproponowania Gościowi pobytu w innym obiekcie będącym w dyspozycji MSCAPARTMENTS. W przypadku wystąpienia zjawisk mających charakter siły wyższej MSCAPARTMENTS ma prawo odstąpić od Umowy. Dotyczy to również przypadków, w których bezpieczeństwo osobiste Gościa lub jego majątku, nie będzie mogło być zagwarantowane z powodów niezależnych od MSCAPARTMENTS. Kwoty wpłacone przez Klienta podlegają natychmiastowemu zwrotowi, z potrąceniem kwot należnych za usługi już wyświadczone.
+
+VII) REKLAMACJE
+1. W razie zaistnienia nieprawidłowości Gość ma prawo do złożenia reklamacji w terminie 14 dni od ich wystąpienia i przesłanie uwag na email: apartamentymsc@gmail.com
+
+2. Rozpatrzenie reklamacji następuje w terminie 30 dni od jej otrzymania. Odpowiedź zostanie wysłana drogą elektroniczną
+
+3. MSCAPARTMENTS nie ponosi odpowiedzialności za niedogodności i utrudnienia powstałe podczas pobytu i związane z pracami budowlanymi lub remontowymi, które mogą być prowadzone na terenie nieruchomości, w której znajduje się apartament oraz przerwaniem, z przyczyn niezależnych od MSCAPARTMENTS dostaw mediów – prądu, wody, Internetu.
+
+VIII) POSTANOWIENIA KOŃCOWE
+1. Dokonując rezerwacji w MSCAPARTMENTS telefonicznie, mailowo, za pośrednictwem stron, gdziekolwiek znajduje się nasza oferta Gość wyraża zgodę na przetwarzanie Jego danych osobowych poprzez umieszczenie ich w bazie danych Firmy. Dane będą przetwarzane wyłącznie w celu realizacji rezerwacji, ułatwienia dokonania kolejnych rezerwacji oraz celach marketingowych zgodnie z przepisami ustawy z dnia 29.08.1997 r. o Ochronie danych osobowych.
+
+2. Rozstrzyganie sporów. Prawem właściwym dla sporów pomiędzy Sidorowicz Mariusz FHU MSC a Gościem jest prawo polskie. Spory rozstrzygane będą przez sąd właściwy dla siedziby MSCAPARTMENTS
+
+`}
 					</div>
 				</div>
 			</main>

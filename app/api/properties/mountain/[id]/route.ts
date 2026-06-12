@@ -20,7 +20,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 			where: {
 				id: propertyId,
 				userId: userId,
-				brand: "MOUNTAIN",
 				state: "active", // Only get active properties
 			},
 			include: {
@@ -37,6 +36,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 				},
 				place: {
 					select: { name: true, location: true, extended: true },
+				},
+				city: {
+					select: { name: true },
 				},
 				availabilities: {
 					select: {
@@ -56,9 +58,38 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 			return NextResponse.json({ error: "Property not found", success: false }, { status: 404 })
 		}
 
+		const sanitizedExtended = property.extended
+			? (() => {
+					const extended = property.extended as Record<string, unknown>
+					const safeFields = [
+						"title",
+						"keywords",
+						"minPrice",
+						"maxPrice",
+						"petFee",
+						"petsMax",
+						"babyCribFee",
+						"petsAllowed",
+						"breakfastFee",
+						"babyCribAllowed",
+						"breakfastAllowed",
+					]
+					const sanitized: Record<string, unknown> = {}
+
+					for (const field of safeFields) {
+						if (extended[field] !== undefined) {
+							sanitized[field] = extended[field]
+						}
+					}
+
+					return sanitized
+				})()
+			: null
+
 		// Transform property to include price from availabilities
 		const propertyWithPricing = {
 			...property,
+			extended: sanitizedExtended,
 			price: property.availabilities.length > 0 ? property.availabilities[0].price : null,
 			availabilities: undefined, // Remove availabilities from response to keep it clean
 		}

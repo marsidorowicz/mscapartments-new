@@ -18,7 +18,7 @@ export default function ModernApartmentCarousel({ dictionary, lang }: ModernApar
 	const [allProperties, setAllProperties] = useState<Property[]>([])
 	const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
 	const [loading, setLoading] = useState(true)
-	const [currentView, setCurrentView] = useState<"grid" | "slider">("slider")
+	const [currentView, setCurrentView] = useState<"grid" | "slider">("grid")
 	const [selectedFilters, setSelectedFilters] = useState<PropertyFilterType[]>([])
 	const [selectedPlaces, setSelectedPlaces] = useState<number[]>([])
 	const [currentSlide, setCurrentSlide] = useState(0)
@@ -142,7 +142,7 @@ export default function ModernApartmentCarousel({ dictionary, lang }: ModernApar
 		const fetchProperties = async () => {
 			try {
 				setLoading(true)
-				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 				const response = await fetch(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`)
 
 				if (!response.ok) {

@@ -5,7 +5,6 @@
 import { useState, useEffect, useRef } from "react"
 import { PropertyFilterType, Place } from "@/types"
 import { Dictionary } from "../../types/dictionary"
-import axios from "axios"
 import { NEXT_PUBLIC_API_BASE_URL } from "@/types"
 
 type FilterButtonProps = {
@@ -207,10 +206,16 @@ export default function FilterButton({ dictionary }: FilterButtonProps) {
 
 		const fetchPlaces = async () => {
 			try {
-				const response = await axios.get(`${NEXT_PUBLIC_API_BASE_URL}/properties/places?userId=clok0rd6f0000kkdgyf1pd0t3`)
+				const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/properties/places?userId=clok0rd6f0000kkdgyf1pd0t3`)
 
-				if (response.data.success) {
-					setPlaces(response.data.places || [])
+				if (!response.ok) {
+					throw new Error(`Failed to fetch places: ${response.status}`)
+				}
+
+				const data = await response.json()
+
+				if (data.success) {
+					setPlaces(data.places || [])
 				}
 			} catch (error) {
 				console.error("Error fetching places:", error)

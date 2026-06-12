@@ -187,7 +187,7 @@ const translations: Record<"en" | "pl" | "it" | "de", ITranslation> = {
 			"We do not store your credit or debit card numbers. This is handled by our PCI DSS compliant payment provider, Fiserv Polcard. In case of consent to card tokenization, you agree to have it saved by Fiserv Polcard, which will provide us with a token representing it. This token may be used to pre-authorize the card for a deposit, charge additional fees such as for additional services or extra days of stay, to unblock pre-authorization, to complete it in case of damages or leaving the apartment dirty, leaving personal belongings including trash, or not performing initial cleaning after yourself, washing dishes, removing water stains, heavy soiling of bedding or towels, or not reporting the stay of an animal or additional persons.",
 		terms_dialog_content_p4: 'Additional terms can be found on the website in the "Terms" section.',
 		terms_dialog_content_p5:
-			"Mountain Apartments reserves the right to change or cancel reservations in the event of detection of incorrect prices, search result errors, improper functioning of discount codes, reservation system or payment system, and also in other justified cases. In such a case, the Client has the right to receive a refund of the paid deposit or use it for future reservations.",
+			"MSC Apartments reserves the right to change or cancel reservations in the event of detection of incorrect prices, search result errors, improper functioning of discount codes, reservation system or payment system, and also in other justified cases. In such a case, the Client has the right to receive a refund of the paid deposit or use it for future reservations.",
 		terms_dialog_close_button: "Close",
 		assignAll: "Please assign all guests",
 		read_terms_step: "1. Read terms and conditions",
@@ -234,7 +234,7 @@ const translations: Record<"en" | "pl" | "it" | "de", ITranslation> = {
 			"Nie przechowujemy numerów twojej karty kredytowej/debetowej. Odpowiada za to nasz dostawca płatności zgodny z PCI DSS, Fiserv Polcard. W przypadku zgody na tokenizację karty, zgadzasz się na jej zapisanie przez Fiserv Polcard, który udostępni nam reprezentujący ją token. Token ten może zostać użyty do preautoryzacji karty na depozyt, pobrania dodatkowej opłaty, np. za dodatkową usługę czy dodatkowy dzień pobytu, do odblokowania preautoryzacji, do jej dopełnienia w przypadku zniszczeń lub pozostawienia mieszkania brudnym, pozostawienia rzeczy osobistych, w tym śmieci, czy nie wykonaniu wstępnego sprzątania po sobie, zmycie naczyń, usunięcie plam wody, silne zabrudzenie pościeli czy ręczników, czy nie zgłoszenia pobytu zwierzęcia, lub dodatkowych osób.",
 		terms_dialog_content_p4: 'Dodatkowe warunki znajdziesz na stronie w zakładce "regulamin".',
 		terms_dialog_content_p5:
-			"Mountain Apartments zastrzega sobie prawo do zmiany lub anulowania rezerwacji w przypadku wykrycia nieprawidłowych cen, błędów w wynikach wyszukiwania, nieprawidłowego działania kodów rabatowych, systemu rezerwacji lub systemu płatności, a także w innych uzasadnionych przypadkach. W takim przypadku Klient ma prawo do otrzymania zwrotu wpłaconej zaliczki lub jej wykorzystania na przyszłe rezerwacje.",
+			"MSC Apartments zastrzega sobie prawo do zmiany lub anulowania rezerwacji w przypadku wykrycia nieprawidłowych cen, błędów w wynikach wyszukiwania, nieprawidłowego działania kodów rabatowych, systemu rezerwacji lub systemu płatności, a także w innych uzasadnionych przypadkach. W takim przypadku Klient ma prawo do otrzymania zwrotu wpłaconej zaliczki lub jej wykorzystania na przyszłe rezerwacje.",
 		terms_dialog_close_button: "Zamknij",
 		assignAll: "Przypisz wszystkich gości",
 		read_terms_step: "1. Przeczytaj warunki",
@@ -281,7 +281,7 @@ const translations: Record<"en" | "pl" | "it" | "de", ITranslation> = {
 			"Non memorizziamo i numeri della tua carta di credito o debito. Questo è gestito dal nostro fornitore di pagamenti conforme a PCI DSS, Fiserv Polcard. In caso di consenso alla tokenizzazione della carta, accetti che venga salvata da Fiserv Polcard, che ci fornirà un token che la rappresenta. Questo token può essere utilizzato per preautorizzare la carta per un deposito, addebitare commissioni aggiuntive, ad esempio per servizi aggiuntivi o giorni extra di soggiorno, per sbloccare la preautorizzazione, per completarla in caso di danni o di lasciare l'appartamento sporco, lasciare effetti personali inclusi rifiuti, o non eseguire la pulizia iniziale dopo di sé, lavare i piatti, rimuovere macchie d'acqua, sporcare pesantemente biancheria da letto o asciugamani, o non segnalare il soggiorno di un animale o persone aggiuntive.",
 		terms_dialog_content_p4: 'Termini aggiuntivi possono essere trovati sul sito web nella sezione "Regolamento".',
 		terms_dialog_content_p5:
-			"Mountain Apartments si riserva il diritto di modificare o cancellare le prenotazioni in caso di rilevamento di prezzi errati, errori nei risultati di ricerca, malfunzionamento di codici sconto, sistema di prenotazione o sistema di pagamento, e anche in altri casi giustificati. In tal caso, il Cliente ha diritto al rimborso dell'acconto versato o al suo utilizzo per future prenotazioni.",
+			"MSC Apartments si riserva il diritto di modificare o cancellare le prenotazioni in caso di rilevamento di prezzi errati, errori nei risultati di ricerca, malfunzionamento di codici sconto, sistema di prenotazione o sistema di pagamento, e anche in altri casi giustificati. In tal caso, il Cliente ha diritto al rimborso dell'acconto versato o al suo utilizzo per future prenotazioni.",
 		terms_dialog_close_button: "Chiudi",
 		assignAll: "Assegna tutti gli ospiti",
 		read_terms_step: "1. Leggi i termini e condizioni",
@@ -328,7 +328,7 @@ const translations: Record<"en" | "pl" | "it" | "de", ITranslation> = {
 			"Wir speichern Ihre Kredit- oder Debitkartennummern nicht. Dies wird von unserem PCI DSS-konformen Zahlungsanbieter Fiserv Polcard übernommen. Im Falle der Zustimmung zur Kartentokenisierung erklären Sie sich damit einverstanden, dass diese von Fiserv Polcard gespeichert wird, der uns ein Token zur Verfügung stellt, das sie repräsentiert. Dieses Token kann verwendet werden, um die Karte für eine Kaution vorzuautorisieren, zusätzliche Gebühren wie für zusätzliche Dienstleistungen oder zusätzliche Aufenthaltstage zu berechnen, die Vorautorisierung aufzuheben, sie im Falle von Schäden oder bei Verlassen der Wohnung in schmutzigem Zustand, Zurücklassen persönlicher Gegenstände einschließlich Müll oder bei Nichtdurchführung der Grundreinigung nach sich selbst, Abwaschen des Geschirrs, Entfernen von Wasserflecken, starker Verschmutzung von Bettwäsche oder Handtüchern oder Nichtmeldung des Aufenthalts eines Tieres oder zusätzlicher Personen abzuschließen.",
 		terms_dialog_content_p4: 'Weitere Bedingungen finden Sie auf der Website im Bereich "AGB".',
 		terms_dialog_content_p5:
-			"Mountain Apartments behält sich das Recht vor, Reservierungen zu ändern oder zu stornieren im Falle der Feststellung falscher Preise, Suchergebnisfehler, Fehlfunktion von Rabattcodes, Reservierungssystem oder Zahlungssystem, und auch in anderen gerechtfertigten Fällen. In einem solchen Fall hat der Kunde das Recht auf Rückerstattung der geleisteten Anzahlung oder deren Verwendung für zukünftige Reservierungen.",
+			"MSC Apartments behält sich das Recht vor, Reservierungen zu ändern oder zu stornieren im Falle der Feststellung falscher Preise, Suchergebnisfehler, Fehlfunktion von Rabattcodes, Reservierungssystem oder Zahlungssystem, und auch in anderen gerechtfertigten Fällen. In einem solchen Fall hat der Kunde das Recht auf Rückerstattung der geleisteten Anzahlung oder deren Verwendung für zukünftige Reservierungen.",
 		terms_dialog_close_button: "Schließen",
 		assignAll: "Bitte alle Gäste zuweisen",
 		read_terms_step: "1. Bitte lesen Sie die Allgemeinen Geschäftsbedingungen sorgfältig durch.",
@@ -495,7 +495,7 @@ function ReservationForm({ id, arrivalDate, departureDate, theme = "light", loca
 					reason: formData?.tripPurpose,
 					status: "New",
 					numOfParkingPlaces: property?.parkingQuantity,
-					source: "mountain",
+					source: "msc",
 					sourceDescription: offerData
 						? (() => {
 								return `Offer: ${offerData.offerId}`
@@ -702,7 +702,7 @@ function ReservationForm({ id, arrivalDate, departureDate, theme = "light", loca
 				const response = await upsertEvent({
 					event: eventWithRoomId,
 					id,
-					source: "mountain", //TODO: get source from url
+					source: "msc", //TODO: get source from url
 					offerId: offerData?.offerId,
 				})
 

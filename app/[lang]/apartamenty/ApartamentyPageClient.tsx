@@ -146,7 +146,7 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 			}
 
 			try {
-				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 				// Format dates in local timezone instead of UTC
 				const startDateStr = currentFilterDateRange.start.toLocaleDateString("sv-SE") // YYYY-MM-DD format
 				const endDateStr = currentFilterDateRange.end.toLocaleDateString("sv-SE") // YYYY-MM-DD format
@@ -173,7 +173,7 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 
 					// After availability is known, fetch per-property NoBeds cache entries to compute total prices for the range
 					try {
-						const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+						const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 						const startDateStr = currentFilterDateRange.start.toLocaleDateString("sv-SE")
 						const endDateStr = currentFilterDateRange.end.toLocaleDateString("sv-SE")
 						const sums: Record<number, number> = {}
@@ -318,7 +318,7 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 		const fetchProperties = async () => {
 			try {
 				setLoading(true)
-				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 				const response = await fetch(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`)
 
 				if (!response.ok) {
@@ -376,7 +376,7 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 			<div className="relative h-1/3 overflow-hidden ">
 				<Image
 					src="/images/tlo.jpg"
-					alt="Mountain Apartments"
+					alt="MSC Apartments"
 					fill
 					className="object-cover"
 					quality={70}

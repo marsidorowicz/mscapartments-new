@@ -8,7 +8,7 @@ function Logo2() {
 		<div className="">
 			<Image
 				src={"/images/logo-nowe.png"}
-				alt="Mountain Apartments Logo"
+				alt="MSC Apartments Logo"
 				fill
 				className="object-contain"
 				priority={true}

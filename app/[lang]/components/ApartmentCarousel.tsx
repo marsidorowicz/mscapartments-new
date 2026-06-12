@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation"
 import ApartmentCard from "./ApartmentCard"
 import { ApartmentsDictionary, Dictionary } from "../../types/dictionary"
 import { Property, PropertyFilterType } from "@/types"
-import axios from "axios"
 import FilterButtonSearch from "./re/FilterButtonSearch"
 
 type ApartmentCarouselProps = {
@@ -471,10 +470,15 @@ export default function ApartmentCarousel({
 		const fetchProperties = async () => {
 			try {
 				setLoading(true)
-				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
-				const mountainProperties = await axios.get(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`)
+				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
+				const response = await fetch(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`)
 
-				const fetchedProperties = mountainProperties.data.properties || []
+				if (!response.ok) {
+					throw new Error(`Failed to fetch properties: ${response.status}`)
+				}
+
+				const data = await response.json()
+				const fetchedProperties = data.properties || []
 
 				setAllProperties(fetchedProperties)
 				// Note: filtering will be applied automatically by the separate useEffect that watches allProperties and selectedFilters

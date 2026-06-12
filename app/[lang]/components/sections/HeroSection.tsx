@@ -164,7 +164,7 @@ export default function HeroSection({ home, currentSection, dictionary }: HeroPr
 			<Section id="hero" bgImage="/images/tlo.jpg">
 				<div className="text-center text-white">
 					<h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">
-						<AnimatedText text="Mountain Apartments" delay={300} />
+						<AnimatedText text="MSC Apartments" delay={300} />
 					</h1>
 					<p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 drop-shadow-md">
 						<AnimatedWords text="Loading..." delay={1000} />

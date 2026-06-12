@@ -1,6 +1,5 @@
 /** @format */
 
-import axios from "axios"
 import { format, parseISO, startOfDay } from "date-fns"
 
 const NOBEDS_API: string | undefined = process.env.NOBEDS_API_KEY
@@ -29,21 +28,11 @@ type RestoreAvailabilityData = {
 }
 
 export const restoreAvailability = async (data: RestoreAvailabilityData) => {
-	const {
-		rid,
-		room_id,
-		date,
-		currentAvail,
-		price,
-		min_stay,
-		max_stay,
-		targetQuantity,
-	} = data
+	const { rid, room_id, date, currentAvail, price, min_stay, max_stay, targetQuantity } = data
 	if (!rid || !room_id || date === "") return null
 
 	// Use targetQuantity if provided, otherwise default to currentAvail + 1
-	const finalQuantity =
-		targetQuantity !== undefined ? targetQuantity : currentAvail + 1
+	const finalQuantity = targetQuantity !== undefined ? targetQuantity : currentAvail + 1
 
 	const requestData = {
 		rid: rid,
@@ -56,28 +45,30 @@ export const restoreAvailability = async (data: RestoreAvailabilityData) => {
 		max_stay: max_stay,
 	}
 
-	const options = {
-		method: "PUT",
-		url: `https://api.nobeds.com/api/Availability/${NOBEDS_API}`,
-		headers: {
-			accept: "application/json",
-			"content-type": "application/*+json",
-		},
-		data: requestData,
-	}
+	const url = `https://api.nobeds.com/api/Availability/${NOBEDS_API}`
 
 	try {
-		const response = await axios.request(options)
-		return response
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				accept: "application/json",
+				"content-type": "application/*+json",
+			},
+			body: JSON.stringify(requestData),
+		})
+
+		const data = await response.json()
+		return {
+			status: response.status,
+			statusText: response.statusText,
+			data,
+		}
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
-		console.error(
-			`[restoreAvailability] Error releasing date ${date} for room ${room_id}:`,
-			error
-		)
+		console.error(`[restoreAvailability] Error releasing date ${date} for room ${room_id}:`, error)
 		return {
-			status: error.response?.status || 500,
-			statusText: error.response?.statusText || "Error",
+			status: 500,
+			statusText: "Error",
 			error: error.message || "Unknown error",
 		}
 	}
@@ -88,37 +79,39 @@ export const removeAvailability = async (data: RemoveAvailabilityData) => {
 
 	if (!rid || !room_id || date === "") return null
 
-	const options = {
-		method: "PUT",
-		url: `https://api.nobeds.com/api/Availability/${NOBEDS_API}`,
-		headers: {
-			accept: "application/json",
-			"content-type": "application/*+json",
-		},
-		data: {
-			rid: rid,
-			room_id: room_id,
-			date: date,
-			quantity: currentAvail > 0 ? currentAvail - 1 : 0,
-			price: price,
-			min_stay: min_stay,
-			max_stay: max_stay,
-		},
-	}
+	const url = `https://api.nobeds.com/api/Availability/${NOBEDS_API}`
 
 	try {
-		const response = await axios.request(options)
-		return response
-	} catch (error: unknown) {
-		const axiosError = error as {
-			response?: { status?: number; statusText?: string }
-			message?: string
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				accept: "application/json",
+				"content-type": "application/*+json",
+			},
+			body: JSON.stringify({
+				rid: rid,
+				room_id: room_id,
+				date: date,
+				quantity: currentAvail > 0 ? currentAvail - 1 : 0,
+				price: price,
+				min_stay: min_stay,
+				max_stay: max_stay,
+			}),
+		})
+
+		const data = await response.json()
+		return {
+			status: response.status,
+			statusText: response.statusText,
+			data,
 		}
+	} catch (error: unknown) {
+		const err = error as { message?: string }
 		console.error(`Error blocking date ${date} for room ${room_id}:`, error)
 		return {
-			status: axiosError.response?.status || 500,
-			statusText: axiosError.response?.statusText || "Error",
-			error: axiosError.message || "Unknown error",
+			status: 500,
+			statusText: "Error",
+			error: err.message || "Unknown error",
 		}
 	}
 }

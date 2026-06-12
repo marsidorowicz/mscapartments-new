@@ -253,7 +253,7 @@ const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 		assignAll: "Please assign all guests",
 		successForm: "Reservation completed successfully",
 		failed: "Reservation failed",
-		noneAvailable: "Please call us for information about available spots. Online booking is temporarily unavailable. Tel +48 511 000 660",
+		noneAvailable: "Please call us for information about available spots. Online booking is temporarily unavailable. Tel +48 515 857 609",
 		requestedDatesNotAvailable: "These dates are still available, but may sell out quickly",
 		apartmentNoLongerAvailable: "This apartment can no longer be reserved",
 		unknownStep: "Unknown step",
@@ -372,7 +372,7 @@ const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 		assignAll: "Przypisz wszystkich gości",
 		successForm: "Rezerwacja zakończona pomyślnie",
 		failed: "Rezerwacja nie powiodła się",
-		noneAvailable: "Zapraszamy do kontaktu telefonicznego w celu uzyskania informacji o wolnych miejscach. Tel +48 511 000 660",
+		noneAvailable: "Zapraszamy do kontaktu telefonicznego w celu uzyskania informacji o wolnych miejscach. Tel +48 515 857 609",
 		requestedDatesNotAvailable: "Te terminy są jeszcze dostępne, ale mogą się szybko wyprzedać",
 		apartmentNoLongerAvailable: "Tego apartamentu nie mozna juz zarezerwować",
 		unknownStep: "Nieznany krok",
@@ -492,7 +492,7 @@ const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 		successForm: "Prenotazione completata con successo",
 		failed: "Prenotazione fallita",
 		noneAvailable:
-			"Vi invitiamo a contattarci telefonicamente per informazioni sui posti disponibili. La prenotazione online è temporaneamente non disponibile. Tel +48 511 000 660",
+			"Vi invitiamo a contattarci telefonicamente per informazioni sui posti disponibili. La prenotazione online è temporaneamente non disponibile. Tel +48 515 857 609",
 		requestedDatesNotAvailable: "Queste date sono ancora disponibili, ma potrebbero esaurirsi rapidamente",
 		apartmentNoLongerAvailable: "Questo appartamento non può più essere prenotato",
 		unknownStep: "Passaggio sconosciuto",
@@ -612,7 +612,7 @@ const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 		successForm: "Reservierung erfolgreich abgeschlossen",
 		failed: "Reservierung fehlgeschlagen",
 		noneAvailable:
-			"Wir bitten Sie, uns anzurufen, um Informationen über verfügbare Plätze zu erhalten. Die Online-Buchung ist vorübergehend nicht verfügbar. Tel +48 511 000 660",
+			"Wir bitten Sie, uns anzurufen, um Informationen über verfügbare Plätze zu erhalten. Die Online-Buchung ist vorübergehend nicht verfügbar. Tel +48 515 857 609",
 		requestedDatesNotAvailable: "Diese Termine sind noch verfügbar, können sich aber schnell ausverkaufen",
 		apartmentNoLongerAvailable: "Dieses Apartment kann nicht mehr reserviert werden",
 		unknownStep: "Unbekannter Schritt",
@@ -732,7 +732,7 @@ const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 		successForm: "Reservation completed successfully",
 		failed: "Reservation failed",
 		noneAvailable:
-			"Le invitamos a llamarnos para obtener información sobre plazas disponibles. La reserva online está temporalmente no disponible. Tel +48 511 000 660",
+			"Le invitamos a llamarnos para obtener información sobre plazas disponibles. La reserva online está temporalmente no disponible. Tel +48 515 857 609",
 		requestedDatesNotAvailable: "These dates are still available, but may sell out quickly",
 		apartmentNoLongerAvailable: "This apartment can no longer be reserved",
 		unknownStep: "Unknown step",
@@ -1473,7 +1473,7 @@ const ReservationEngine: React.FC<ReservationEngineProps> = ({
 			if (targetProperty) {
 				// Fetch full property data to get extended fields like petsAllowed, breakfastAllowed, etc.
 				try {
-					const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+					const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 					const response = await fetch(`${baseUrl}/api/properties/mountain/${propertyId}?userId=clok0rd6f0000kkdgyf1pd0t3`, {
 						cache: "no-store",
 					})

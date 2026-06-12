@@ -18,7 +18,7 @@ type Params = {
 // Fetch property data by slug
 async function getPropertyBySlug(slug: string, lang: string) {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const response = await fetch(`${baseUrl}/api/properties/by-slug/${lang}/${slug}`, {
 			cache: "no-store",
 		})
@@ -92,7 +92,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		expectedSlug = generateSlug(property.name)
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/apartamenty/${expectedSlug || slug}`
 
 	const title = property.name || "Property"
@@ -101,10 +101,10 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		: `Book ${property.name} in ${property.place?.name}`
 
 	return {
-		title: `${title} - Mountain Apartments`,
+		title: `${title} - MSC Apartments`,
 		description,
 		openGraph: {
-			title: `${title} - Mountain Apartments`,
+			title: `${title} - MSC Apartments`,
 			description,
 			url: currentUrl,
 			images: property.images?.length > 0 ? [{ url: property.images[0].path }] : [],
@@ -112,7 +112,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: `${title} - Mountain Apartments`,
+			title: `${title} - MSC Apartments`,
 			description,
 			images: property.images?.length > 0 ? [property.images[0].path] : [],
 		},

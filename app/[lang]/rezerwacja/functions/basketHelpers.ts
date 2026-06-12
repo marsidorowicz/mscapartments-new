@@ -571,7 +571,7 @@ export const buildEventFromItem = (item: BasketItem, state: ItemState, form: Res
 		reason: "",
 		status: "New",
 		numOfParkingPlaces: parkingQuantity,
-		source: "mountain",
+		source: "msc",
 		sourceDescription: undefined,
 		placeId: property.placeId,
 		propertyId: property.id,

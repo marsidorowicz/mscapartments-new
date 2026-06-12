@@ -9,8 +9,6 @@ import { format, subDays, eachDayOfInterval, isSameDay, setHours, setMinutes } f
 
 import { NextRequest, NextResponse } from "next/server"
 
-import axios from "axios"
-
 import { eventBus } from "@/utilities/events/eventBus"
 import {
 	EmailNotificationHandler,
@@ -344,13 +342,21 @@ export async function POST(req: NextRequest) {
 			if (propertyWithTelegram?.sendTelegram && propertyWithTelegram?.telegramChatIds?.length > 0) {
 				const message = `Nowa rezerwacja:\n${propertyWithTelegram.name}\nPrzyjazd: ${format(new Date(event.startDate), "yyyy-MM-dd")}\nWyjazd: ${format(new Date(event.endDate), "yyyy-MM-dd")}\nOsób: ${event.amountOfPeople}\nŹródło: ${source || "msc"}`
 
-				await axios.post("http://localhost:4000/api/send-telegram", {
-					chatIds: propertyWithTelegram.telegramChatIds,
-					message: message,
-					propertyName: propertyWithTelegram.name,
+				const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						chatIds: propertyWithTelegram.telegramChatIds,
+						message: message,
+						propertyName: propertyWithTelegram.name,
+					}),
 				})
 
-				console.log(`Sent Telegram notification for new reservation: ${eventSaved.id}`)
+				if (!telegramResponse.ok) {
+					console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+				} else {
+					console.log(`Sent Telegram notification for new reservation: ${eventSaved.id}`)
+				}
 			}
 		} catch (telegramError) {
 			console.error(`Failed to send Telegram notification for new reservation:`, telegramError)
@@ -373,12 +379,21 @@ export async function POST(req: NextRequest) {
 				console.log(`Logged newsletter signup for user ${user.id}, event ${eventSaved.id}`)
 				try {
 					const telegramMessage = `Newsletter ma nowego subskrybenta, ${extended.newsletter.email} rezerwacja ${eventSaved.id}`
-					await axios.post("http://localhost:4000/api/send-telegram", {
-						chatIds: ["1691373957"],
-						message: telegramMessage,
-						propertyName: "NEWSLETTER",
+					const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							chatIds: ["1691373957"],
+							message: telegramMessage,
+							propertyName: "NEWSLETTER",
+						}),
 					})
-					console.log(`Sent Telegram notification for newsletter signup: ${telegramMessage}`)
+
+					if (!telegramResponse.ok) {
+						console.error(`Telegram notification failed with status ${telegramResponse.status}`)
+					} else {
+						console.log(`Sent Telegram notification for newsletter signup: ${telegramMessage}`)
+					}
 				} catch (telegramError) {
 					console.error(`Failed to send Telegram notification for newsletter signup:`, telegramError)
 				}
