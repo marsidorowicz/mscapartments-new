@@ -185,11 +185,30 @@ const SimpleDateRangePicker: React.FC<SimpleDateRangePickerProps> = ({ onDateRan
 		setAnchorEl(null)
 	}
 
+	const shortWeekdays: Record<"pl" | "en" | "de" | "es", string[]> = {
+		pl: ["nd", "pn", "wt", "śr", "cz", "pt", "so"],
+		en: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+		de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+		es: ["do", "lu", "ma", "mi", "ju", "vi", "sa"],
+	}
+
+	const shortMonths: Record<"pl" | "en" | "de" | "es", string[]> = {
+		pl: ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"],
+		en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		de: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+		es: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+	}
+
+	const formatSingleDate = (date: Date): string => {
+		const weekday = shortWeekdays[locale][date.getDay()]
+		const month = shortMonths[locale][date.getMonth()]
+		return `${weekday}. ${date.getDate()} ${month}.`
+	}
+
 	const formatDateRange = (): string => {
-		if (!startDate || !endDate) return "-"
-		const startStr = format(startDate, "dd:MM")
-		const endStr = format(endDate, "dd:MM")
-		return `${startStr} - ${endStr}`
+		if (!startDate) return "-"
+		if (!endDate) return formatSingleDate(startDate)
+		return `${formatSingleDate(startDate)} - ${formatSingleDate(endDate)}`
 	}
 
 	const monthsArr = t("months").split(", ")
@@ -251,7 +270,7 @@ const SimpleDateRangePicker: React.FC<SimpleDateRangePickerProps> = ({ onDateRan
 						)}
 					</Box>
 				</Box>
-				<Box sx={{ fontSize: "1.1rem", fontWeight: "bold", color: color }}>{formatDateRange()}</Box>
+				<div style={{ fontSize: "1.1rem", fontWeight: "bold", color: color, width: "280px", textAlign: "center" }}>{formatDateRange()}</div>
 			</Button>
 
 			<Popover

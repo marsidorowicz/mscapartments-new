@@ -816,7 +816,7 @@ Nie czekaj – liczba miejsc ograniczona!
 		searchByNameLabel: "Szukaj po nazwie",
 		searchByNamePlaceholder: "Nazwa apartamentu...",
 		checkAvailability: "Sprawdź dostępność",
-		anyLabel: "DOWOLNE",
+		anyLabel: "DOWOLNA",
 		resultsFound: "Znaleziono: {{count}} apartamentów",
 		locations: {
 			zakopane: "Zakopane",
