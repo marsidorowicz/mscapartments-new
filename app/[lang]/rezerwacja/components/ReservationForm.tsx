@@ -270,7 +270,7 @@ export default function ReservationForm({
 				<button
 					type="submit"
 					disabled={isSubmitDisabled}
-					className="hidden sm:block w-full rounded-2xl bg-[#cc9678] px-2 sm:px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#a6755a] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500">
+					className="hidden sm:block w-full rounded-2xl bg-[#1D2430] px-2 sm:px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#a6755a] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500">
 					{isSubmitting ? locale.submit + "..." : (submitLabel ?? locale.submit)}
 				</button>
 			</form>

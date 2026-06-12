@@ -78,6 +78,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		priceStatus: "idle",
 		reservationStatus: "idle",
 		errorMsg: null,
+		paymentLinks: [],
 		priceNote: null,
 	})
 	const [reservationConfirmation, setReservationConfirmation] = useState<{
@@ -456,17 +457,19 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				}
 			}
 
-			let paymentLink = null
 			const successfulResponses = responses.filter((r) => r.success && r.eventSaved)
+			const paymentLinks: string[] = []
 			if (successfulResponses.length > 0 && basketSummary.onlineTotal > 0) {
-				const ev = successfulResponses[0].eventSaved
-				if (ev?.id && ev?.propertyId && ev?.accessToken) {
-					// pattern: pl/reservation/19844/57?token=7640a2...
-					paymentLink = `/${lang}/reservation/${ev.id}/${ev.propertyId}?token=${ev.accessToken}`
-				}
+				successfulResponses.forEach((r) => {
+					const ev = r.eventSaved
+					if (ev?.id && ev?.propertyId && ev?.accessToken) {
+						// pattern: pl/reservation/19844/57?token=7640a2...
+						paymentLinks.push(`/${lang}/reservation/${ev.id}/${ev.propertyId}?token=${ev.accessToken}`)
+					}
+				})
 			}
 
-			setProgressState((p) => ({ ...p, reservationStatus: "success", paymentLink, priceNote: null }))
+			setProgressState((p) => ({ ...p, reservationStatus: "success", paymentLinks, paymentLink: paymentLinks[0] ?? null, priceNote: null }))
 			setReservationConfirmation(null)
 			setBasketItems([]) // Clear basket on successful reservation
 		} catch (error) {
@@ -493,6 +496,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 			priceStatus: "idle",
 			reservationStatus: "idle",
 			errorMsg: null,
+			paymentLinks: [],
 			priceNote: null,
 		})
 
@@ -991,7 +995,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 						<Link
 							href={`/${lang}`}
 							aria-label={t.backHome}
-							className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-transparent bg-[#cc9678] text-white transition hover:bg-[#a6755a]">
+							className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-transparent bg-[#1D2430] text-white transition hover:bg-[#a6755a]">
 							<HomeIcon className="h-6 w-6" aria-hidden="true" />
 						</Link>
 						<Link
