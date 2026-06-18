@@ -537,6 +537,15 @@ export const buildEventFromItem = (item: BasketItem, state: ItemState, form: Res
 	const eventPrice = totalPrice
 
 	const parsedRemarks: Record<string, unknown> = {}
+	if (form.invoice) {
+		parsedRemarks.invoiceData = {
+			companyName: form.companyName,
+			streetAddress: form.streetAddress,
+			postalCode: form.postalCode,
+			invoiceCountry: form.invoiceCountry,
+			taxNumber: form.taxNumber,
+		}
+	}
 	if (breakfastQuantity > 0) parsedRemarks.withBreakfast = true
 	if (petsQuantity > 0) parsedRemarks.withPets = true
 	if (babyCribQuantity > 0) parsedRemarks.extraBedRequested = true

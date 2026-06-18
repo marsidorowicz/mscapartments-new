@@ -12,6 +12,12 @@ export type ReservationFormData = {
 	remarks: string
 	acceptTerms: boolean
 	newsletter: boolean
+	invoice: boolean
+	companyName: string
+	streetAddress: string
+	postalCode: string
+	invoiceCountry: string
+	taxNumber: string
 }
 
 const translations = {
@@ -21,6 +27,12 @@ const translations = {
 		phone: "Telefon",
 		email: "Email",
 		remarks: "Uwagi",
+		invoice: "Faktura",
+		company_name: "Nazwa firmy",
+		street_address: "Ulica i numer",
+		postal_code: "Kod pocztowy",
+		country: "Kraj",
+		tax_number: "NIP",
 		submit: "Rezerwuj",
 		thankYou: "Dziękujemy. Twoje dane zostały zapisane lokalnie do dalszej modyfikacji.",
 
@@ -43,6 +55,12 @@ const translations = {
 		phone: "Phone",
 		email: "Email",
 		remarks: "Remarks",
+		invoice: "Invoice (Faktura)",
+		company_name: "Company Name",
+		street_address: "Street Address",
+		postal_code: "Postal Code",
+		country: "Country",
+		tax_number: "Tax Number",
 		submit: "Send request",
 		thankYou: "Thank you. Your details were saved locally for further updates.",
 
@@ -65,6 +83,12 @@ const translations = {
 		phone: "Telefon",
 		email: "Email",
 		remarks: "Bemerkungen",
+		invoice: "Rechnung",
+		company_name: "Firmenname",
+		street_address: "Straße i numer",
+		postal_code: "Postleitzahl",
+		country: "Land",
+		tax_number: "Steuernummer",
 		submit: "Anfrage senden",
 		thankYou: "Danke. Deine Angaben wurden lokal zur weiteren Bearbeitung gespeichert.",
 
@@ -87,6 +111,12 @@ const translations = {
 		phone: "Teléfono",
 		email: "Correo electrónico",
 		remarks: "Comentarios",
+		invoice: "Factura",
+		company_name: "Nombre de la empresa",
+		street_address: "Dirección",
+		postal_code: "Código postal",
+		country: "País",
+		tax_number: "NIF/NIE",
 		submit: "Enviar solicitud",
 		thankYou: "Gracias. Tus datos se han guardado localmente para futuras modificaciones.",
 
@@ -157,6 +187,13 @@ export default function ReservationForm({
 	if (!phoneBody.trim()) missingFields.push(locale.phone)
 	if (!values.email.trim()) missingFields.push(locale.email)
 	if (isRemarksRequired && !values.remarks.trim()) missingFields.push(locale.remarks)
+	if (values.invoice) {
+		if (!values.companyName.trim()) missingFields.push(locale.company_name)
+		if (!values.streetAddress.trim()) missingFields.push(locale.street_address)
+		if (!values.postalCode.trim()) missingFields.push(locale.postal_code)
+		if (!values.invoiceCountry.trim()) missingFields.push(locale.country)
+		if (!values.taxNumber.trim()) missingFields.push(locale.tax_number)
+	}
 	if (!values.acceptTerms) missingFields.push(locale.acceptTerms)
 
 	const isSubmitDisabled = disabled || isSubmitting || missingFields.length > 0
@@ -229,6 +266,81 @@ export default function ReservationForm({
 						className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
 						placeholder={locale.remarks}
 					/>
+				</div>
+				<div className="space-y-4">
+					<label className="flex items-start gap-2 cursor-pointer">
+						<input
+							type="checkbox"
+							checked={values.invoice}
+							onChange={(e) => handleCheckboxChange("invoice", e.target.checked)}
+							className="mt-1 shrink-0 rounded border-gray-300 text-[#cc9678] focus:ring-[#cc9678]"
+						/>
+						<span className="text-sm text-gray-700">{locale.invoice}</span>
+					</label>
+					{values.invoice && (
+						<div className="grid gap-4 sm:grid-cols-2">
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-1">
+									{locale.company_name} <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									value={values.companyName}
+									onChange={(event) => handleChange("companyName", event.target.value)}
+									className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
+									placeholder={locale.company_name}
+								/>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-1">
+									{locale.street_address} <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									value={values.streetAddress}
+									onChange={(event) => handleChange("streetAddress", event.target.value)}
+									className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
+									placeholder={locale.street_address}
+								/>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-1">
+									{locale.postal_code} <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									value={values.postalCode}
+									onChange={(event) => handleChange("postalCode", event.target.value)}
+									className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
+									placeholder={locale.postal_code}
+								/>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-1">
+									{locale.country} <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									value={values.invoiceCountry}
+									onChange={(event) => handleChange("invoiceCountry", event.target.value)}
+									className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
+									placeholder={locale.country}
+								/>
+							</div>
+							<div className="sm:col-span-2">
+								<label className="block text-sm font-medium text-gray-700 mb-1">
+									{locale.tax_number} <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									value={values.taxNumber}
+									onChange={(event) => handleChange("taxNumber", event.target.value)}
+									className="w-full rounded-2xl border border-gray-300 px-2 sm:px-4 py-3 text-sm text-black outline-none transition focus:border-[#cc9678] focus:ring-2 focus:ring-[#cc9678]/20"
+									placeholder={locale.tax_number}
+								/>
+							</div>
+						</div>
+					)}
 				</div>
 				<div className="flex flex-col gap-3 py-2">
 					<label className="flex items-start gap-2 cursor-pointer">
