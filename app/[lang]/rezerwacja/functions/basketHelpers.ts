@@ -586,7 +586,7 @@ export const buildEventFromItem = (item: BasketItem, state: ItemState, form: Res
 		propertyId: property.id,
 		userId: property.userId,
 		createdAt: new Date(),
-		document: "receipt",
+		document: form.invoice ? "invoice" : "receipt",
 		documentDone: false,
 		name: form.name || "",
 		surname: "",
