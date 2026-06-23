@@ -196,7 +196,7 @@ export default function SearchBar({ dictionary: _dictionary, color = "#1976d2", 
 				{/* Responsive layout with paired elements on smaller screens */}
 				<div className="flex flex-col gap-2 xl:flex-row xl:gap-2">
 					{/* Row 1: Date Range Picker and Guests */}
-					<div className="flex gap-2 xl:flex-1">
+					<div className="flex flex-col md:flex-row gap-2 flex-1">
 						<div className="flex-1 min-w-0">
 							<BookingHeader color={color} initialDateRange={dateRange} showPriceFrom={false} showBookButton={false} />
 						</div>
@@ -376,7 +376,7 @@ export default function SearchBar({ dictionary: _dictionary, color = "#1976d2", 
 								</Box>
 								<Box
 									sx={{
-										fontSize: { sm: "1.1rem" },
+										fontSize: "1.1rem",
 										fontWeight: "bold",
 										color: color,
 										wordBreak: "break-word",

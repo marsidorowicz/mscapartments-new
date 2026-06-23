@@ -3,7 +3,7 @@
 import nodemailer from "nodemailer"
 
 const transporterSDC = nodemailer.createTransport({
-	host: "smtp.mountainapartments.pl", // sprawdź dokładny adres w panelu SDC
+	host: "smtp.mscapartments.pl", // sprawdź dokładny adres w panelu SDC
 	port: 465,
 	secure: true,
 	auth: {

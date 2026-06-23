@@ -14,7 +14,6 @@ export async function GET(request: Request) {
 				properties: {
 					some: {
 						userId: userId,
-						brand: "MOUNTAIN",
 						state: "active",
 						id: { not: 53 }, // Exclude property 53
 					},
@@ -39,9 +38,6 @@ export async function GET(request: Request) {
 		})
 	} catch (error) {
 		console.error("API Error fetching places:", error)
-		return NextResponse.json(
-			{ error: "Failed to fetch places", success: false },
-			{ status: 500 }
-		)
+		return NextResponse.json({ error: "Failed to fetch places", success: false }, { status: 500 })
 	}
 }

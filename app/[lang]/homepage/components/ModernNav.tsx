@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import Image from "next/image"
+import HomeIcon from "@mui/icons-material/Home"
 import { usePathname } from "next/navigation"
 import { Dictionary } from "../../../types/dictionary"
 import { Locale } from "../../../i18n-config"
@@ -39,15 +39,9 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 	const pathname = usePathname()
 
 	const [basketItems, setBasketItems] = useLocalStorageNew<BasketItem[]>("rootBasket", [])
-	const [itemStates, setItemStates] = useLocalStorageNew<Record<string, any>>("rootBasketStates", {})
 
 	const handleRemoveBasketItem = (item: BasketItem) => {
 		setBasketItems((prev) => prev.filter((existing) => existing.id !== item.id))
-		setItemStates((prev) => {
-			const next = { ...prev }
-			delete next[item.id.toString()]
-			return next
-		})
 	}
 
 	useEffect(() => {
@@ -186,13 +180,13 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 
 	return (
 		<>
-			{/* Navigation matching mountainapartments.pl */}
+			{/* Navigation matching mscapartments.pl */}
 			<nav className="sticky top-0 bg-white shadow-sm w-full z-50">
 				<div className="w-full">
 					<div className="flex items-center h-16 px-2 lg:pl-8 relative gap-0 md:gap-2 justify-center">
 						{/* Logo */}
-						<Link href={`/${lang}/`} className="flex items-center flex-shrink-0">
-							<Image src="/images/logo-nowe.png" alt="Mountain Apartments" width={172} height={64} className="h-16 w-auto" priority />
+						<Link href={`/${lang}/`} className="flex items-center flex-shrink-0 text-black">
+							<HomeIcon />
 						</Link>
 
 						{/* Left Arrow - Fixed position right from logo */}
@@ -240,25 +234,6 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 								</Link>
 
 								<Link
-									href={`/${lang}/offers`}
-									className="text-gray-700 hover:text-[#7a4a35] font-medium transition-colors duration-200 whitespace-nowrap flex-shrink-0">
-									{dictionary.navigation?.offers || "Oferty"}
-								</Link>
-
-								<Link
-									href={`/${lang}/zakopane-noclegi`}
-									className="text-gray-700 hover:text-[#7a4a35] font-medium transition-colors duration-200 whitespace-nowrap flex-shrink-0">
-									{dictionary.navigation?.zakopaneRooms || "Przewodnik"}
-								</Link>
-
-								<Link
-									href="/join-us.pdf"
-									target="_blank"
-									className="text-gray-700 hover:text-[#7a4a35] font-medium transition-colors duration-200 whitespace-nowrap flex-shrink-0">
-									{dictionary.navigation?.joinUs || "Oferta Współpracy"}
-								</Link>
-
-								<Link
 									href={`/${lang}/o-nas`}
 									className="text-gray-700 hover:text-[#7a4a35] font-medium transition-colors duration-200 whitespace-nowrap flex-shrink-0">
 									{dictionary.navigation?.aboutUs || "O nas"}
@@ -267,9 +242,9 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 								{/* Phone Number */}
 								<div className="flex items-center space-x-2 text-gray-600 flex-shrink-0">
 									<a
-										href={`tel:${dictionary.contactForm?.officePhone || "+48 511 000 660"}`}
+										href={`tel:${dictionary.contactForm?.officePhone || "+48 515 857 609"}`}
 										className="font-semibold text-gray-800 hover:text-[#7a4a35] transition-colors duration-200">
-										{dictionary.contactForm?.officePhone || "+48 511 000 660"}
+										{dictionary.contactForm?.officePhone || "+48 515 857 609"}
 									</a>
 								</div>
 
@@ -335,9 +310,9 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 						<div className="md:hidden flex flex-col items-center text-center flex-1 mx-4">
 							<span className="text-xs text-gray-600">{dictionary.contactForm?.subtitle2 || "Biuro i Rezerwacje"}</span>
 							<a
-								href={`tel:${dictionary.contactForm?.officePhone || "+48 511 000 660"}`}
+								href={`tel:${dictionary.contactForm?.officePhone || "+48 515 857 609"}`}
 								className="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">
-								{dictionary.contactForm?.officePhone || "+48 511 000 660"}
+								{dictionary.contactForm?.officePhone || "+48 515 857 609"}
 							</a>
 						</div>
 
@@ -528,9 +503,9 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 						<div className="flex items-center justify-center space-x-2 py-3 border-t border-gray-100 mt-2">
 							<span className="text-sm text-gray-600">{dictionary.contactForm?.subtitle2 || "Biuro i Rezerwacje"}</span>
 							<a
-								href={`tel:${dictionary.contactForm?.officePhone || "+48 511 000 660"}`}
+								href={`tel:${dictionary.contactForm?.officePhone || "+48 515 857 609"}`}
 								className="font-semibold text-gray-800 hover:text-[#7a4a35] transition-colors duration-200">
-								{dictionary.contactForm?.officePhone || "+48 511 000 660"}
+								{dictionary.contactForm?.officePhone || "+48 515 857 609"}
 							</a>
 						</div>
 

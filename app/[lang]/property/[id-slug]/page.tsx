@@ -18,7 +18,7 @@ type Params = {
 // Fetch property data
 async function getProperty(id: string) {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const response = await fetch(`${baseUrl}/api/properties/mountain/${id}?userId=clok0rd6f0000kkdgyf1pd0t3`, {
 			cache: "no-store",
 		})
@@ -96,7 +96,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		expectedSlug = generateSlug(property.name)
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/property/${id}${expectedSlug ? `-${expectedSlug}` : ""}`
 
 	// Get localized title from property.extended.title if available
@@ -112,11 +112,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		}
 		// Final fallback to default format
 		else {
-			title = `${property.name} - Mountain Apartments`
+			title = `${property.name} - MSC Apartments`
 		}
 	} else {
 		// Fallback to default format if extended.title doesn't exist
-		title = `${property.name} - Mountain Apartments`
+		title = `${property.name} - MSC Apartments`
 	}
 
 	let description = property.htmlDetails
@@ -149,11 +149,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		}
 		// Final fallback to default keywords
 		else {
-			keywords = [property.name, property.type, property.location, "mountain apartment", "Comfortable accommodation", "vacation rental"].join(", ")
+			keywords = [property.name, property.type, property.location, "MSC apartment", "Comfortable accommodation", "vacation rental"].join(", ")
 		}
 	} else {
 		// Fallback to default keywords if extended.keywords doesn't exist
-		keywords = [property.name, property.type, property.location, "mountain apartment", "Comfortable accommodation", "vacation rental"].join(", ")
+		keywords = [property.name, property.type, property.location, "MSC apartment", "Comfortable accommodation", "vacation rental"].join(", ")
 	}
 
 	// Build alternate language URLs with their respective slugs
@@ -175,10 +175,10 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 		title,
 		description,
 		keywords,
-		author: "Mountain Apartments - created by Mariusz Sidorowicz, cyberwealth.pro",
+		author: "MSC Apartments - created by Mariusz Sidorowicz, cyberwealth.pro",
 
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -188,7 +188,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 			title,
 			description,
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images:
 				property.images && property.images.length > 0
 					? [
@@ -196,7 +196,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 								url: `${baseUrl}${property.images[0]}`,
 								width: 1200,
 								height: 630,
-								alt: `${property.name} - Mountain Apartments`,
+								alt: `${property.name} - MSC Apartments`,
 							},
 						]
 					: [
@@ -204,7 +204,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 								url: `${baseUrl}/images/apartment-default-small.jpg`,
 								width: 1200,
 								height: 630,
-								alt: `${property.name} - Mountain Apartments`,
+								alt: `${property.name} - MSC Apartments`,
 							},
 						],
 			locale: lang,

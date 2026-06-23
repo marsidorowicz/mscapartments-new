@@ -3,12 +3,12 @@
 export const es = {
 	contactForm: {
 		title: "Contáctenos",
-		subtitle: "Oficina y Reservas Mountain Apartments",
+		subtitle: "Oficina y Reservas MSC Apartments",
 		subtitle2: "Oficina y Reservas",
 		officePhoneLabel: "Número de teléfono:",
-		officePhone: "+48 511 000 660",
+		officePhone: "+48 515 857 609",
 		officeEmailLabel: "Correo electrónico:",
-		officeEmail: "biuro@mountainapartments.pl",
+		officeEmail: "apartamentymsc@gmail.com",
 		nameLabel: "Nombre y apellido *",
 		emailLabel: "Correo electrónico",
 		phoneLabel: "Número de teléfono",
@@ -20,7 +20,7 @@ export const es = {
 		submitButton: "Enviar consulta",
 		privacyPolicy: "Política de privacidad",
 	},
-	title: "Mountain Apartments - Apartamentos Confortables en Zakopane y Kościelisko | Reserve Su Retiro Perfecto en la Montaña",
+	title: "MSC Apartments - Apartamentos Confortables en Zakopane y Kościelisko | Reserve Su Retiro Perfecto en la Montaña",
 	apartment: "Apartamento",
 	description:
 		"Descubra apartamentos de montaña de lujo con vistas alpinas impresionantes. Comodidades premium, confort moderno y paisajes montañosos espectaculares le esperan. Reserve hoy su retiro perfecto en la montaña.",
@@ -38,10 +38,10 @@ export const es = {
 	],
 	home: {
 		hero: {
-			title: "Mountain Apartments",
+			title: "MSC Apartments",
 			subtitle: "Experimenta la belleza de la vida en la montaña en nuestros apartamentos cómodos",
 			heroTitle: "Elige un Apartamento para tu Estancia",
-			HeroTitle1: "Descubre apartamentos únicos en el corazón de los Tatras",
+			HeroTitle1: "Más cerca de la naturaleza, más lejos de la rutina. Apartamentos cómodos en el corazón de las montañas.",
 			features: ["Apartamentos cómodos", "Zakopane y Kościelisko", "¡Desayunos", "Área SPA"],
 			specialOffers: "OFERTAS ESPECIALES",
 			bookNow: "Encuentra tu Estancia",
@@ -126,13 +126,13 @@ export const es = {
 			],
 		},
 		footer: {
-			companyName: "Mountain Apartments",
+			companyName: "MSC Apartments",
 			companyDescription:
 				"Ofrecemos apartamentos cómodos en Zakopane y Kościelisko. Tu estancia soñada en el corazón de los Tatras comienza con nosotros.",
-			phone: "+48 511 000 660",
+			phone: "+48 515 857 609",
 			officeAndReservations: "Oficina y Reservas",
 			businessHours: "Horario de atención: Lun - Vie 8:00 - 20:00\nSáb, Dom y Festivos 9:00 - 17:00",
-			email: "biuro@mountainapartments.pl",
+			email: "apartamentymsc@gmail.com",
 			quickLinksTitle: "Enlaces Rápidos",
 			home: "Inicio",
 			apartments: "Apartamentos",
@@ -142,7 +142,7 @@ export const es = {
 			locationTitle: "Ubicación",
 			location: "Zakopane y Kościelisko",
 			region: "Voivodato de Pequeña Polonia",
-			copyright: "© {{year}} Mountain Apartments. Todos los derechos reservados.",
+			copyright: "© {{year}} MSC Apartments. Todos los derechos reservados.",
 			privacy: "Política de Privacidad",
 			terms: "Términos y Condiciones",
 			cookies: "Cookies",
@@ -502,6 +502,10 @@ export const es = {
 		paymentNumber: "Pago #{{number}}",
 		initiatedDate: "Fecha de iniciación",
 		propertyNotAvailable: "La propiedad solicitada {{propertyName}} no está disponible para las fechas seleccionadas. Aquí hay otras opciones disponibles:",
+		paymentOptionLabel: "Opción de pago",
+		depositMarkupNote: "(+5% para la opción de pago anticipado del 30%)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "ID de la orden:",
 	},
 	cookieBar: {
 		text: "Utilizamos cookies para mejorar su experiencia. Al usar nuestro sitio, acepta nuestra ",
@@ -768,7 +772,7 @@ Simplemente introduzca el código en la reserva: LASTMINUTE
 		availableApartments: "Apartamentos Disponibles en {{placeName}}",
 		noApartmentsAvailable: "Actualmente no hay apartamentos disponibles en este edificio.",
 		metadata: {
-			title: "{{placeName}} - Mountain Apartments",
+			title: "{{placeName}} - MSC Apartments",
 			description: "Descubra apartamentos en {{placeName}}, {{location}}. {{count}} propiedades disponibles.",
 			keywords: ["{{placeName}}", "{{location}}", "apartamentos de montaña", "edificio de apartamentos", "alquiler vacacional"],
 			placeNotFound: "Lugar No Encontrado",

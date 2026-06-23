@@ -1,8 +1,6 @@
 /** @format */
 
 import { Locale } from "../../../i18n-config"
-import Image from "next/image"
-import SocialMedia from "./SocialMedia"
 
 type FooterProps = {
 	lang: Locale
@@ -34,12 +32,13 @@ type FooterTranslations = {
 
 const footerTranslations: Record<Locale, FooterTranslations> = {
 	pl: {
-		companyName: "Mountain Apartments",
-		companyDescription: "Oferujemy komfortowe apartamenty w Zakopanem i Kościelisku. Twój wymarzony pobyt w sercu Tatr zaczyna się u nas.",
-		phone: "+48 511 000 660",
+		companyName: "MSC Apartments",
+		companyDescription:
+			"Nasza firma zajmuje się najmem którtkoterminowym w Zakopanem i Kościelisku. Zajmujemy się równie automatyzacją wynajmu, podsyłaniem gości, w celu zapełnienia luk w wynajmie oraz udostępnianiem narzędzi Channel Manager i PMS",
+		phone: "+48 515 857 609",
 		officeAndReservations: "biuro i rezerwacje",
 		businessHours: "Godziny pracy: Pon - Pt 8:00 - 20:00\nSo, Ndz i Święta 9:00 - 17:00",
-		email: "biuro@mountainapartments.pl",
+		email: "apartamentymsc@gmail.com",
 		quickLinksTitle: "Szybkie linki",
 		home: "Strona główna",
 		apartments: "Apartamenty",
@@ -51,18 +50,19 @@ const footerTranslations: Record<Locale, FooterTranslations> = {
 		locationTitle: "Lokalizacja",
 		location: "Zakopane i Kościelisko",
 		region: "Województwo małopolskie",
-		copyright: `© ${new Date().getFullYear()} Mountain Apartments. Wszelkie prawa zastrzeżone.`,
+		copyright: `© ${new Date().getFullYear()} MSC Apartments. Wszelkie prawa zastrzeżone.`,
 		privacy: "Polityka prywatności",
 		terms: "Regulamin",
 		cookies: "Cookies",
 	},
 	en: {
-		companyName: "Mountain Apartments",
-		companyDescription: "We offer comfortable apartments in Zakopane and Kościelisko. Your perfect stay in the heart of the Tatras begins with us.",
-		phone: "+48 511 000 660",
+		companyName: "MSC Apartments",
+		companyDescription:
+			"Our company specializes in short-term rentals in Zakopane and Kościelisko. We also provide rental automation, guest communication, and tools like Channel Manager and PMS to optimize your rental experience.",
+		phone: "+48 515 857 609",
 		officeAndReservations: "Office and Reservations",
 		businessHours: "Business hours: Mon - Fri 8:00 - 20:00\nSat, Sun and Holidays 9:00 - 17:00",
-		email: "biuro@mountainapartments.pl",
+		email: "apartamentymsc@gmail.com",
 		quickLinksTitle: "Quick Links",
 		home: "Home",
 		apartments: "Apartments",
@@ -74,18 +74,19 @@ const footerTranslations: Record<Locale, FooterTranslations> = {
 		locationTitle: "Location",
 		location: "Zakopane and Kościelisko",
 		region: "Lesser Poland Voivodeship",
-		copyright: `© ${new Date().getFullYear()} Mountain Apartments. All rights reserved.`,
+		copyright: `© ${new Date().getFullYear()} MSC Apartments. All rights reserved.`,
 		privacy: "Privacy Policy",
 		terms: "Terms of Service",
 		cookies: "Cookies",
 	},
 	de: {
-		companyName: "Mountain Apartments",
-		companyDescription: "Wir bieten komfortable Apartments in Zakopane und Kościelisko. Ihr Traumaufenthalt im Herzen der Tatra beginnt bei uns.",
-		phone: "+48 511 000 660",
+		companyName: "MSC Apartments",
+		companyDescription:
+			"Unser Unternehmen spezialisiert sich auf Kurzzeitvermietungen in Zakopane und Kościelisko. Wir bieten auch Automatisierungslösungen für Vermietungen, Gästekommunikation und Tools wie Channel Manager und PMS, um Ihr Vermietungserlebnis zu optimieren.",
+		phone: "+48 515 857 609",
 		officeAndReservations: "Büro und Reservierungen",
 		businessHours: "Öffnungszeiten: Mo - Fr 8:00 - 20:00\nSa, So und Feiertage 9:00 - 17:00",
-		email: "biuro@mountainapartments.pl",
+		email: "apartamentymsc@gmail.com",
 		quickLinksTitle: "Schnelllinks",
 		home: "Startseite",
 		apartments: "Apartments",
@@ -97,18 +98,19 @@ const footerTranslations: Record<Locale, FooterTranslations> = {
 		locationTitle: "Standort",
 		location: "Zakopane und Kościelisko",
 		region: "Woiwodschaft Kleinpolen",
-		copyright: `© ${new Date().getFullYear()} Mountain Apartments. Alle Rechte vorbehalten.`,
+		copyright: `© ${new Date().getFullYear()} MSC Apartments. Alle Rechte vorbehalten.`,
 		privacy: "Datenschutz",
 		terms: "AGB",
 		cookies: "Cookies",
 	},
 	es: {
-		companyName: "Mountain Apartments",
-		companyDescription: "Ofrecemos apartamentos cómodos en Zakopane y Kościelisko. Tu estancia soñada en el corazón de los Tatras comienza con nosotros.",
-		phone: "+48 511 000 660",
+		companyName: "MSC Apartments",
+		companyDescription:
+			"Nuestra empresa se especializa en alquileres a corto plazo en Zakopane y Kościelisko. También ofrecemos automatización de alquileres, comunicación con los huéspedes y herramientas como Channel Manager y PMS para optimizar su experiencia de alquiler.",
+		phone: "+48 515 857 609",
 		officeAndReservations: "Oficina y Reservas",
 		businessHours: "Horario de atención: Lun - Vie 8:00 - 20:00\nSáb, Dom y Festivos 9:00 - 17:00",
-		email: "biuro@mountainapartments.pl",
+		email: "apartamentymsc@gmail.com",
 		quickLinksTitle: "Enlaces Rápidos",
 		home: "Inicio",
 		apartments: "Apartamentos",
@@ -120,7 +122,7 @@ const footerTranslations: Record<Locale, FooterTranslations> = {
 		locationTitle: "Ubicación",
 		location: "Zakopane y Kościelisko",
 		region: "Voivodato de Pequeña Polonia",
-		copyright: `© ${new Date().getFullYear()} Mountain Apartments. Todos los derechos reservados.`,
+		copyright: `© ${new Date().getFullYear()} MSC Apartments. Todos los derechos reservados.`,
 		privacy: "Política de Privacidad",
 		terms: "Términos y Condiciones",
 		cookies: "Cookies",
@@ -137,22 +139,7 @@ export default function Footer({ lang }: FooterProps) {
 					{/* Company Info */}
 					<div className="md:col-span-2">
 						<div className="flex">
-							<h3 className="text-xl font-bold mb-4 text-white">{footer.companyName || "Mountain Apartments"}</h3>
-
-							{/* Logo */}
-							<div className="block pl-3">
-								<div className="flex items-center gap-4">
-									<Image src="/images/logo-mountain-rf.png" alt="Mountain RF" width={120} height={40} className="h-10 w-auto" />
-									<Image
-										src="/images/orlyzlogomountain.jpg"
-										alt="Orlyz Logo Mountain"
-										width={120}
-										height={40}
-										quality={50}
-										className="h-10 w-auto"
-									/>
-								</div>
-							</div>
+							<h3 className="text-xl font-bold mb-4 text-white">{footer.companyName || "MSC Apartments"}</h3>
 						</div>
 						<p className="text-white mb-4 leading-relaxed">
 							{footer.companyDescription ||
@@ -170,8 +157,8 @@ export default function Footer({ lang }: FooterProps) {
 											d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
 										/>
 									</svg>
-									<a href={`tel:${footer.phone || "+48 511 000 660"}`} className="text-white hover:text-blue-400 transition-colors">
-										{footer.phone || "+48 511 000 660"}
+									<a href={`tel:${footer.phone || "+48 515 857 609"}`} className="text-white hover:text-blue-400 transition-colors">
+										{footer.phone || "+48 515 857 609"}
 									</a>
 									<div className="text-white text-sm ml-2">{footer.officeAndReservations || "Biuro i Rezerwacje"}</div>
 								</div>
@@ -190,10 +177,8 @@ export default function Footer({ lang }: FooterProps) {
 										d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 									/>
 								</svg>
-								<a
-									href={`mailto:${footer.email || "biuro@mountainapartments.pl"}`}
-									className="text-white hover:text-blue-400 transition-colors">
-									{footer.email || "biuro@mountainapartments.pl"}
+								<a href={`mailto:${footer.email || "apartamentymsc@gmail.com"}`} className="text-white hover:text-blue-400 transition-colors">
+									{footer.email || "apartamentymsc@gmail.com"}
 								</a>
 							</div>
 						</div>
@@ -266,9 +251,6 @@ export default function Footer({ lang }: FooterProps) {
 								</span>
 							</p>
 						</div>
-
-						{/* Social Media */}
-						<SocialMedia />
 					</div>
 				</div>
 
@@ -276,7 +258,7 @@ export default function Footer({ lang }: FooterProps) {
 				<div className="border-t border-gray-700 mt-8 pt-8">
 					<div className="flex flex-col md:flex-row justify-between items-center gap-4">
 						<p className="text-white text-sm">
-							{(footer.copyright || `© ${new Date().getFullYear()} Mountain Apartments. All rights reserved.`).replace(
+							{(footer.copyright || `© ${new Date().getFullYear()} MSC Apartments. All rights reserved.`).replace(
 								"{{year}}",
 								new Date().getFullYear().toString(),
 							)}

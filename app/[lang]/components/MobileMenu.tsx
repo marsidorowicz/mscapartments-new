@@ -4,7 +4,6 @@
 
 import React, { useState, useEffect } from "react"
 import type { Dictionary } from "@/app/types/dictionary"
-import Logo2 from "./Logo2"
 
 interface MobileMenuProps {
 	dictionary: Dictionary
@@ -151,12 +150,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ dictionary }) => {
 					{/* Header */}
 					<div className="flex items-center justify-between p-4 border-b">
 						<h2 className="text-lg font-semibold text-gray-800">{dictionary.navigation.menu}</h2>
-						{/* Logo for Mobile */}
-						<div className="flex justify-center items-center py-4 sm:py-6 mt-2 sm:mt-4">
-							<div className="relative w-20 h-10 sm:w-24 sm:h-12 md:w-32 md:h-16 lg:w-36 lg:h-18">
-								<Logo2 />
-							</div>
-						</div>
+
 						<button
 							onClick={handleMenuToggle}
 							className="p-1 rounded text-black-md hover:bg-gray-100 active:bg-gray-200 transition-all duration-200"
@@ -194,7 +188,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ dictionary }) => {
 										zIndex: 10001,
 										position: "relative",
 									}}>
-									<span className="font-medium text-gray-800 hover:text-amber-800 transition-colors">{dictionary.navigation.apartmentBuildings}</span>
+									<span className="font-medium text-gray-800 hover:text-amber-800 transition-colors">
+										{dictionary.navigation.apartmentBuildings}
+									</span>
 									<ChevronDownIcon
 										className={`w-4 h-4 text-gray-600 hover:text-amber-600 transition-all duration-200 ${expandedSection === "buildings" ? "rotate-180" : ""}`}
 									/>

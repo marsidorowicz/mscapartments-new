@@ -13,7 +13,6 @@ import PeopleIcon from "@mui/icons-material/People"
 import BedIcon from "@mui/icons-material/Bed"
 import { useState } from "react"
 import BookingHeader from "../../../../components/BookingHeader"
-import ReservationEngine from "@/app/[lang]/components/rev13/ReservationEngine"
 import { NotificationComponent } from "@/app/[lang]/components/rev13/Notification"
 import { useSelector } from "react-redux"
 import { RootState } from "@/state/store"
@@ -173,7 +172,7 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 							className={` bottom-0 left-0 right-0 bg-white p-1 hidden md:block z-30 ${isExpanded ? "top-0 h-screen md:fixed md:w-screen hidden md:block overflow-y-auto" : ""}`}>
 							{" "}
 							<BookingHeader
-								color="#cc9678"
+								color="#1D2430"
 								totalPrice={totalPrice}
 								minPrice={minPrice}
 								hasTotalPrice={Boolean(totalPrice)}
@@ -189,20 +188,6 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 								disableAddToBasket={!dateRangeParam}
 								showReservationPageButton={isInBasket}
 							/>
-							{isExpanded && (
-								<div className="mt-4 mb-4 md:block">
-									{" "}
-									<ReservationEngine
-										id={"clok0rd6f0000kkdgyf1pd0t3"}
-										propertyId={property.id}
-										// propertyName={propertyName}
-										// booking={booking}
-										filterDictionary={dictionary.filters}
-										dictionary={dictionary}
-										onThemeChange={() => ({})}
-									/>
-								</div>
-							)}
 						</div>
 					</div>
 					<div className="text-gray-500 flex flex-col md:flex-row md:items-center md:gap-4 text-sm">

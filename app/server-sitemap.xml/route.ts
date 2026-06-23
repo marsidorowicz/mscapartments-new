@@ -12,7 +12,6 @@ export async function GET() {
 		const properties = await prisma.property.findMany({
 			where: {
 				state: "active",
-				brand: "MOUNTAIN",
 				id: { not: 53 }, // Exclude property 53
 			},
 			select: {
@@ -22,8 +21,7 @@ export async function GET() {
 			},
 		})
 
-		const baseUrl =
-			process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const locales = ["en", "pl", "de", "es"]
 
 		const fields = []
@@ -34,21 +32,14 @@ export async function GET() {
 				let slug = ""
 
 				// Try to get language-specific slug, fallback to generated slug
-				if (
-					property.slugs &&
-					typeof property.slugs === "object" &&
-					!Array.isArray(property.slugs) &&
-					locale in property.slugs
-				) {
+				if (property.slugs && typeof property.slugs === "object" && !Array.isArray(property.slugs) && locale in property.slugs) {
 					slug = (property.slugs as Record<string, string>)[locale]
 				} else {
 					// Generate slug from property name if not available
 					slug = generateSlug(property.name)
 				}
 
-				const url = `${baseUrl}/${locale}/property/${property.id}${
-					slug ? `-${slug}` : ""
-				}`
+				const url = `${baseUrl}/${locale}/property/${property.id}${slug ? `-${slug}` : ""}`
 
 				fields.push({
 					loc: url,

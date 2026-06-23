@@ -149,14 +149,7 @@ export default function PaymentSuccessPage({ dictionary }: PaymentSuccessPagePro
 								</p>{" "}
 								<p className="text-gray-700 dark:text-gray-300">
 									<strong className="text-gray-900 dark:text-gray-100">{dictionary.common.amount}:</strong>{" "}
-									{formatCurrency(
-										typeof paymentDetails.chargeTotal === "string" ? parseFloat(paymentDetails.chargeTotal) : paymentDetails.chargeTotal,
-										paymentDetails.currency,
-									)}
-									<span className="text-gray-900 dark:text-gray-100">
-										{" "}
-										/ {formatCurrency(paymentDetails.amount, paymentDetails.currency)}
-									</span>
+									{formatCurrency(paymentDetails.chargeTotal, paymentDetails.currency)}
 								</p>
 								<p className="text-gray-700 dark:text-gray-300">
 									<strong className="text-gray-900 dark:text-gray-100">{dictionary.common.status}:</strong>{" "}

@@ -2,7 +2,6 @@
 
 import prisma from "@/prisma/prisma"
 import { Availability, AvailabilityGetRequestType } from "@/types"
-import axios from "axios"
 import { format, parseISO, startOfDay } from "date-fns"
 import { NextRequest, NextResponse } from "next/server"
 import dotenv from "dotenv"
@@ -182,25 +181,23 @@ export async function GET(req: NextRequest) {
 		const formattedFromDate = resetHours(fromdate)
 		const formattedToDate = resetHours(todate)
 
-		const options = {
-			method: "GET",
-			url: `https://api.nobeds.com/api/Availability/${NOBEDS_API}`,
-			params: {
-				room_id,
-				fromdate: formattedFromDate,
-				todate: formattedToDate,
-			},
-			headers: { accept: "application/json" },
-		}
+		const url = new URL(`https://api.nobeds.com/api/Availability/${NOBEDS_API}`)
+		url.searchParams.set("room_id", String(room_id))
+		url.searchParams.set("fromdate", formattedFromDate)
+		url.searchParams.set("todate", formattedToDate)
 
 		try {
-			const response = await axios.request(options)
+			const response = await fetch(url.toString(), {
+				method: "GET",
+				headers: { accept: "application/json" },
+			})
 
-			if (response?.status === 200 && response?.data) {
-				return NextResponse.json({ data: response?.data })
-			} else {
+			if (!response.ok) {
 				return NextResponse.json({ error: "cannot fetch availability" })
 			}
+
+			const data = await response.json()
+			return NextResponse.json({ data })
 		} catch (error) {
 			console.log(error)
 

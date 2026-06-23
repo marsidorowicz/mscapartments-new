@@ -38,7 +38,7 @@
 
 ## Offer Link Handling
 
-**URL Structure**: `mountainapartments.pl/en/homepage?fromOffer=true&offer=OFFER_123&startDate=01/12/2025&endDate=03/12/2025&guests=2`
+**URL Structure**: `mscapartments.pl/en/homepage?fromOffer=true&offer=OFFER_123&startDate=01/12/2025&endDate=03/12/2025&guests=2`
 
 **Flow**:
 

@@ -7,13 +7,13 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { GoogleTagManager } from "@next/third-parties/google"
 import Image from "next/image"
 import ReduxProvider from "./components/ReduxProvider"
-import MountainApartmentsSchema from "../components/MountainApartmentsSchema"
+import MscapartmentsSchema from "../components/MountainApartmentsSchema"
 
 // Metadata is handled by locale-specific layouts and pages
 export const metadata: Metadata = {
-	title: "Mountain Apartments",
+	title: "MSC Apartments",
 	description: "Znajdź komfortowy apartament w górach dla swojej Rodziny",
-	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"),
+	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"),
 }
 
 type LayoutProps = {
@@ -61,7 +61,7 @@ fbq('track', 'PageView');
 
 				<meta charSet="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-				<MountainApartmentsSchema />
+				<MscapartmentsSchema />
 			</head>
 			<body>
 				<ReduxProvider>{children}</ReduxProvider>

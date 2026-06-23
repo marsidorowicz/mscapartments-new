@@ -1,19 +1,19 @@
 /** @format */
 
-export default function MountainApartmentsSchema() {
+export default function MscapartmentsSchema() {
 	const schema = {
 		"@context": "https://schema.org",
 		"@graph": [
 			{
 				"@type": "Organization",
-				"@id": "https://mountainapartments.pl/#brand",
-				name: "JARMEX spółka z ograniczoną odpowiedzialnością sp. k.",
-				legalName: "JARMEX spółka z ograniczoną odpowiedzialnością sp. k.",
-				url: "https://mountainapartments.pl",
+				"@id": "https://mscapartments.pl/#brand",
+				name: "Cyberwealth.pro sp. z o.o.",
+				legalName: "Cyberwealth.pro sp. z o.o.",
+				url: "https://mscapartments.pl",
 				taxID: "6793091927",
-				identifier: "KRS 0000459495",
-				telephone: "+48 511 000 660",
-				email: "biuro@mountainapartments.pl",
+				identifier: "KRS 0001176671",
+				telephone: "+48 515 857 609",
+				email: "contact@cyberwealth.pro",
 				address: {
 					"@type": "PostalAddress",
 					streetAddress: "ul. Micińskiego 13",
@@ -23,11 +23,11 @@ export default function MountainApartmentsSchema() {
 			},
 			{
 				"@type": "LodgingBusiness",
-				"@id": "https://mountainapartments.pl/#lodging",
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
-				telephone: "+48 511 000 660",
-				email: "biuro@mountainapartments.pl",
+				"@id": "https://mscapartments.pl/#lodging",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
+				telephone: "+48 515 857 609",
+				email: "contact@cyberwealth.pro",
 				description: "Apartamenty w Zakopanem i okolicach dla 2–7 osób z dostępem do basenu, sauny i jacuzzi. Komfortowe noclegi z WiFi i parkingiem.",
 				areaServed: {
 					"@type": "Place",
@@ -72,7 +72,7 @@ export default function MountainApartmentsSchema() {
 					reviewCount: "120",
 				},
 				brand: {
-					"@id": "https://mountainapartments.pl/#brand",
+					"@id": "https://mscapartments.pl",
 				},
 			},
 		],

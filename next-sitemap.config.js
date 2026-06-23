@@ -2,7 +2,7 @@
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-	siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl",
+	siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl",
 	generateRobotsTxt: true,
 	generateIndexSitemap: true,
 
@@ -36,7 +36,7 @@ module.exports = {
 
 		try {
 			// Fetch properties to generate sitemap URLs
-			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 			const response = await fetch(`${baseUrl}/api/properties/mountain?userId=clok0rd6f0000kkdgyf1pd0t3`)
 			const data = await response.json()
 
@@ -88,7 +88,7 @@ module.exports = {
 				disallow: ["/api/", "/admin/", "/_next/", "/login"],
 			},
 		],
-		additionalSitemaps: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"}/server-sitemap.xml`],
+		additionalSitemaps: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"}/server-sitemap.xml`],
 	},
 }
 
@@ -119,7 +119,7 @@ function getPriority(path, locale) {
  */
 function getAlternateRefs(path, currentLocale) {
 	const locales = ["en", "pl", "de", "es"]
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 
 	// Remove current locale prefix to get the base path
 	const basePath = path.replace(new RegExp(`^/${currentLocale}`), "") || "/"

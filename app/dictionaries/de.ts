@@ -3,12 +3,12 @@
 export const de = {
 	contactForm: {
 		title: "Kontaktieren Sie uns",
-		subtitle: "Büro & Reservierungen Mountain Apartments",
+		subtitle: "Büro & Reservierungen MSC Apartments",
 		subtitle2: "Büro & Reservierungen",
 		officePhoneLabel: "Telefonnummer:",
-		officePhone: "+48 511 000 660",
+		officePhone: "+48 515 857 609",
 		officeEmailLabel: "E-Mail-Adresse:",
-		officeEmail: "biuro@mountainapartments.pl",
+		officeEmail: "apartamentymsc@gmail.com",
 		nameLabel: "Vollständiger Name *",
 		emailLabel: "E-Mail-Adresse *",
 		phoneLabel: "Telefonnummer",
@@ -20,7 +20,7 @@ export const de = {
 		submitButton: "Anfrage senden",
 		privacyPolicy: "Datenschutzerklärung",
 	},
-	title: "Mountain Apartments - Komfortable Apartments in Zakopane und Kościelisko | Buchen Sie Ihren Perfekten Bergurlaub",
+	title: "MSC Apartments - Komfortable Apartments in Zakopane und Kościelisko | Buchen Sie Ihren Perfekten Bergurlaub",
 	apartment: "Apartment",
 	description:
 		"Entdecken Sie luxuriöse Bergapartments mit atemberaubenden Blicken auf die Tatra-Berge. Premium-Ausstattung, moderner Komfort und beeindruckende Berglandschaften erwarten Sie. Buchen Sie heute Ihren perfekten Bergurlaub.",
@@ -38,10 +38,10 @@ export const de = {
 	],
 	home: {
 		hero: {
-			title: "Mountain Apartments",
+			title: "MSC Apartments",
 			subtitle: "Erleben Sie die Schönheit des Berglebens in unseren komfortablen Apartments",
 			heroTitle: "Wählen Sie ein Apartment für Ihren Aufenthalt",
-			HeroTitle1: "Entdecken Sie einzigartige Apartments im Herzen der Tatra",
+			HeroTitle1: "Näher an der Natur, weiter weg vom Alltag. Komfortable Apartments im Herzen der Berge.",
 			features: ["Zakopane und Kościelisko", "Bergblick", "Frühstück", "SPA-Bereich"],
 			specialOffers: "SPEZIELLE ANGEBOTE",
 			bookNow: "Finden und Buchen",
@@ -120,12 +120,12 @@ export const de = {
 			features: ["Leckeres Frühstück!", "Beste Lagen", "Garagen und Parkplätze", "Hilfe bei der Organisation von Ausflügen", "Transfers gegen Aufpreis"],
 		},
 		footer: {
-			companyName: "Mountain Apartments",
+			companyName: "MSC Apartments",
 			companyDescription: "Wir bieten komfortable Apartments in Zakopane und Kościelisko. Ihr Traumaufenthalt im Herzen der Tatra beginnt bei uns.",
-			phone: "+48 511 000 660",
+			phone: "+48 515 857 609",
 			officeAndReservations: "Büro und Reservierungen",
 			businessHours: "Öffnungszeiten: Mo - Fr 8:00 - 20:00\nSa, So und Feiertage 9:00 - 17:00",
-			email: "biuro@mountainapartments.pl",
+			email: "apartamentymsc@gmail.com",
 			quickLinksTitle: "Schnelllinks",
 			home: "Startseite",
 			apartments: "Apartments",
@@ -135,7 +135,7 @@ export const de = {
 			locationTitle: "Standort",
 			location: "Zakopane und Kościelisko",
 			region: "Woiwodschaft Kleinpolen",
-			copyright: "© {{year}} Mountain Apartments. Alle Rechte vorbehalten.",
+			copyright: "© {{year}} MSC Apartments. Alle Rechte vorbehalten.",
 			privacy: "Datenschutz",
 			terms: "AGB",
 			cookies: "Cookies",
@@ -496,6 +496,10 @@ export const de = {
 		initiatedDate: "Initiiertes Datum",
 		propertyNotAvailable:
 			"Die angeforderte Unterkunft {{propertyName}} ist für Ihre ausgewählten Daten nicht verfügbar. Hier sind andere verfügbare Optionen:",
+		paymentOptionLabel: "Zahlungsoption",
+		depositMarkupNote: "(+5% für die 30%-Anzahlungsoption)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "Bestell-ID:",
 	},
 	cookieBar: {
 		text: "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Durch die Nutzung unserer Website akzeptieren Sie unsere ",
@@ -762,7 +766,7 @@ Warten Sie nicht – begrenzte Plätze verfügbar!
 		availableApartments: "Verfügbare Wohnungen in {{placeName}}",
 		noApartmentsAvailable: "In diesem Gebäude sind derzeit keine Wohnungen verfügbar.",
 		metadata: {
-			title: "{{placeName}} - Mountain Apartments",
+			title: "{{placeName}} - MSC Apartments",
 			description: "Entdecken Sie Wohnungen in {{placeName}}, {{location}}. {{count}} verfügbare Immobilien.",
 			keywords: ["{{placeName}}", "{{location}}", "Bergwohnungen", "Apartmenthaus", "Ferienwohnung"],
 			placeNotFound: "Ort Nicht Gefunden",

@@ -13,21 +13,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/regulamin`
 
 	return {
 		title: `${dictionary.navigation.regulamin} - ${dictionary.title}`,
-		description: "Regulamin Mountain Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
-		keywords: [dictionary.navigation.regulamin, "Mountain Apartments", "regulamin", "warunki rezerwacji", "płatności", "pobyt"].join(", "),
+		description: "Regulamin MSC Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
+		keywords: [dictionary.navigation.regulamin, "MSC Apartments", "regulamin", "warunki rezerwacji", "płatności", "pobyt"].join(", "),
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -40,15 +40,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		},
 		openGraph: {
 			title: `${dictionary.navigation.regulamin} - ${dictionary.title}`,
-			description: "Regulamin Mountain Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
+			description: "Regulamin MSC Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/terms-conditions.jpg`,
 					width: 1200,
 					height: 630,
-					alt: "Terms and Conditions - Mountain Apartments",
+					alt: "Terms and Conditions - MSC Apartments",
 				},
 			],
 			locale: lang,
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		twitter: {
 			card: "summary_large_image",
 			title: `${dictionary.navigation.regulamin} - ${dictionary.title}`,
-			description: "Regulamin Mountain Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
+			description: "Regulamin MSC Apartments - przeczytaj warunki rezerwacji, płatności i pobytu w naszych apartamentach w Zakopanem i Kościelisku.",
 			images: [`${baseUrl}/images/terms-conditions.jpg`],
 		},
 		robots: {

@@ -11,7 +11,6 @@ export async function GET(request: Request) {
 		const properties = await prisma.property.findMany({
 			where: {
 				userId: userId,
-				brand: "MOUNTAIN",
 				state: "active", // Only get active properties
 				id: {
 					not: 53, // Exclude property 53
@@ -55,7 +54,19 @@ export async function GET(request: Request) {
 			const sanitizedExtended = property.extended
 				? (() => {
 						const extended = property.extended as Record<string, unknown>
-						const safeFields = ["title", "keywords", "minPrice", "maxPrice"] //allow safe fields only, add new fields if needed
+						const safeFields = [
+							"title",
+							"keywords",
+							"minPrice",
+							"maxPrice",
+							"petFee",
+							"petsMax",
+							"babyCribFee",
+							"petsAllowed",
+							"breakfastFee",
+							"babyCribAllowed",
+							"breakfastAllowed",
+						]
 						const sanitized: Record<string, unknown> = {}
 
 						for (const field of safeFields) {

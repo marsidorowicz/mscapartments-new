@@ -15,22 +15,22 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/o-nas`
 
 	return {
 		title: `${dictionary.navigation.aboutUs} - ${dictionary.title}`,
 		description:
-			"Poznaj Mountain Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
-		keywords: [dictionary.navigation.aboutUs, "Mountain Apartments", "o nas", "historia", "doświadczenie", "Tatry", "Zakopane"].join(", "),
+			"Poznaj MSC Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
+		keywords: [dictionary.navigation.aboutUs, "MSC Apartments", "o nas", "historia", "doświadczenie", "Tatry", "Zakopane"].join(", "),
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		metadataBase: new URL(baseUrl),
 		alternates: {
 			canonical: currentUrl,
@@ -44,15 +44,15 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
 		openGraph: {
 			title: `${dictionary.navigation.aboutUs} - ${dictionary.title}`,
 			description:
-				"Poznaj Mountain Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
+				"Poznaj MSC Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/about-us.jpg`,
 					width: 1200,
 					height: 630,
-					alt: "About Mountain Apartments",
+					alt: "About MSC Apartments",
 				},
 			],
 			locale: lang,
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
 			card: "summary_large_image",
 			title: `${dictionary.navigation.aboutUs} - ${dictionary.title}`,
 			description:
-				"Poznaj Mountain Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
+				"Poznaj MSC Apartments - ponad 10 lat doświadczenia w zarządzaniu apartamentami w sercu Tatr. Profesjonalna obsługa, komfortowe apartamenty i niezapomniane doświadczenia.",
 			images: [`${baseUrl}/images/about-us.jpg`],
 		},
 		robots: {

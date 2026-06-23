@@ -68,6 +68,12 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		remarks: "",
 		acceptTerms: false,
 		newsletter: false,
+		invoice: false,
+		companyName: "",
+		streetAddress: "",
+		postalCode: "",
+		invoiceCountry: "",
+		taxNumber: "",
 	})
 	const [isValidating, setIsValidating] = useState(false)
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -78,6 +84,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		priceStatus: "idle",
 		reservationStatus: "idle",
 		errorMsg: null,
+		paymentLinks: [],
 		priceNote: null,
 	})
 	const [reservationConfirmation, setReservationConfirmation] = useState<{
@@ -402,7 +409,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 					upsertEventDb({
 						event: eventPayload,
 						id: defaultUserId,
-						source: "mountain",
+						source: "msc",
 						offerId: index === 0 ? offerData?.offerId : undefined,
 					}),
 				),
@@ -456,17 +463,19 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				}
 			}
 
-			let paymentLink = null
 			const successfulResponses = responses.filter((r) => r.success && r.eventSaved)
+			const paymentLinks: string[] = []
 			if (successfulResponses.length > 0 && basketSummary.onlineTotal > 0) {
-				const ev = successfulResponses[0].eventSaved
-				if (ev?.id && ev?.propertyId && ev?.accessToken) {
-					// pattern: pl/reservation/19844/57?token=7640a2...
-					paymentLink = `/${lang}/reservation/${ev.id}/${ev.propertyId}?token=${ev.accessToken}`
-				}
+				successfulResponses.forEach((r) => {
+					const ev = r.eventSaved
+					if (ev?.id && ev?.propertyId && ev?.accessToken) {
+						// pattern: pl/reservation/19844/57?token=7640a2...
+						paymentLinks.push(`/${lang}/reservation/${ev.id}/${ev.propertyId}?token=${ev.accessToken}`)
+					}
+				})
 			}
 
-			setProgressState((p) => ({ ...p, reservationStatus: "success", paymentLink, priceNote: null }))
+			setProgressState((p) => ({ ...p, reservationStatus: "success", paymentLinks, paymentLink: paymentLinks[0] ?? null, priceNote: null }))
 			setReservationConfirmation(null)
 			setBasketItems([]) // Clear basket on successful reservation
 		} catch (error) {
@@ -484,6 +493,18 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 			console.warn("Reservation form is missing required fields")
 			return
 		}
+		if (reservationFormValues.invoice) {
+			if (
+				!reservationFormValues.companyName.trim() ||
+				!reservationFormValues.streetAddress.trim() ||
+				!reservationFormValues.postalCode.trim() ||
+				!reservationFormValues.invoiceCountry.trim() ||
+				!reservationFormValues.taxNumber.trim()
+			) {
+				console.warn("Reservation form is missing required invoice fields")
+				return
+			}
+		}
 
 		setValidationError(null)
 		setIsValidating(true)
@@ -493,6 +514,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 			priceStatus: "idle",
 			reservationStatus: "idle",
 			errorMsg: null,
+			paymentLinks: [],
 			priceNote: null,
 		})
 
@@ -854,6 +876,11 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				name: "Imię i nazwisko",
 				phone: "Telefon",
 				email: "Email",
+				company_name: "Nazwa firmy",
+				street_address: "Ulica i numer",
+				postal_code: "Kod pocztowy",
+				country: "Kraj",
+				tax_number: "NIP",
 				acceptTerms: "Akceptuję regulamin",
 				remarks: "Uwagi",
 				missingData: "Wypełnij brakujące dane w formularzu:",
@@ -862,6 +889,11 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				name: "Name",
 				phone: "Phone",
 				email: "Email",
+				company_name: "Company Name",
+				street_address: "Street Address",
+				postal_code: "Postal Code",
+				country: "Country",
+				tax_number: "Tax Number",
 				acceptTerms: "I accept the terms and conditions",
 				remarks: "Remarks",
 				missingData: "Please fill in missing form data:",
@@ -870,6 +902,11 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				name: "Name",
 				phone: "Telefon",
 				email: "Email",
+				company_name: "Firmenname",
+				street_address: "Straße und Hausnummer",
+				postal_code: "Postleitzahl",
+				country: "Land",
+				tax_number: "Steuernummer",
 				acceptTerms: "Ich akzeptiere die allgemeinen Geschäftsbedingungen",
 				remarks: "Bemerkungen",
 				missingData: "Bitte füllen Sie die fehlenden Formulardaten aus:",
@@ -878,6 +915,11 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				name: "Nombre",
 				phone: "Teléfono",
 				email: "Correo electrónico",
+				company_name: "Nombre de la empresa",
+				street_address: "Dirección",
+				postal_code: "Código postal",
+				country: "País",
+				tax_number: "NIF/NIE",
 				acceptTerms: "Acepto los términos y condiciones",
 				remarks: "Comentarios",
 				missingData: "Por favor, complete los datos faltantes del formulario:",
@@ -890,6 +932,13 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		if (!reservationFormValues.phone.trim()) list.push(ft.phone)
 		if (!reservationFormValues.email.trim()) list.push(ft.email)
 		if (!reservationFormValues.acceptTerms) list.push(ft.acceptTerms)
+		if (reservationFormValues.invoice) {
+			if (!reservationFormValues.companyName.trim()) list.push(ft.company_name)
+			if (!reservationFormValues.streetAddress.trim()) list.push(ft.street_address)
+			if (!reservationFormValues.postalCode.trim()) list.push(ft.postal_code)
+			if (!reservationFormValues.invoiceCountry.trim()) list.push(ft.country)
+			if (!reservationFormValues.taxNumber.trim()) list.push(ft.tax_number)
+		}
 		const isRemarksRequired = Object.values(itemStates).some((state) => state.services?.some((s) => s.id === "breakfast" && s.quantity > 0))
 		if (isRemarksRequired && !reservationFormValues.remarks.trim()) list.push(ft.remarks)
 
@@ -991,7 +1040,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 						<Link
 							href={`/${lang}`}
 							aria-label={t.backHome}
-							className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-transparent bg-[#cc9678] text-white transition hover:bg-[#a6755a]">
+							className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-transparent bg-[#1D2430] text-white transition hover:bg-[#a6755a]">
 							<HomeIcon className="h-6 w-6" aria-hidden="true" />
 						</Link>
 						<Link

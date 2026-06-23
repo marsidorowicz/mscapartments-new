@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const dictionary = await getDictionary(lang)
 
 	// Add safety checks for dictionary properties
-	const title = dictionary?.title || "Mountain Apartments"
+	const title = dictionary?.title || "MSC Apartments"
 	const description = dictionary?.description || "Comfortable mountain accommodation"
 	const keywords = dictionary?.keywords || []
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.pl"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}` // Changed from /homepage to root
 	return {
 		title,
@@ -27,16 +27,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		keywords: Array.isArray(keywords) ? keywords.join(", ") : "",
 		authors: [
 			{
-				name: "Mountain Apartments",
-				url: "https://mountainapartments.pl",
+				name: "MSC Apartments",
+				url: "https://mscapartments.pl",
 			},
 			{
 				name: "Mariusz Sidorowicz",
 				url: "https://cyberwealth.pro",
 			},
 		],
-		creator: "Mountain Apartments",
-		publisher: "Mountain Apartments",
+		creator: "MSC Apartments",
+		publisher: "MSC Apartments",
 		formatDetection: {
 			email: false,
 			address: false,
@@ -56,13 +56,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 			title,
 			description,
 			url: currentUrl,
-			siteName: "Mountain Apartments",
+			siteName: "MSC Apartments",
 			images: [
 				{
 					url: `${baseUrl}/images/bg.webp`,
 					width: 1200,
 					height: 630,
-					alt: "Mountain Apartments - Comfortable Mountain Accommodation",
+					alt: "MSC Apartments - Comfortable Mountain Accommodation",
 				},
 			],
 			locale: lang,
@@ -93,7 +93,7 @@ export default async function HomePage({ params }: PageProps) {
 	const dictionary = await getDictionary(lang)
 
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<div>Wczytywanie...</div>}>
 			<HomepagePageClient dictionary={dictionary} lang={lang} />
 		</Suspense>
 	)

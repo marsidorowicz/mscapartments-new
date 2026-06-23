@@ -81,7 +81,6 @@ export async function POST(req: NextRequest) {
 			where: {
 				userId: "clok0rd6f0000kkdgyf1pd0t3",
 				state: "active",
-				brand: "MOUNTAIN",
 			},
 			select: {
 				id: true,

@@ -60,7 +60,7 @@ export default function AboutUsPageClient({ dictionary, lang = "pl" }: AboutUsPa
 						<section className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
 							<div className="prose prose-lg max-w-none">
 								<p className="text-xl leading-relaxed text-gray-700 mb-6 font-medium">
-									{`Mountain Apartments to `}
+									{`MSC Apartments to `}
 									<span className="text-[#cc9678] font-semibold">{`wyjątkowe miejsce`}</span>
 									{`, w którym łączymy pasję do gór z wieloletnim
 									doświadczeniem w branży turystycznej. Od ponad 13 lat zajmujemy się profesjonalnym zarządzaniem apartamentami w`}{" "}

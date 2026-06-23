@@ -119,17 +119,17 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 							<div>
 								<span className="font-semibold">{dictionary.contactForm?.officePhoneLabel || "Phone number:"}</span>{" "}
 								<a
-									href={`tel:${dictionary.contactForm?.officePhone || "+48 511 000 660"}`}
+									href={`tel:${dictionary.contactForm?.officePhone || "+48 515 857 609"}`}
 									className="text-[#1D2430] hover:text-[#8f6350] underline transition-colors">
-									{dictionary.contactForm?.officePhone || "+48 511 000 660"}
+									{dictionary.contactForm?.officePhone || "+48 515 857 609"}
 								</a>
 							</div>
 							<div>
 								<span className="font-semibold">{dictionary.contactForm?.officeEmailLabel || "Email address:"}</span>{" "}
 								<a
-									href={`mailto:${dictionary.contactForm?.officeEmail || "biuro@mountainapartments.pl"}`}
+									href={`mailto:${dictionary.contactForm?.officeEmail || "apartamentymsc@gmail.com"}`}
 									className="text-[#1D2430] hover:text-[#8f6350] underline transition-colors">
-									{dictionary.contactForm?.officeEmail || "biuro@mountainapartments.pl"}
+									{dictionary.contactForm?.officeEmail || "apartamentymsc@gmail.com"}
 								</a>
 							</div>
 						</div>

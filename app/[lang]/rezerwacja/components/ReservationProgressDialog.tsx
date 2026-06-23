@@ -17,6 +17,7 @@ export type ReservationProgressState = {
 	reservationStatus: ProgressStatus
 	errorMsg: string | null
 	paymentLink?: string | null
+	paymentLinks?: string[]
 	priceNote?: string | null
 }
 
@@ -131,19 +132,37 @@ export function ReservationProgressDialog({ lang, state, onClose }: Props) {
 				{isCompletedSuccess && (
 					<div className="mt-6 space-y-4">
 						<div className="rounded-xl bg-green-50 p-4 text-sm text-green-700 text-center font-medium border border-green-100">{t.successMsg}</div>
-						{state.paymentLink && (
+						{(state.paymentLinks?.length ?? 0) > 0 ? (
+							<div className="space-y-3 rounded-xl bg-white p-5">
+								<span className="text-sm font-medium text-black text-center">{t.successMsgPaymentPrefix}</span>
+								<div className="grid gap-3">
+									{state.paymentLinks?.map((link, index) => (
+										<a
+											key={`${link}-${index}`}
+											href={link}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-flex w-full justify-center rounded-2xl bg-[#1D2430] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1D2430] shadow-sm">
+											{t.successMsgPaymentLinkText}
+											{state.paymentLinks && state.paymentLinks.length > 1 ? ` ${"booking #"} ${index + 1} ` : ""}
+										</a>
+									))}
+								</div>
+							</div>
+						) : state.paymentLink ? (
 							<div className="flex flex-col items-center gap-3 rounded-xl bg-white p-5 ">
 								<span className="text-sm font-medium text-black text-center">{t.successMsgPaymentPrefix}</span>
 								<a
 									href={state.paymentLink}
-									className="inline-flex w-full justify-center rounded-2xl bg-[#cc9678] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#a6755a] shadow-sm">
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex w-full justify-center rounded-2xl bg-[#1D2430] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1D2430] shadow-sm">
 									{t.successMsgPaymentLinkText}
 								</a>
 							</div>
-						)}
+						) : null}
 					</div>
 				)}
-
 				{/* Actions (Only show Close when done or error) */}
 				{/* {(isCompletedSuccess || state.errorMsg) && (
 					<div className="mt-6 flex justify-center">
