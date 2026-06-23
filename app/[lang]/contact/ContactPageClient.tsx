@@ -56,7 +56,9 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 	return (
 		<>
 			{/* Modern Navigation */}
-			<ModernNav dictionary={dictionary} lang={lang} />
+			<React.Suspense fallback={null}>
+				<ModernNav dictionary={dictionary} lang={lang as Locale} />
+			</React.Suspense>
 
 			<Section id="contact" className="bg-[#f5f0eb] ">
 				<div className="flex flex-col items-center justify-start min-h-[80vh] pt-8 px-1">
