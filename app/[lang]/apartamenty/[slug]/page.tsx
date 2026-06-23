@@ -109,7 +109,16 @@ export default async function PropertyPage({ params, searchParams }: { params: P
 
 	// Redirect to correct URL if slug is missing or incorrect
 	if (expectedSlug && slug !== expectedSlug) {
-		redirect(`/${lang}/apartamenty/${expectedSlug}`)
+		const query = new URLSearchParams()
+		Object.entries(searchParamsResolved).forEach(([key, value]) => {
+			if (typeof value === "string") {
+				query.set(key, value)
+			} else if (Array.isArray(value)) {
+				value.forEach((item) => query.append(key, item))
+			}
+		})
+		const queryString = query.toString()
+		redirect(`/${lang}/apartamenty/${expectedSlug}${queryString ? `?${queryString}` : ""}`)
 	}
 
 	return (
