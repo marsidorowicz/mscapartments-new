@@ -501,6 +501,10 @@ export const pl = {
 		paymentNumber: "Płatność #{{number}}",
 		initiatedDate: "Data zainicjowania",
 		propertyNotAvailable: "Żądany obiekt {{propertyName}} nie jest dostępny w wybrane terminy. Oto inne dostępne opcje:",
+		paymentOptionLabel: "Opcja płatności",
+		depositMarkupNote: "(+5% za opcję 30% zaliczki)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "Numer zamówienia:",
 	},
 	cookieBar: {
 		text: "Używamy plików cookie, aby poprawić Twoje doświadczenia. Korzystając z naszej strony, akceptujesz naszą ",

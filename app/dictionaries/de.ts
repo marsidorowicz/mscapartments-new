@@ -496,6 +496,10 @@ export const de = {
 		initiatedDate: "Initiiertes Datum",
 		propertyNotAvailable:
 			"Die angeforderte Unterkunft {{propertyName}} ist für Ihre ausgewählten Daten nicht verfügbar. Hier sind andere verfügbare Optionen:",
+		paymentOptionLabel: "Zahlungsoption",
+		depositMarkupNote: "(+5% für die 30%-Anzahlungsoption)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "Bestell-ID:",
 	},
 	cookieBar: {
 		text: "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Durch die Nutzung unserer Website akzeptieren Sie unsere ",

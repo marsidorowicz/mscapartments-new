@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getSimplifiedCacheEntriesForDateRange } from "../../../../utilities/functions/nobedsCache"
 import prisma from "@/prisma/prisma"
+import { differenceInCalendarDays } from "date-fns"
 
 export async function POST(req: NextRequest) {
 	try {
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
 		}
 
 		const availablePropertyIds: number[] = []
+		const nights = differenceInCalendarDays(new Date(endDate), new Date(startDate))
 
 		// Get all properties with their room_ids in one query
 		const properties = await prisma.property.findMany({
@@ -33,9 +35,15 @@ export async function POST(req: NextRequest) {
 					const cacheEntries = await getSimplifiedCacheEntriesForDateRange(property.room_id, startDate, endDate)
 
 					// Check if all dates in the range have available quantity > 0
-					const hasAvailability = cacheEntries.every((entry: { date: string; quantity: number | null }) => {
-						return entry.quantity && entry.quantity > 0
-					})
+					const hasAvailability = cacheEntries.every(
+						(entry: { date: string; quantity: number | null; minStay?: number | null; maxStay?: number | null }) => {
+							const isQuantityAvailable = entry.quantity && entry.quantity > 0
+							const isMinStayValid = !entry.minStay || entry.minStay <= nights
+							const isMaxStayValid = !entry.maxStay || entry.maxStay >= nights
+
+							return isQuantityAvailable && isMinStayValid && isMaxStayValid
+						},
+					)
 
 					if (hasAvailability && cacheEntries.length > 0) {
 						availablePropertyIds.push(property.id)

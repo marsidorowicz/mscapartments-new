@@ -500,6 +500,10 @@ export const en = {
 		paymentNumber: "Payment #{{number}}",
 		initiatedDate: "Initiated Date",
 		propertyNotAvailable: "The requested property {{propertyName}} is not available for your selected dates. Here are other available options:",
+		paymentOptionLabel: "Payment Option",
+		depositMarkupNote: "(+5% for 30% upfront option)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "Order ID:",
 	},
 	cookieBar: {
 		text: "We use cookies to improve your experience. By using our site, you accept our ",

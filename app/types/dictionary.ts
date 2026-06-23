@@ -327,6 +327,10 @@ export type Dictionary = {
 		paymentNumber: string
 		initiatedDate: string
 		propertyNotAvailable: string
+		paymentOptionLabel: string
+		depositMarkupNote: string
+		depositMarkupSuffix: string
+		orderIdLabel: string
 	}
 	cookieBar: {
 		text: string

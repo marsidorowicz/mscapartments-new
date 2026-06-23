@@ -502,6 +502,10 @@ export const es = {
 		paymentNumber: "Pago #{{number}}",
 		initiatedDate: "Fecha de iniciación",
 		propertyNotAvailable: "La propiedad solicitada {{propertyName}} no está disponible para las fechas seleccionadas. Aquí hay otras opciones disponibles:",
+		paymentOptionLabel: "Opción de pago",
+		depositMarkupNote: "(+5% para la opción de pago anticipado del 30%)",
+		depositMarkupSuffix: "(+5%)",
+		orderIdLabel: "ID de la orden:",
 	},
 	cookieBar: {
 		text: "Utilizamos cookies para mejorar su experiencia. Al usar nuestro sitio, acepta nuestra ",

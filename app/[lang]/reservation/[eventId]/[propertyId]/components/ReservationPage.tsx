@@ -51,8 +51,24 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 	const [isInstructionsExpanded, setIsInstructionsExpanded] = useState(false)
 	const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
 	const [orderId, setOrderId] = useState<string | null>(null)
+	const [paymentOption, setPaymentOption] = useState<"30" | "100">("100")
+
+	// Function to parse numbers with comma or dot decimal separators
+	const parseNumber = (value: string | number | null | undefined): number => {
+		if (value === null || value === undefined) return 0
+		const stringValue = String(value).replace(",", ".")
+		return parseFloat(stringValue) || 0
+	}
 
 	const totalPrice = (reservation?.price || 0) + (reservation?.cityTax || 0) + (reservation?.extraFees || 0) || 0
+	const depositAmount = parseNumber(reservation?.deposit)
+	const reservationPrice = parseNumber(reservation?.price)
+	const hasExistingDeposit = depositAmount >= reservationPrice * 0.1
+	const shouldPreviewMarkup = paymentOption === "30" && !hasExistingDeposit
+	const previewTotalPrice = shouldPreviewMarkup ? totalPrice + reservationPrice * 0.05 : totalPrice
+	const remainingToPay = Math.max(0, previewTotalPrice - depositAmount).toFixed(2)
+	const selectedChargeTotal =
+		paymentOption === "30" ? (hasExistingDeposit ? (reservationPrice * 0.3).toFixed(2) : (reservationPrice * 0.315).toFixed(2)) : remainingToPay
 
 	// Countdown timer effect
 	useEffect(() => {
@@ -70,17 +86,9 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 					}
 				})
 			}, 1000)
-
 			return () => clearInterval(timer)
 		}
 	}, [retryAfter])
-
-	// Function to parse numbers with comma or dot decimal separators
-	const parseNumber = (value: string | number | null | undefined): number => {
-		if (value === null || value === undefined) return 0
-		const stringValue = String(value).replace(",", ".")
-		return parseFloat(stringValue) || 0
-	}
 
 	// Function to translate payment status
 	const getPaymentStatusTranslation = useCallback(
@@ -110,9 +118,11 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 				body: JSON.stringify({
 					orderId: generatedOrderId,
 					eventId: parseInt(eventId),
-					chargeTotal: totalPrice.toString(),
+					chargeTotal: selectedChargeTotal,
 					currency: "PLN",
 					locale: locale,
+					paymentOption,
+					paymentType: paymentOption === "30" ? (hasExistingDeposit ? "DEPOSIT_30_NO_MARKUP" : "DEPOSIT_30_MARKUP") : "FULL",
 				}),
 			})
 
@@ -304,7 +314,6 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 	}
 
 	const paid = reservation?.paid
-	const remainingToPay = Math.max(0, totalPrice - parseNumber(reservation.deposit)).toFixed(2)
 
 	const startDateStr = format(new Date(reservation.startDate), "dd.MM.yyyy")
 	const checkinTime = reservation.property?.checkinInstructionTime || "00:00"
@@ -455,8 +464,13 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 											{dictionary.reservation.totalPrice}
 										</Typography>
 										<Typography className="text-gray-900 dark:text-gray-100 font-semibold">
-											{formatCurrency(String(totalPrice), reservation.payments?.[0]?.currency || "PLN")}{" "}
+											{formatCurrency(String(previewTotalPrice), reservation.payments?.[0]?.currency || "PLN")}{" "}
 										</Typography>
+										{shouldPreviewMarkup && (
+											<Typography className="text-xs text-green-600 dark:text-green-400 mt-1">
+												{dictionary.reservation.depositMarkupNote}
+											</Typography>
+										)}
 									</div>
 									<div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
 										<Typography className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
@@ -565,11 +579,47 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 
 									{totalPrice &&
 										totalPrice !== 0 &&
-										parseNumber(reservation.deposit) < totalPrice &&
+										parseNumber(reservation.deposit) < previewTotalPrice &&
 										reservation?.property?.paymentsOn === true && (
 											<div className="mt-6 pt-4 border-t border-blue-200 dark:border-blue-700">
 												{!orderId ? (
-													<div className="mb-4">
+													<div className="mb-4 space-y-4">
+														<div>
+															<Typography variant="body1" className="text-gray-900 dark:text-gray-100 font-semibold mb-2">
+																30% / 100%
+															</Typography>
+															<div className="grid gap-3 sm:grid-cols-2">
+																<label className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 cursor-pointer">
+																	<input
+																		type="radio"
+																		name="paymentOption"
+																		value="100"
+																		checked={paymentOption === "100"}
+																		onChange={() => setPaymentOption("100")}
+																		className="h-4 w-4 accent-[#cc9678]"
+																	/>
+																	<span>{dictionary.reservation.totalPrice} (100%)</span>
+																</label>
+																<label className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 cursor-pointer">
+																	<input
+																		type="radio"
+																		name="paymentOption"
+																		value="30"
+																		checked={paymentOption === "30"}
+																		onChange={() => setPaymentOption("30")}
+																		className="h-4 w-4 accent-[#cc9678]"
+																	/>
+																	<span>{dictionary.reservation.deposit} (30%)</span>
+																</label>
+															</div>
+														</div>
+														<Typography variant="body2" className="text-gray-600 dark:text-gray-400">
+															{paymentOption === "30"
+																? hasExistingDeposit
+																	? `${dictionary.reservation.deposit}: ${formatCurrency(selectedChargeTotal, reservation.payments?.[0]?.currency || "PLN")}`
+																	: `${dictionary.reservation.deposit}: ${formatCurrency(selectedChargeTotal, reservation.payments?.[0]?.currency || "PLN")} ${dictionary.reservation.depositMarkupSuffix}`
+																: `${dictionary.reservation.remainingToPay}: ${formatCurrency(selectedChargeTotal, reservation.payments?.[0]?.currency || "PLN")}`}
+														</Typography>
 														<Button variant="outlined" color="primary" onClick={createNewPaymentRecord} className="w-full">
 															{!reservation.payments || reservation.payments.length === 0
 																? dictionary.reservation.payNow
@@ -582,16 +632,17 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 															{dictionary.reservation.refreshOrderId || "Refresh Order ID"}
 														</Button>
 														<Typography variant="body2" className="text-gray-600 dark:text-gray-400 self-center">
-															Zlecenie Numer ID: {orderId.slice(0, 8)}...
+															{dictionary.reservation.orderIdLabel} {orderId.slice(0, 8)}...
 														</Typography>
 													</div>
 												)}
 												{orderId && (
 													<FiservPaymentHPP
-														chargeTotal={remainingToPay}
+														chargeTotal={selectedChargeTotal}
 														eventId={parseInt(eventId)}
 														locale={"pl"}
 														oid={orderId}
+														paymentOptions={false}
 														forceNewOrderId={false}
 													/>
 												)}
