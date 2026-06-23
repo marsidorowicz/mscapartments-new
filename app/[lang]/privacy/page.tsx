@@ -377,8 +377,9 @@ export default async function PrivacyPage(props: { params: Promise<{ lang: Local
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-[#e4d9c7] via-white to-[#f5f0eb]">
 			{/* Modern Navigation */}
-			<ModernNav dictionary={dictionary} lang={langKey} />
-
+			<React.Suspense fallback={null}>
+				<ModernNav dictionary={dictionary} lang={langKey} />
+			</React.Suspense>
 			{/* Main Content */}
 			<main className="pt-24 pb-16">
 				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -6,6 +6,7 @@ import { Dictionary } from "../../types/dictionary"
 import { Locale } from "../../i18n-config"
 import ModernNav from "../homepage/components/ModernNav"
 import Footer from "../homepage/components/Footer"
+import React from "react"
 
 type RegulaminPageClientProps = {
 	dictionary: Dictionary
@@ -16,7 +17,9 @@ export default function RegulaminPageClient({ dictionary, lang }: RegulaminPageC
 	return (
 		<div className="min-h-screen bg-white">
 			{/* Navigation */}
-			<ModernNav dictionary={dictionary} lang={lang} />
+			<React.Suspense fallback={null}>
+				<ModernNav dictionary={dictionary} lang={lang as Locale} />
+			</React.Suspense>
 
 			{/* Main Content */}
 			<main className="pt-20 pb-16">
