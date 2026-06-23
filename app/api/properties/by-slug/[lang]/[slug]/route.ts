@@ -13,7 +13,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ lang
 		const properties = await prisma.property.findMany({
 			where: {
 				userId: userId,
-				brand: "MOUNTAIN",
 				state: "active", // Only get active properties
 			},
 			include: {

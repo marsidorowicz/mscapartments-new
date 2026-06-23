@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
 	const property = await prisma.property.findFirst({
 		where: {
 			room_id: roomId || room_id,
-			brand: "MOUNTAIN",
 		},
 	})
 

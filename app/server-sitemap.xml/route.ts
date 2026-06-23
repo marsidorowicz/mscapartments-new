@@ -12,7 +12,6 @@ export async function GET() {
 		const properties = await prisma.property.findMany({
 			where: {
 				state: "active",
-				brand: "MOUNTAIN",
 				id: { not: 53 }, // Exclude property 53
 			},
 			select: {

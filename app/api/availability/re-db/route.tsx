@@ -87,7 +87,6 @@ export async function POST(req: NextRequest) {
 			where: {
 				state: "active",
 				userId: "clok0rd6f0000kkdgyf1pd0t3",
-				brand: "MOUNTAIN",
 			},
 			include: {
 				images: {

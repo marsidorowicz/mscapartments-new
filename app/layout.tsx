@@ -7,7 +7,7 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { GoogleTagManager } from "@next/third-parties/google"
 import Image from "next/image"
 import ReduxProvider from "./components/ReduxProvider"
-import MountainApartmentsSchema from "../components/MountainApartmentsSchema"
+import MscapartmentsSchema from "../components/MountainApartmentsSchema"
 
 // Metadata is handled by locale-specific layouts and pages
 export const metadata: Metadata = {
@@ -61,7 +61,7 @@ fbq('track', 'PageView');
 
 				<meta charSet="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-				<MountainApartmentsSchema />
+				<MscapartmentsSchema />
 			</head>
 			<body>
 				<ReduxProvider>{children}</ReduxProvider>

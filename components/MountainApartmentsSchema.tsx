@@ -1,6 +1,6 @@
 /** @format */
 
-export default function MountainApartmentsSchema() {
+export default function MscapartmentsSchema() {
 	const schema = {
 		"@context": "https://schema.org",
 		"@graph": [

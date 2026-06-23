@@ -95,14 +95,11 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 
 			let BRAND_URL
 			switch (propertyDetails?.brand) {
-				case "MOUNTAIN":
-					BRAND_URL = "https://mountainapartments.pl"
-					break
 				case "MSC":
 					BRAND_URL = "https://mscapartments.pl"
 					break
 				default:
-					BRAND_URL = "https://pms.cyberwealth.pro"
+					BRAND_URL = "https://mscapartments.pl"
 					break
 			}
 
