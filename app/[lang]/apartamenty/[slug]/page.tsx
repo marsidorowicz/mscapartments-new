@@ -15,8 +15,30 @@ type Params = {
 	slug: string
 }
 
-// Fetch property data by slug
-async function getPropertyBySlug(slug: string, lang: string) {
+type SearchParams = {
+	[id: string]: string | string[] | undefined
+}
+
+async function fetchPropertyById(id: string) {
+	try {
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
+		const response = await fetch(`${baseUrl}/api/properties/mountain/${id}`, {
+			cache: "no-store",
+		})
+
+		if (!response.ok) {
+			return null
+		}
+
+		const data = await response.json()
+		return data.property || null
+	} catch (error) {
+		console.error("Error fetching property by id:", error)
+		return null
+	}
+}
+
+async function fetchPropertyBySlug(slug: string, lang: string) {
 	try {
 		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 		const response = await fetch(`${baseUrl}/api/properties/by-slug/${lang}/${slug}`, {
@@ -24,22 +46,51 @@ async function getPropertyBySlug(slug: string, lang: string) {
 		})
 
 		if (!response.ok) {
-			throw new Error("Failed to fetch property")
+			return null
 		}
 
 		const data = await response.json()
 		return data.property || null
 	} catch (error) {
-		console.error("Error fetching property:", error)
+		console.error("Error fetching property by slug:", error)
 		return null
 	}
 }
 
-export default async function PropertyPage({ params }: { params: Promise<Params> }) {
+function getNumericId(searchParams: SearchParams) {
+	const idValue = searchParams.id
+	if (typeof idValue === "string" && /^[0-9]+$/.test(idValue)) {
+		return idValue
+	}
+	return null
+}
+
+async function getProperty(slug: string, lang: string, searchParams: SearchParams) {
+	const id = getNumericId(searchParams)
+
+	if (id) {
+		const propertyById = await fetchPropertyById(id)
+		if (propertyById) {
+			return propertyById
+		}
+	}
+
+	if (/^[0-9]+$/.test(slug)) {
+		const propertyById = await fetchPropertyById(slug)
+		if (propertyById) {
+			return propertyById
+		}
+	}
+
+	return await fetchPropertyBySlug(slug, lang)
+}
+
+export default async function PropertyPage({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<SearchParams> }) {
 	const { lang, slug } = await params
+	const searchParamsResolved = await searchParams
 	const dictionary = await getDictionary(lang)
 
-	const property = await getPropertyBySlug(slug, lang)
+	const property = await getProperty(slug, lang, searchParamsResolved)
 
 	if (!property) {
 		notFound()
@@ -70,9 +121,10 @@ export default async function PropertyPage({ params }: { params: Promise<Params>
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: { params: Promise<Params> }) {
+export async function generateMetadata({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<SearchParams> }) {
 	const { slug, lang } = await params
-	const property = await getPropertyBySlug(slug, lang)
+	const searchParamsResolved = await searchParams
+	const property = await getProperty(slug, lang, searchParamsResolved)
 
 	if (!property) {
 		return {
