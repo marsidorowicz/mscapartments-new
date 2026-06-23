@@ -1,6 +1,6 @@
 {
-	"name": "mountainapartments",
-	"version": "1.0.0",
+	"name": "mscapartments",
+	"version": "1.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
