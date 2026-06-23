@@ -5,7 +5,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import HomeIcon from "@mui/icons-material/Home"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { Dictionary } from "../../../types/dictionary"
 import { Locale } from "../../../i18n-config"
 // import BookNowButton from "../../components/BookNowButton"
@@ -57,13 +57,16 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 		}>
 	>([])
 
+	const searchParams = useSearchParams()
+
 	// Helper function to generate language-specific URL
 	const getLangUrl = (newLang: string) => {
 		const pathSegments = pathname.split("/").filter(Boolean)
 		if (pathSegments.length > 0) {
 			pathSegments[0] = newLang
 		}
-		return "/" + pathSegments.join("/")
+		const query = searchParams?.toString()
+		return `/${pathSegments.join("/")}${query ? `?${query}` : ""}`
 	}
 
 	// Close language dropdown when clicking outside

@@ -2,7 +2,7 @@
 
 "use client"
 
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
 import { i18n } from "../../i18n-config"
@@ -10,6 +10,7 @@ import { Locale } from "../../i18n-config"
 
 export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 	const pathName = usePathname()
+	const searchParams = useSearchParams()
 	const [isOpen, setIsOpen] = useState(false)
 	const [currentLocale, setCurrentLocale] = useState<Locale>(i18n.defaultLocale)
 	const [isHydrated, setIsHydrated] = useState(false)
@@ -71,7 +72,8 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 		if (!pathName) return "/"
 		const segments = pathName.split("/")
 		segments[1] = locale
-		return segments.join("/")
+		const query = searchParams?.toString()
+		return `${segments.join("/")}${query ? `?${query}` : ""}`
 	}
 
 	const handleLocaleClick = (locale: Locale) => {
