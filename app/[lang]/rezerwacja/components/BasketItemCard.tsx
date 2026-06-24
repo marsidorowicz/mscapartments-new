@@ -30,6 +30,8 @@ type BasketItemCardProps = {
 
 const getServiceLabel = (service: ServiceState | ServiceOption, lang: string) => service.labels[lang] || service.labels.pl
 
+const isServiceDisabled = (service: ServiceState) => service.id !== "cleaning" && service.allowed === false
+
 const getItemTotal = (item: BasketItem, services: ServiceState[]) => {
 	const serviceTotal = services.reduce((sum, service) => {
 		if (!service.selected) return sum
@@ -55,7 +57,6 @@ export function BasketItemCard({
 	const nights = dateRange ? Math.max(1, differenceInDays(dateRange.end, dateRange.start)) : 1
 	const localTax = (state.property?.localTax ?? 0) * nights * (state.guests ?? 1)
 	const itemTotal = getItemTotal(item, state.services) + localTax
-
 	const propertyUrl = buildPropertyUrl(item.id, state.property?.name ?? item.name, lang, state.property?.slugs)
 	const propertyUrlWithDateRange = item.dateRange ? `${propertyUrl}?dateRange=${encodeURIComponent(item.dateRange)}` : propertyUrl
 
@@ -155,8 +156,8 @@ export function BasketItemCard({
 											<input
 												type="checkbox"
 												checked={service.selected}
-												disabled={service.id === "cleaning"}
-												onChange={() => service.id !== "cleaning" && onToggleServiceSelected(service.id)}
+												disabled={service.id === "cleaning" || isServiceDisabled(service)}
+												onChange={() => !isServiceDisabled(service) && service.id !== "cleaning" && onToggleServiceSelected(service.id)}
 												className="h-4 w-4 rounded border-gray-300 text-[#cc9678]"
 											/>
 											<span>{getServiceLabel(service, lang)}</span>
@@ -175,7 +176,8 @@ export function BasketItemCard({
 											<>
 												<button
 													type="button"
-													onClick={() => onChangeServiceQuantity(service.id, -1)}
+												onClick={() => !isServiceDisabled(service) && onChangeServiceQuantity(service.id, -1)}
+												disabled={isServiceDisabled(service)}
 													className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white transition hover:border-gray-400">
 													-
 												</button>
@@ -192,11 +194,13 @@ export function BasketItemCard({
 														const val = parseInt(e.target.value) || 0
 														onSetServiceQuantity(service.id, val)
 													}}
+													disabled={isServiceDisabled(service)}
 													className="w-12 h-9 text-center rounded-lg border border-gray-300 bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:outline-none focus:ring-1 focus:ring-[#cc9678]"
 												/>
 												<button
 													type="button"
-													onClick={() => onChangeServiceQuantity(service.id, 1)}
+													onClick={() => !isServiceDisabled(service) && onChangeServiceQuantity(service.id, 1)}
+													disabled={isServiceDisabled(service)}
 													className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white transition hover:border-gray-400">
 													+
 												</button>
@@ -207,6 +211,11 @@ export function BasketItemCard({
 										)}
 									</div>
 								</div>
+								{service.allowed === false && service.id !== "cleaning" && (
+									<p className="text-[0.875rem] font-medium italic text-red-600 px-2 mt-1">
+										{service.id === "breakfast" ? t.breakfastNotAllowed : service.id === "pets" ? t.petsNotAllowed : t.babyCribNotAllowed}
+									</p>
+								)}
 								{service.id === "breakfast" && ((service.quantity ?? 0) > 0 || service.selected) && (
 									<p className="text-[0.875rem] font-medium italic text-red-600 px-2 mt-1">
 										{t.breakfastNote} max ({(state.guests ?? 1) * nights})

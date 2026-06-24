@@ -154,6 +154,9 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 		backHome: "Powrót do strony głównej",
 		apartmentSelectionLabel: "Wybór apartamentów",
 		breakfastNote: "Łączna liczba śniadań na cały pobyt. Prosimy w uwagach napisać, ile śniadań w jakie dni Państwo potrzebują.",
+		petsNotAllowed: "Zwierzęta nie są akceptowane w tym obiekcie",
+		breakfastNotAllowed: "Śniadanie nie jest dostępne w tym obiekcie",
+		babyCribNotAllowed: "Usługa łóżeczka dla dziecka nie jest dostępna w tym obiekcie",
 	},
 	en: {
 		summary: "Summary",
@@ -191,6 +194,9 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 		backHome: "Back to homepage",
 		apartmentSelectionLabel: "Apartment selection",
 		breakfastNote: "Total number of breakfasts for the entire stay. Please write in notes on what days how many breakfasts are required.",
+		petsNotAllowed: "Pets are not accepted in this property",
+		breakfastNotAllowed: "Breakfast is not available in this property",
+		babyCribNotAllowed: "Baby crib service is not available in this property",
 	},
 	de: {
 		summary: "Zusammenfassung",
@@ -230,6 +236,9 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 		apartmentSelectionLabel: "Apartment-Auswahl",
 		breakfastNote:
 			"Gesamtanzahl der Frühstücke für den gesamten Aufenthalt. Bitte schreiben Sie in die Notizen, an welchen Tagen wie viele Frühstücke benötigt werden.",
+		petsNotAllowed: "Haustiere sind in dieser Unterkunft nicht erlaubt",
+		breakfastNotAllowed: "Frühstück ist in dieser Unterkunft nicht verfügbar",
+		babyCribNotAllowed: "Babybettservice ist in dieser Unterkunft nicht verfügbar",
 	},
 	es: {
 		summary: "Resumen",
@@ -268,6 +277,9 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 		backHome: "Volver a la página principal",
 		apartmentSelectionLabel: "Selección de apartamentos",
 		breakfastNote: "Número total de desayunos para toda la estancia. Por favor escriba en las notas en qué días cuántos desayunos se requieren.",
+		petsNotAllowed: "No se aceptan mascotas en esta propiedad",
+		breakfastNotAllowed: "El desayuno no está disponible en esta propiedad",
+		babyCribNotAllowed: "El servicio de cuna no está disponible en esta propiedad",
 	},
 }
 
@@ -478,7 +490,7 @@ export const createServicesFromProperty = (
 			price: basePrice,
 			allowed,
 			selected: service.id === "cleaning" ? true : service.selected && allowed,
-			quantity: service.id === "cleaning" ? 1 : service.quantity,
+			quantity: service.id === "cleaning" ? 1 : allowed ? service.quantity : 0,
 		}
 	})
 }
