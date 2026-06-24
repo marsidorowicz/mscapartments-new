@@ -176,8 +176,8 @@ export function BasketItemCard({
 											<>
 												<button
 													type="button"
-												onClick={() => !isServiceDisabled(service) && onChangeServiceQuantity(service.id, -1)}
-												disabled={isServiceDisabled(service)}
+													onClick={() => !isServiceDisabled(service) && onChangeServiceQuantity(service.id, -1)}
+													disabled={isServiceDisabled(service)}
 													className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white transition hover:border-gray-400">
 													-
 												</button>
