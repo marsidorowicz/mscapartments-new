@@ -317,11 +317,26 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 
 	const startDateStr = format(new Date(reservation.startDate), "dd.MM.yyyy")
 	const checkinTime = reservation.property?.checkinInstructionTime || "00:00"
-	const adjustedStartDate = `${startDateStr}, ${checkinTime}:00`
+	const adjustedStartDate = `${startDateStr}, ${checkinTime}`
 
 	const endDateStr = format(new Date(reservation.endDate), "dd.MM.yyyy")
 	const checkoutTime = reservation.property?.checkoutInstructionTime || "00:00"
-	const adjustedEndDate = `${endDateStr}, ${checkoutTime}:00`
+	const adjustedEndDate = `${endDateStr}, ${checkoutTime}`
+
+	const instructionPaidTemplate = reservation.property?.emailTemplates?.find((emailTemplate: EmailTemplate) => emailTemplate.type === "instructionPaid")
+
+	const checkinDateTime = (() => {
+		if (!reservation?.startDate) return null
+		const date = new Date(reservation.startDate)
+		const [hoursStr, minutesStr] = checkinTime.split(":")
+		const hours = Number(hoursStr)
+		const minutes = Number(minutesStr)
+		if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return date
+		date.setHours(hours, minutes, 0, 0)
+		return date
+	})()
+
+	const instructionPaidVisible = Boolean(paid && checkinDateTime && new Date() > checkinDateTime && instructionPaidTemplate)
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 py-8">
@@ -441,6 +456,16 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 													{reservation.property.emailTemplates.find(
 														(emailTemplate: EmailTemplate) => emailTemplate.type === "instruction",
 													)?.body || ""}
+												</Typography>
+											</div>
+										)}
+										{instructionPaidVisible && instructionPaidTemplate && (
+											<div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+												<Typography className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+													{dictionary.reservation.additionalInstructions}
+												</Typography>
+												<Typography className="text-gray-900 dark:text-gray-100 whitespace-pre-line">
+													{instructionPaidTemplate.body || ""}
 												</Typography>
 											</div>
 										)}
