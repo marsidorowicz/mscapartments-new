@@ -47,6 +47,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 	const [error, setError] = useState<string | null>(null)
 	const [retryAfter, setRetryAfter] = useState<number | null>(null)
 	const [countdown, setCountdown] = useState<number | null>(null)
+	const [checkinCountdownMs, setCheckinCountdownMs] = useState<number | null>(null)
 	const [isPaymentExpanded, setIsPaymentExpanded] = useState(true)
 	const [isInstructionsExpanded, setIsInstructionsExpanded] = useState(false)
 	const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
@@ -89,6 +90,65 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 			return () => clearInterval(timer)
 		}
 	}, [retryAfter])
+
+	const instructionCountdownLabels: Record<string, string> = {
+		pl: "Czas do wyświetlenia instrukcji zameldowania:",
+		en: "Time until check-in instructions are shown:",
+		de: "Zeit bis zur Anzeige der Check-in-Anweisungen:",
+		es: "Tiempo hasta que se muestren las instrucciones de registro:",
+	}
+
+	const checkinCountdownLabel = instructionCountdownLabels[locale] || instructionCountdownLabels.en
+
+	const formatDuration = (milliseconds: number): string => {
+		const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000))
+		const days = Math.floor(totalSeconds / 86400)
+		const hours = Math.floor((totalSeconds % 86400) / 3600)
+		const minutes = Math.floor((totalSeconds % 3600) / 60)
+		const seconds = totalSeconds % 60
+
+		if (days > 0) {
+			return `${days}d ${hours}h ${minutes}m ${seconds}s`
+		}
+
+		if (hours > 0) {
+			return `${hours}h ${minutes}m ${seconds}s`
+		}
+
+		if (minutes > 0) {
+			return `${minutes}m ${seconds}s`
+		}
+
+		return `${seconds}s`
+	}
+
+	useEffect(() => {
+		if (!reservation?.startDate) {
+			setCheckinCountdownMs(null)
+			return
+		}
+
+		const checkinTimeString = reservation.property?.checkinInstructionTime || "00:00"
+		const date = new Date(reservation.startDate)
+		const [hoursStr, minutesStr] = checkinTimeString.split(":")
+		const hours = Number(hoursStr)
+		const minutes = Number(minutesStr)
+
+		if (!Number.isFinite(hours) || !Number.isFinite(minutes)) {
+			setCheckinCountdownMs(null)
+			return
+		}
+
+		date.setHours(hours, minutes, 0, 0)
+
+		const updateCountdown = () => {
+			setCheckinCountdownMs(Math.max(0, date.getTime() - Date.now()))
+		}
+
+		updateCountdown()
+		const timer = window.setInterval(updateCountdown, 1000)
+		return () => clearInterval(timer)
+	}, [reservation?.startDate, reservation?.property?.checkinInstructionTime])
 
 	// Function to translate payment status
 	const getPaymentStatusTranslation = useCallback(
@@ -317,11 +377,26 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 
 	const startDateStr = format(new Date(reservation.startDate), "dd.MM.yyyy")
 	const checkinTime = reservation.property?.checkinInstructionTime || "00:00"
-	const adjustedStartDate = `${startDateStr}, ${checkinTime}:00`
+	const adjustedStartDate = `${startDateStr}, ${checkinTime}`
 
 	const endDateStr = format(new Date(reservation.endDate), "dd.MM.yyyy")
 	const checkoutTime = reservation.property?.checkoutInstructionTime || "00:00"
-	const adjustedEndDate = `${endDateStr}, ${checkoutTime}:00`
+	const adjustedEndDate = `${endDateStr}, ${checkoutTime}`
+
+	const instructionPaidTemplate = reservation.property?.emailTemplates?.find((emailTemplate: EmailTemplate) => emailTemplate.type === "instructionPaid")
+
+	const checkinDateTime = (() => {
+		if (!reservation?.startDate) return null
+		const date = new Date(reservation.startDate)
+		const [hoursStr, minutesStr] = checkinTime.split(":")
+		const hours = Number(hoursStr)
+		const minutes = Number(minutesStr)
+		if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return date
+		date.setHours(hours, minutes, 0, 0)
+		return date
+	})()
+
+	const instructionPaidVisible = Boolean(paid && checkinDateTime && new Date() > checkinDateTime && instructionPaidTemplate)
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4 py-8">
@@ -442,6 +517,26 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 														(emailTemplate: EmailTemplate) => emailTemplate.type === "instruction",
 													)?.body || ""}
 												</Typography>
+											</div>
+										)}
+										{paid && instructionPaidTemplate && (
+											<div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+												<Typography className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+													{checkinCountdownLabel}
+												</Typography>
+												<Typography className="text-gray-900 dark:text-gray-100 font-semibold mb-4">
+													{checkinCountdownMs !== null ? formatDuration(checkinCountdownMs) : dictionary.reservation.notAvailable}
+												</Typography>
+												{instructionPaidVisible && (
+													<div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+														<Typography className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+															{dictionary.reservation.additionalInstructions}
+														</Typography>
+														<Typography className="text-gray-900 dark:text-gray-100 whitespace-pre-line">
+															{instructionPaidTemplate.body || ""}
+														</Typography>
+													</div>
+												)}
 											</div>
 										)}
 									</div>
@@ -708,7 +803,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 							<Link href={`/${locale}`} passHref>
 								<Button
 									variant="contained"
-									className="w-full !bg-[#cc9678] hover:!bg-[#a6755a] text-white font-semibold py-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
+									className="w-full bg-[#1D2430] text-white font-semibold py-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
 									sx={{
 										textTransform: "none",
 										boxShadow: "0 10px 25px -5px rgba(204, 150, 120, 0.5)",
