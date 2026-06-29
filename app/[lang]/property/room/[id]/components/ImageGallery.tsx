@@ -17,8 +17,8 @@ export default function ImageGallery({ property, className, dictionary }: ImageG
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
 	const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 	const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
-	const [isSmallScreen, setIsSmallScreen] = useState(false)
-
+	const [isSmallScreen, setIsSmallScreen] = useState(false) // ← must exist
+	const [imageOrientations, setImageOrientations] = useState<Record<number, boolean>>({})
 	// Drag/swipe state
 	const [dragOffset, setDragOffset] = useState(0)
 	const [isDragging, setIsDragging] = useState(false)
@@ -30,6 +30,19 @@ export default function ImageGallery({ property, className, dictionary }: ImageG
 		if (property.images && property.images.length > 0) {
 			setCurrentImageIndex(0)
 		}
+	}, [property.images])
+
+	// Detect orientation per image
+	useEffect(() => {
+		if (!property.images?.length) return
+
+		property.images.forEach((_, index) => {
+			const img = new window.Image()
+			img.src = getImageSrc(index)
+			img.onload = () => {
+				setImageOrientations((prev) => ({ ...prev, [index]: img.naturalHeight > img.naturalWidth }))
+			}
+		})
 	}, [property.images])
 
 	// Detect small screen
@@ -165,7 +178,7 @@ export default function ImageGallery({ property, className, dictionary }: ImageG
 		<>
 			<div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-white/40">
 				{/* Main Image */}
-				<div className={`relative bg-gray-200 ${className ?? "h-[215px] md:h-[224px]"}`}>
+				<div className={`relative bg-gray-200 ${className ?? "h-[420px] md:h-[460px]"}`}>
 					<div className="absolute inset-0 overflow-hidden">
 						<div
 							className={`flex h-full flex-nowrap ${isDragging ? "" : "transition-transform duration-300 ease-out"}`}
@@ -186,7 +199,7 @@ export default function ImageGallery({ property, className, dictionary }: ImageG
 											src={getImageSrc(index)}
 											alt={`${property.name} image ${index + 1}`}
 											fill
-											className="object-cover cursor-pointer"
+											className={imageOrientations[index] ? "object-contain bg-black cursor-pointer" : "object-cover cursor-pointer"}
 											onClick={() => {
 												if (justDragged) {
 													setJustDragged(false)

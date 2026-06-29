@@ -364,7 +364,7 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 								</button>
 								{isInBasket && (
 									<button
-										className="bg-[#cc9678] w-full text-white font-semibold py-2 px-4 rounded md:w-auto hover:bg-[#b88569] transition-colors"
+										className="bg-[#1D2430] w-full text-white font-semibold py-2 px-4 rounded md:w-auto hover:bg-[#b88569] transition-colors"
 										onClick={() => router.push(`/${lang}/rezerwacja`)}>
 										{translation.reservationButton}
 									</button>
