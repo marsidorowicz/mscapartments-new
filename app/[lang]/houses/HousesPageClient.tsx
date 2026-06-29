@@ -5,8 +5,8 @@
 import { Property } from "@/types"
 import { Dictionary } from "../../types/dictionary"
 import { Locale } from "../../i18n-config"
-import ModernApartmentTile from "../homepage/components/ModernApartmentTile"
 import ModernNav from "../homepage/components/ModernNav"
+import ModernApartmentTile from "../apartamenty/components/ModernApartmentTile"
 
 type HousesPageClientProps = {
 	properties: Property[]
