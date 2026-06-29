@@ -19,10 +19,13 @@ export default function ModernApartmentTile({ property, dictionary, lang }: Mode
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
 	const [showAllAmenities, setShowAllAmenities] = useState(false)
 
+	// Track detected image orientation per index so we can letterbox vertical photos
+	const [imageOrientations, setImageOrientations] = useState<Record<number, "portrait" | "landscape">>({})
+
 	// Get valid images with proper validation
 	const validImages =
 		property.images?.filter(
-			(img) => img.path && img.path !== "undefined" && img.path !== "/undefined" && img.path !== "" && !img.path.includes("undefined")
+			(img) => img.path && img.path !== "undefined" && img.path !== "/undefined" && img.path !== "" && !img.path.includes("undefined"),
 		) || []
 
 	const [imageErrors, setImageErrors] = useState<Set<number>>(new Set())
@@ -93,14 +96,29 @@ export default function ModernApartmentTile({ property, dictionary, lang }: Mode
 		<div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col w-full h-auto min-h-[680px] scale-90 sm:scale-95 md:scale-100">
 			{/* Image - Responsive height */}
 			<div className="relative overflow-hidden flex-shrink-0 w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[400px]">
-				<Link href={buildPropertyUrl(property.id, property.name, lang, property.slugs)} className="block w-full h-full">
+				<Link
+					href={buildPropertyUrl(property.id, property.name, lang, property.slugs)}
+					className={`block w-full h-full ${imageOrientations[currentImageIndex] === "portrait" ? "bg-black" : ""}`}>
 					<Image
 						src={getImageSrc(currentImageIndex)}
 						alt={property.name}
 						fill
-						className="object-cover"
+						className={imageOrientations[currentImageIndex] === "portrait" ? "object-contain" : "object-cover"}
 						sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 70vw, 480px"
 						onError={() => handleImageError(currentImageIndex)}
+						onLoad={(e) => {
+							const target = e.currentTarget as HTMLImageElement
+							if (target.naturalWidth && target.naturalHeight) {
+								const isPort = target.naturalHeight > target.naturalWidth
+								const newOrientation: "portrait" | "landscape" = isPort ? "portrait" : "landscape"
+								if (imageOrientations[currentImageIndex] !== newOrientation) {
+									setImageOrientations((prev) => ({
+										...prev,
+										[currentImageIndex]: newOrientation,
+									}))
+								}
+							}
+						}}
 						quality={50}
 						placeholder="blur"
 						blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
