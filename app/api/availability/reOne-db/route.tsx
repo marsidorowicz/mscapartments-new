@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server"
 import dotenv from "dotenv"
 import { format, differenceInDays, startOfDay } from "date-fns"
 import { getPersonAdjustedPrice } from "@/utilities/functions/pricing/personBasedPricing"
-import { getSimplifiedCacheEntriesForDateRange } from "@/utilities/functions/nobedsCache"
+import { getCacheEntriesForDateRange } from "@/utilities/functions/nobedsCache"
 
 dotenv.config()
 
@@ -209,11 +209,7 @@ export async function POST(req: NextRequest) {
 		// 4. If no database availability found, check NoBeds cache
 		if (!propertyResult) {
 			try {
-				const cacheEntries = await getSimplifiedCacheEntriesForDateRange(
-					property.room_id,
-					format(userStartDate, "yyyy-MM-dd"),
-					format(userEndDate, "yyyy-MM-dd"),
-				)
+				const cacheEntries = await getCacheEntriesForDateRange(property.room_id, format(userStartDate, "yyyy-MM-dd"), format(userEndDate, "yyyy-MM-dd"))
 
 				// Check if all dates in the range have available quantity > 0
 				const hasAvailability = cacheEntries.every((entry) => entry.quantity && entry.quantity > 0)
