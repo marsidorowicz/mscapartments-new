@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server"
 import prisma from "@/prisma/prisma"
-import { getSimplifiedCacheEntriesForDateRange } from "@/utilities/functions/nobedsCache"
+import { getCacheEntriesForDateRange } from "@/utilities/functions/nobedsCache"
 
 export const dynamic = "force-dynamic"
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ error: "Property not found or missing room_id" }, { status: 404 })
 		}
 
-		const entries = await getSimplifiedCacheEntriesForDateRange(property.room_id, startDate, endDate)
+		const entries = await getCacheEntriesForDateRange(property.room_id, startDate, endDate)
 
 		return NextResponse.json({
 			entries,

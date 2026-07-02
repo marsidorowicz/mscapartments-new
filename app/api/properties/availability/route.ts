@@ -1,7 +1,7 @@
 /** @format */
 
 import { NextRequest, NextResponse } from "next/server"
-import { getSimplifiedCacheEntriesForDateRange } from "../../../../utilities/functions/nobedsCache"
+import { getCacheEntriesForDateRange } from "../../../../utilities/functions/nobedsCache"
 import prisma from "@/prisma/prisma"
 import { differenceInCalendarDays } from "date-fns"
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 		for (const property of properties) {
 			if (property.room_id != null) {
 				try {
-					const cacheEntries = await getSimplifiedCacheEntriesForDateRange(property.room_id, startDate, endDate)
+					const cacheEntries = await getCacheEntriesForDateRange(property.room_id, startDate, endDate)
 
 					// Check if all dates in the range have available quantity > 0
 					const hasAvailability = cacheEntries.every(
