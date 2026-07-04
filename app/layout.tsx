@@ -4,7 +4,6 @@ import "./globals.css"
 import { ReactNode } from "react"
 import type { Metadata } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { GoogleTagManager } from "@next/third-parties/google"
 import Image from "next/image"
 import ReduxProvider from "./components/ReduxProvider"
 import MscapartmentsSchema from "../components/MountainApartmentsSchema"
@@ -68,8 +67,7 @@ fbq('track', 'PageView');
 				{/* Google Analytics & Tag Manager - Only in production */}
 				{process.env.NODE_ENV === "production" && (
 					<>
-						<GoogleTagManager gtmId="GTM-NQ374DTQ" />
-						<GoogleAnalytics gaId="G-ZRXZN6KFKX" />
+						<GoogleAnalytics gaId="G-42139CJM3V" />
 					</>
 				)}
 			</body>
