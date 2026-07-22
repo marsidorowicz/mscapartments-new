@@ -10,13 +10,8 @@ import { format, subDays, eachDayOfInterval, isSameDay, setHours, setMinutes } f
 import { NextRequest, NextResponse } from "next/server"
 
 import { eventBus } from "@/utilities/events/eventBus"
-import {
-	EmailNotificationHandler,
-	// NoBedsAvailabilityHandler,
-	UserActivityLogger,
-	DeleteNotificationHandler,
-	TelegramDevNotificationHandler,
-} from "@/utilities/events/handlers"
+import { registerEventHandlers } from "@/utilities/events/registerHandlers"
+
 import {
 	generateSecureToken,
 	// createMagicLink,
@@ -27,28 +22,7 @@ import { v4 as uuidv4 } from "uuid"
 import { sendMailSDC } from "@/utilities/functions/templates"
 import { Prisma } from "@prisma/client"
 
-// Initialize event handlers
-const userActivityLogger = new UserActivityLogger()
-const emailNotificationHandler = new EmailNotificationHandler()
-const deleteNotificationHandler = new DeleteNotificationHandler()
-// const noBedsAvailabilityHandler = new NoBedsAvailabilityHandler()
-const telegramDevNotificationHandler = new TelegramDevNotificationHandler()
-
-// Subscribe handlers to events
-eventBus.subscribe("EVENT_CREATED", userActivityLogger)
-eventBus.subscribe("EVENT_UPDATED", userActivityLogger)
-eventBus.subscribe("EVENT_DELETED", userActivityLogger)
-eventBus.subscribe("EVENT_CREATED", emailNotificationHandler)
-eventBus.subscribe("EVENT_DELETED", deleteNotificationHandler)
-// // eventBus.subscribe("NOBEDS_AVAILABILITY_UPDATED", noBedsAvailabilityHandler) // Skipping direct NoBeds API calls entirely // Skipping direct NoBeds API calls entirely
-
-// Subscribe telegram dev handler to all events with errors
-// NOTE: this route does not send standard Telegram messages to property telegramChatIds for normal EVENT_CREATED.
-// Only developer/error notifications and newsletter-related Telegram notifications are sent here.
-eventBus.subscribe("EVENT_CREATED", telegramDevNotificationHandler)
-eventBus.subscribe("EVENT_UPDATED", telegramDevNotificationHandler)
-eventBus.subscribe("EVENT_DELETED", telegramDevNotificationHandler)
-eventBus.subscribe("NOBEDS_AVAILABILITY_UPDATED", telegramDevNotificationHandler)
+registerEventHandlers()
 
 interface RequestBodyPOST {
 	event: Event
