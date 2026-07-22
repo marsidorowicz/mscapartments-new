@@ -123,6 +123,15 @@ interface DateRangeCalendarProps {
 	minDate?: Date
 	theme?: "light" | "dark"
 	initialCurrentMonth?: Date
+	commission?: number
+	brand?: string
+}
+
+const applyMountainCommission = (price: number, commission?: number): number => {
+	if (commission != null && commission > 0) {
+		return price * (1 + commission / 100)
+	}
+	return price
 }
 
 export default function DateRangeCalendar({
@@ -136,7 +145,12 @@ export default function DateRangeCalendar({
 	minDate,
 	theme = "light",
 	initialCurrentMonth,
+	commission,
+	brand,
 }: DateRangeCalendarProps) {
+	const isMountain = brand === "MOUNTAIN"
+	console.log("isMountain", isMountain)
+	// const
 	const params = useParams() as { lang?: string }
 	const currentLocale = (locale || (["en", "pl", "it", "de", "es"].includes(params?.lang || "") ? (params.lang as LocaleType) : "pl")) as LocaleType
 	const localeStrings = localeData[currentLocale]
@@ -179,9 +193,9 @@ export default function DateRangeCalendar({
 				if (entry?.price != null) total += entry.price
 				cursor = addDays(cursor, 1)
 			}
-			return total
+			return isMountain ? applyMountainCommission(total, commission) : total
 		},
-		[cacheEntryMap],
+		[cacheEntryMap, isMountain, commission],
 	)
 
 	// const selectedRangeTotal = useMemo(() => computeRangeTotal(selectedStartDate, selectedEndDate), [computeRangeTotal, selectedEndDate, selectedStartDate])
@@ -389,7 +403,7 @@ export default function DateRangeCalendar({
 							return {
 								...item,
 								dateRange: `${format(nextStart!, "yyyy-MM-dd")}_${format(nextEnd!, "yyyy-MM-dd")}`,
-								totalPrice: nextTotal,
+								totalPrice: isMountain ? applyMountainCommission(nextTotal, commission) : nextTotal,
 							}
 						}
 						return item
@@ -461,28 +475,34 @@ export default function DateRangeCalendar({
 						return (
 							<div key={idx} className="min-w-0">
 								<div className={clsx("flex items-center justify-between font-semibold mb-2", c.calendarText)}>
-                                    {idx === 0 ? (
-                                        <button
-                                            onClick={handlePrevMonth}
-                                            className={clsx("px-3 py-1 rounded-md transition-colors duration-200 text-black", c.calendarDayHover, c.calendarBorder)}
-                                        >
-                                            {"<"}
-                                        </button>
-                                    ) : (
-                                        <div className="w-10"></div>
-                                    )}
-                                    <div className="text-center">{monthLabel}</div>
-                                    {idx === monthList.length - 1 ? (
-                                        <button
-                                            onClick={handleNextMonth}
-                                            className={clsx("px-3 py-1 rounded-md transition-colors duration-200 text-black", c.calendarDayHover, c.calendarBorder)}
-                                        >
-                                            {">"}
-                                        </button>
-                                    ) : (
-                                        <div className="w-10"></div>
-                                    )}
-                                </div>
+									{idx === 0 ? (
+										<button
+											onClick={handlePrevMonth}
+											className={clsx(
+												"px-3 py-1 rounded-md transition-colors duration-200 text-black",
+												c.calendarDayHover,
+												c.calendarBorder,
+											)}>
+											{"<"}
+										</button>
+									) : (
+										<div className="w-10"></div>
+									)}
+									<div className="text-center">{monthLabel}</div>
+									{idx === monthList.length - 1 ? (
+										<button
+											onClick={handleNextMonth}
+											className={clsx(
+												"px-3 py-1 rounded-md transition-colors duration-200 text-black",
+												c.calendarDayHover,
+												c.calendarBorder,
+											)}>
+											{">"}
+										</button>
+									) : (
+										<div className="w-10"></div>
+									)}
+								</div>
 								<div className={clsx("grid grid-cols-7 text-center text-sm mb-1", c.calendarText)}>
 									{localeStrings.weekdays.map((day) => (
 										<div key={day} className="p-1">
@@ -577,7 +597,7 @@ export default function DateRangeCalendar({
 																		: checkinOnly
 																			? "before:bg-[repeating-linear-gradient(45deg,transparent,transparent_6px,#cc9678_6px,#cc9678_12px)] before:[clip-path:polygon(0_0,100%_0,0_100%)] before:opacity-40"
 																			: "before:bg-transparent",
-													isDisabledForClick ? "cursor-not-allowed" : (isStart || isEnd) ? "" : c.calendarDayHover,
+													isDisabledForClick ? "cursor-not-allowed" : isStart || isEnd ? "" : c.calendarDayHover,
 													currQuantity > 0 && !(isStart || isEnd || inRange) ? "border border-emerald-400" : "",
 												)}>
 												<div className="relative z-10 flex flex-col items-center gap-[2px]">
@@ -593,7 +613,9 @@ export default function DateRangeCalendar({
 																			? "text-green-600 font-semibold"
 																			: "text-gray-300",
 																)}>
-																{Math.round(cacheEntry.price)}
+																{Math.round(
+																	isMountain ? applyMountainCommission(cacheEntry.price, commission) : cacheEntry.price,
+																)}
 															</span>
 															<span
 																className={clsx(

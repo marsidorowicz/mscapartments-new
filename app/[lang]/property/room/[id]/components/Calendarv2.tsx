@@ -114,7 +114,6 @@ const AvailabilityCalendar: React.FC<CalendarProps> = ({
 		const calendars = []
 		const month = currentMonth.getMonth()
 		const year = currentMonth.getFullYear()
-		const today = new Date()
 
 		for (let i = 0; i < (monthsToDisplay || 1); i++) {
 			const displayMonth = new Date(year, month + i)
@@ -135,7 +134,11 @@ const AvailabilityCalendar: React.FC<CalendarProps> = ({
 				const isPastDate = dateDateOnly < todayDateOnly
 				const isUnavailable = unavailableDates.some((ranges) => ranges.some((range) => isDateInRange(date, range)))
 
-				const isSelected = selectedStart && (date.getTime() === selectedStart.getTime() || date.getTime() === selectedEnd?.getTime() || (selectedEnd && date >= selectedStart && date <= selectedEnd))
+				const isSelected =
+					selectedStart &&
+					(date.getTime() === selectedStart.getTime() ||
+						date.getTime() === selectedEnd?.getTime() ||
+						(selectedEnd && date >= selectedStart && date <= selectedEnd))
 
 				const weekIndex = Math.floor((dayIndex + startingDay) / 7)
 				const dayOfWeek = (dayIndex + startingDay) % 7
@@ -182,7 +185,7 @@ const AvailabilityCalendar: React.FC<CalendarProps> = ({
 							</React.Fragment>
 						))}
 					</div>
-				</div>
+				</div>,
 			)
 		}
 
@@ -192,10 +195,15 @@ const AvailabilityCalendar: React.FC<CalendarProps> = ({
 	return (
 		<div className="flex flex-col items-center mt-1 w-full">
 			<div className="flex mb-4 space-x-2">
-				<button onClick={() => (isPastMonth(currentMonth) ? {} : setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1)))} disabled={isPastMonth(currentMonth)} className={`px-4 py-2 bg-gray-200 rounded-l ${isPastMonth(currentMonth) ? "opacity-50 cursor-not-allowed" : ""}`}>
+				<button
+					onClick={() => (isPastMonth(currentMonth) ? {} : setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1)))}
+					disabled={isPastMonth(currentMonth)}
+					className={`px-4 py-2 bg-gray-200 rounded-l ${isPastMonth(currentMonth) ? "opacity-50 cursor-not-allowed" : ""}`}>
 					{"<< " + buttonLabels[currentLocale].prev}
 				</button>
-				<button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))} className="px-4 py-2 bg-gray-200 rounded-r">
+				<button
+					onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+					className="px-4 py-2 bg-gray-200 rounded-r">
 					{buttonLabels[currentLocale].next + " >>"}
 				</button>
 			</div>

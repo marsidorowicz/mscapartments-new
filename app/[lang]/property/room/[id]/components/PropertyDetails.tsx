@@ -255,7 +255,7 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 							<div className="mt-8 pl-1">
 								<h2 className="text-lg  text-gray-900 mb-3">{dictionary.calendar.title?.toUpperCase() || "Property Calendar"}</h2>
 
-								<DateRangeCalendar propertyId={property.id?.toString() || null} locale={lang} monthsToShow={3} />
+								<DateRangeCalendar propertyId={property.id?.toString() || null} locale={lang} monthsToShow={3} commission={property.commission} brand={property.brand} />
 							</div>
 							{/* Property Map */}
 							<div className="mt-8 pl-1">
