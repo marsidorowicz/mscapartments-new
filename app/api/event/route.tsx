@@ -6,19 +6,10 @@ import { checkNoBedsAvailability } from "@/utilities/functions/availability/nobe
 import { removeAvailability } from "@/utilities/functions/availability/nobedsManagement"
 import { checkOverlappingEvent } from "@/utilities/functions/calendar/overlaps"
 import { Event, Property, EventExtendedData } from "@/types"
-import { format, subDays, eachDayOfInterval, isSameDay } from "date-fns"
-
+import { format, subDays, eachDayOfInterval, isSameDay, setHours, setMinutes } from "date-fns"
 import { NextRequest, NextResponse } from "next/server"
-
 import { eventBus } from "@/utilities/events/eventBus"
-import {
-	EmailNotificationHandler,
-	NoBedsAvailabilityHandler,
-	UserActivityLogger,
-	DeleteNotificationHandler,
-	TelegramDevNotificationHandler,
-} from "@/utilities/events/handlers"
-import { setHours, setMinutes } from "date-fns"
+import { registerEventHandlers } from "@/utilities/events/registerHandlers"
 import {
 	generateSecureToken,
 	// createMagicLink,
@@ -109,26 +100,7 @@ function getNotificationMessages(lang: string) {
 import { EventEntryType } from "@/utilities/types"
 import { createEventEntry } from "@/utilities/functions"
 
-// Initialize event handlers
-const userActivityLogger = new UserActivityLogger()
-const emailNotificationHandler = new EmailNotificationHandler()
-const deleteNotificationHandler = new DeleteNotificationHandler()
-const noBedsAvailabilityHandler = new NoBedsAvailabilityHandler()
-const telegramDevNotificationHandler = new TelegramDevNotificationHandler()
-
-// Subscribe handlers to events
-eventBus.subscribe("EVENT_CREATED", userActivityLogger)
-eventBus.subscribe("EVENT_UPDATED", userActivityLogger)
-eventBus.subscribe("EVENT_DELETED", userActivityLogger)
-eventBus.subscribe("EVENT_CREATED", emailNotificationHandler)
-eventBus.subscribe("EVENT_DELETED", deleteNotificationHandler)
-eventBus.subscribe("NOBEDS_AVAILABILITY_UPDATED", noBedsAvailabilityHandler)
-
-// Subscribe telegram dev handler to all events with errors
-eventBus.subscribe("EVENT_CREATED", telegramDevNotificationHandler)
-eventBus.subscribe("EVENT_UPDATED", telegramDevNotificationHandler)
-eventBus.subscribe("EVENT_DELETED", telegramDevNotificationHandler)
-eventBus.subscribe("NOBEDS_AVAILABILITY_UPDATED", telegramDevNotificationHandler)
+registerEventHandlers()
 
 interface RequestBodyPOST {
 	event: Event

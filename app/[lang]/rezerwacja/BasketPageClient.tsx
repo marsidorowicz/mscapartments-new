@@ -3,7 +3,7 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useState, type FormEvent } from "react"
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/navigation"
 import HomeIcon from "@mui/icons-material/Home"
@@ -52,6 +52,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 	const dispatch = useDispatch()
 	const [basketItems, setBasketItems] = useLocalStorageNew<BasketItem[]>("rootBasket", [])
 	const [itemStates, setItemStates] = useLocalStorageNew<Record<string, ItemState>>("rootBasketStates", {})
+	const previousBasketIdsRef = useRef<string>("")
 
 	// Offer and Discount state
 	const [offerData, setOfferData] = useState<(PublicOfferData & { propertyId?: number; propertyName?: string }) | null>(null)
@@ -103,12 +104,8 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		const discountParam = params.get("discountCode")
 
 		if (fromOffer === "true" && propertyId) {
-			setBasketItems((prev) => prev.filter((item) => item.id.toString() !== propertyId))
-			setItemStates((prev) => {
-				const next = { ...prev }
-				delete next[propertyId]
-				return next
-			})
+			setBasketItems([])
+			setItemStates({})
 		}
 
 		if (fromOffer === "true" && offerId) {
@@ -125,6 +122,50 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	// Resetuj kod rabatowy gdy zmienia się lista apartamentów w koszyku
+	useEffect(() => {
+		// Jeśli nie ma kodu rabatowego - nic nie robimy
+		if (!discountData) return
+
+		// Pobierz aktualne ID apartamentów jako posortowany string
+		const currentBasketIds = basketItems
+			.map((item) => item.id.toString())
+			.sort()
+			.join(",")
+
+		// Jeśli koszyk jest pusty - wyczyść kod
+		if (basketItems.length === 0) {
+			setDiscountData(null)
+			setDiscountCode("")
+			setDiscountCodeExpanded(false)
+			setValidationError(null)
+			return
+		}
+
+		// Jeśli mamy zapisane poprzednie ID i różnią się od obecnych
+		if (previousBasketIdsRef.current && previousBasketIdsRef.current !== currentBasketIds) {
+			// Ktoś dodał lub usunął apartament - resetuj kod
+			setDiscountData(null)
+			setDiscountCode("")
+			setDiscountCodeExpanded(false)
+			setValidationError(null)
+
+			// Opcjonalnie: powiadom użytkownika
+			dispatch(
+				setNotification({
+					open: true,
+					severity: "error",
+					message: t.discountCodeReset || "Kod rabatowy został zresetowany po zmianie koszyka",
+					time: 5000,
+					variant: "filled",
+				}),
+			)
+		}
+
+		// Zapisz obecne ID do porównania w przyszłości
+		previousBasketIdsRef.current = currentBasketIds
+	}, [basketItems, discountData, dispatch, t]) // <- zależności
 
 	// Auto-fill basket from offer. Always apply once when offerData arrives.
 	useEffect(() => {
