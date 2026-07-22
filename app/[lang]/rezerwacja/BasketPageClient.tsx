@@ -320,7 +320,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 
 			let currentBasePrice = item.totalPrice ?? 0
 			if (property.room_id) {
-				const result = await fetchCurrentNoBedsCachePrice(property.id, range.start, range.end)
+				const result = await fetchCurrentNoBedsCachePrice(property.id, range.start, range.end, property.commission, property.brand)
 				if (!result.available) {
 					let errorDetail = result.error || t.noAvailability || "Brak dostępności"
 					if (result.alternatives && result.alternatives.length > 0) {

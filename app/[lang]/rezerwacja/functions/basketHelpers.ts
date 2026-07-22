@@ -315,11 +315,21 @@ export type AlternativeDate = {
 	price: number
 }
 
+const applyMountainCommission = (price: number, commission?: number): number => {
+	if (commission != null && commission > 0) {
+		return price * (1 + commission / 100)
+	}
+	return price
+}
+
 export const fetchCurrentNoBedsCachePrice = async (
 	propertyId: number,
 	start: Date,
 	end: Date,
+	commission?: number,
+	brand?: string,
 ): Promise<{ available: boolean; totalPrice: number; error?: string; alternatives?: { start: string; end: string; price: number }[] }> => {
+	const isMountain = brand === "MOUNTAIN"
 	try {
 		const response = await fetch(
 			`/api/nobeds-cache/entries?id=${encodeURIComponent(propertyId)}&startDate=${encodeURIComponent(
@@ -338,10 +348,11 @@ export const fetchCurrentNoBedsCachePrice = async (
 
 		const json = await response.json()
 		const entries = Array.isArray(json.entries) ? json.entries : []
-		const totalPrice = entries.reduce((sum: number, entry: { price?: number | string | null }) => {
+		const rawTotal = entries.reduce((sum: number, entry: { price?: number | string | null }) => {
 			const price = Number(entry.price) || 0
 			return sum + price
 		}, 0)
+		const totalPrice = isMountain ? applyMountainCommission(rawTotal, commission) : rawTotal
 		const nights = Math.max(1, differenceInDays(end, start))
 		let errorMsg: string | undefined = undefined
 
@@ -395,7 +406,8 @@ export const fetchCurrentNoBedsCachePrice = async (
 						const hasValidMinStay = block.every((e) => !e.minStay || e.minStay <= nights)
 						const hasValidMaxStay = block.every((e) => !e.maxStay || e.maxStay >= nights)
 						if (hasValidMinStay && hasValidMaxStay) {
-							const blockPrice = block.reduce((sum, e) => sum + (Number(e.price) || 0), 0)
+							const rawBlockPrice = block.reduce((sum, e) => sum + (Number(e.price) || 0), 0)
+							const blockPrice = isMountain ? applyMountainCommission(rawBlockPrice, commission) : rawBlockPrice
 							const blockStartStr = block[0].date
 							const blockEndStr = format(addDays(new Date(blockStartStr), nights), "yyyy-MM-dd")
 							if (blockStartStr && blockEndStr) {
