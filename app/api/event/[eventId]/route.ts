@@ -11,10 +11,7 @@ dotenv.config()
 
 const prisma = new PrismaClient()
 
-export async function GET(
-	req: NextRequest,
-	{ params }: { params: Promise<{ eventId: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ eventId: string }> }) {
 	// const t = await getI18n()
 	const { eventId: eventIdParam } = await params
 	const eventId = parseInt(eventIdParam)
@@ -23,22 +20,14 @@ export async function GET(
 
 	// Get client IP for rate limiting
 	const forwardedFor = req.headers.get("x-forwarded-for")
-	const clientIp = forwardedFor
-		? forwardedFor.split(",")[0].trim()
-		: "unknown-ip"
+	const clientIp = forwardedFor ? forwardedFor.split(",")[0].trim() : "unknown-ip"
 
 	if (isNaN(eventId) || !propertyIdParam) {
-		return NextResponse.json(
-			{ error: "Invalid event ID or property ID" },
-			{ status: 400 }
-		)
+		return NextResponse.json({ error: "Invalid event ID or property ID" }, { status: 400 })
 	}
 	const propertyId = parseInt(propertyIdParam)
 	if (isNaN(propertyId)) {
-		return NextResponse.json(
-			{ error: "Invalid property ID" },
-			{ status: 400 }
-		)
+		return NextResponse.json({ error: "Invalid property ID" }, { status: 400 })
 	}
 
 	try {
@@ -59,12 +48,14 @@ export async function GET(
 						name: true,
 						location: true,
 						type: true,
-						place: {select: { name: true }},
+						place: { select: { name: true } },
 						checkinInstructionTime: true,
 						checkoutInstructionTime: true,
 						emailTemplates: true,
 						payments: true,
 						paymentsOn: true,
+						extended: true,
+
 						// Add any other property fields you need
 					},
 				},
@@ -73,10 +64,7 @@ export async function GET(
 		})
 
 		if (!event) {
-			return NextResponse.json(
-				{ error: "Reservation not found" },
-				{ status: 404 }
-			)
+			return NextResponse.json({ error: "Reservation not found" }, { status: 404 })
 		} // Enhanced security check: Always require token validation if access token is set
 		// Create a unique identifier for this reservation's access attempts
 		const rateKey = `event-${eventId}-property-${propertyId}`
@@ -94,30 +82,23 @@ export async function GET(
 						retryAfter: rateLimitCheck.retryAfterSeconds,
 						reason: rateLimitCheck.blockReason,
 					},
-					{ status: 429 }
+					{ status: 429 },
 				)
 
 				// Set Retry-After header according to HTTP spec
 				if (rateLimitCheck.retryAfterSeconds) {
-					response.headers.set(
-						"Retry-After",
-						rateLimitCheck.retryAfterSeconds.toString()
-					)
+					response.headers.set("Retry-After", rateLimitCheck.retryAfterSeconds.toString())
 				}
 
 				return response
 			}
 
 			// Validate token and check expiry
-			const isValid = validateTokenWithExpiry(
-				token,
-				event.accessToken,
-				event.accessTokenExpiry
-			)
+			const isValid = validateTokenWithExpiry(token, event.accessToken, event.accessTokenExpiry)
 
 			// Update rate limiter with the result
 			const rateLimitUpdate = checkRateLimit(clientIp, rateKey, isValid)
-			
+
 			// Check if this attempt caused rate limiting
 			if (!rateLimitUpdate.allowed && process.env.NODE_ENV === "production") {
 				const response = NextResponse.json(
@@ -126,14 +107,11 @@ export async function GET(
 						retryAfter: rateLimitUpdate.retryAfterSeconds,
 						reason: rateLimitUpdate.blockReason,
 					},
-					{ status: 429 }
+					{ status: 429 },
 				)
 
 				if (rateLimitUpdate.retryAfterSeconds) {
-					response.headers.set(
-						"Retry-After",
-						rateLimitUpdate.retryAfterSeconds.toString()
-					)
+					response.headers.set("Retry-After", rateLimitUpdate.retryAfterSeconds.toString())
 				}
 
 				return response
@@ -143,10 +121,9 @@ export async function GET(
 				return NextResponse.json(
 					{
 						error: "Access denied: Invalid or expired token",
-						remainingInvalidAttempts:
-							rateLimitUpdate.remainingInvalidAttempts,
+						remainingInvalidAttempts: rateLimitUpdate.remainingInvalidAttempts,
 					},
-					{ status: 401 }
+					{ status: 401 },
 				)
 			}
 		} else {
@@ -156,17 +133,27 @@ export async function GET(
 				{
 					error: "Access denied: This reservation requires authentication",
 				},
-				{ status: 401 }
+				{ status: 401 },
 			)
 		}
+		const safeEvent = {
+			...event,
+			property: event.property
+				? {
+						...event.property,
+						paymentUpfront:
+							event.property.extended && typeof event.property.extended === "object" && !Array.isArray(event.property.extended)
+								? Math.min(100, Math.max(0, Number((event.property.extended as Record<string, unknown>).paymentUpfront) || 30))
+								: 30,
+						extended: undefined,
+					}
+				: null,
+		}
 
-		return NextResponse.json(event)
+		return NextResponse.json(safeEvent)
 	} catch (error) {
 		console.error("Error fetching event:", error)
-		return NextResponse.json(
-			{ error: "Failed to fetch reservation details" },
-			{ status: 500 }
-		)
+		return NextResponse.json({ error: "Failed to fetch reservation details" }, { status: 500 })
 	} finally {
 		await prisma.$disconnect()
 	}
