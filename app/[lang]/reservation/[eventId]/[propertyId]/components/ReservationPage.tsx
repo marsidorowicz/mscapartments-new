@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from "uuid"
 interface PropertyExtended extends Property {
 	place: Place
 	emailTemplates: EmailTemplate[] | null
+	paymentUpfront?: number | null
 }
 
 interface ReservationDetails extends Event {
@@ -52,7 +53,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 	const [isInstructionsExpanded, setIsInstructionsExpanded] = useState(false)
 	const [isSettingsExpanded, setIsSettingsExpanded] = useState(false)
 	const [orderId, setOrderId] = useState<string | null>(null)
-	const [paymentOption, setPaymentOption] = useState<"30" | "100">("100")
+	const [paymentOption, setPaymentOption] = useState<string>("100")
 
 	// Function to parse numbers with comma or dot decimal separators
 	const parseNumber = (value: string | number | null | undefined): number => {
@@ -61,15 +62,25 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 		return parseFloat(stringValue) || 0
 	}
 
+	const upfrontPercent = reservation?.property?.paymentUpfront ?? 30
+
+	const upfrontMultiplier = upfrontPercent / 100
+	const markupMultiplier = upfrontMultiplier * 1.05
+
 	const totalPrice = (reservation?.price || 0) + (reservation?.cityTax || 0) + (reservation?.extraFees || 0) || 0
 	const depositAmount = parseNumber(reservation?.deposit)
 	const reservationPrice = parseNumber(reservation?.price)
 	const hasExistingDeposit = depositAmount >= reservationPrice * 0.1
+	const isDepositOption = paymentOption !== "100"
+
 	const shouldPreviewMarkup = paymentOption === "30" && !hasExistingDeposit
 	const previewTotalPrice = shouldPreviewMarkup ? totalPrice + reservationPrice * 0.05 : totalPrice
 	const remainingToPay = Math.max(0, previewTotalPrice - depositAmount).toFixed(2)
-	const selectedChargeTotal =
-		paymentOption === "30" ? (hasExistingDeposit ? (reservationPrice * 0.3).toFixed(2) : (reservationPrice * 0.315).toFixed(2)) : remainingToPay
+	const selectedChargeTotal = isDepositOption
+		? hasExistingDeposit
+			? (reservationPrice * upfrontMultiplier).toFixed(2)
+			: (reservationPrice * markupMultiplier).toFixed(2)
+		: remainingToPay
 
 	// Countdown timer effect
 	useEffect(() => {
@@ -182,7 +193,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 					currency: "PLN",
 					locale: locale,
 					paymentOption,
-					paymentType: paymentOption === "30" ? (hasExistingDeposit ? "DEPOSIT_30_NO_MARKUP" : "DEPOSIT_30_MARKUP") : "FULL",
+					paymentType: isDepositOption ? (hasExistingDeposit ? "DEPOSIT_30_NO_MARKUP" : "DEPOSIT_30_MARKUP") : "FULL",
 				}),
 			})
 
@@ -681,7 +692,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 													<div className="mb-4 space-y-4">
 														<div>
 															<Typography variant="body1" className="text-gray-900 dark:text-gray-100 font-semibold mb-2">
-																30% / 100%
+																{upfrontPercent}% / 100%
 															</Typography>
 															<div className="grid gap-3 sm:grid-cols-2">
 																<label className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 cursor-pointer">
@@ -699,17 +710,19 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 																	<input
 																		type="radio"
 																		name="paymentOption"
-																		value="30"
-																		checked={paymentOption === "30"}
-																		onChange={() => setPaymentOption("30")}
+																		value={String(upfrontPercent)}
+																		checked={paymentOption === String(upfrontPercent)}
+																		onChange={() => setPaymentOption(String(upfrontPercent))}
 																		className="h-4 w-4 accent-[#cc9678]"
 																	/>
-																	<span>{dictionary.reservation.deposit} (30%)</span>
+																	<span>
+																		{dictionary.reservation.deposit} ({upfrontPercent}%)
+																	</span>
 																</label>
 															</div>
 														</div>
 														<Typography variant="body2" className="text-gray-600 dark:text-gray-400">
-															{paymentOption === "30"
+															{isDepositOption
 																? hasExistingDeposit
 																	? `${dictionary.reservation.deposit}: ${formatCurrency(selectedChargeTotal, reservation.payments?.[0]?.currency || "PLN")}`
 																	: `${dictionary.reservation.deposit}: ${formatCurrency(selectedChargeTotal, reservation.payments?.[0]?.currency || "PLN")} ${dictionary.reservation.depositMarkupSuffix}`

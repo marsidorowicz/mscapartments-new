@@ -146,18 +146,13 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 			}
 
 			try {
-				const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
-				// Format dates in local timezone instead of UTC
-				const startDateStr = currentFilterDateRange.start.toLocaleDateString("sv-SE") // YYYY-MM-DD format
-				const endDateStr = currentFilterDateRange.end.toLocaleDateString("sv-SE") // YYYY-MM-DD format
+				const startDateStr = currentFilterDateRange.start.toLocaleDateString("sv-SE")
+				const endDateStr = currentFilterDateRange.end.toLocaleDateString("sv-SE")
 				const propertyIds = properties.map((p) => p.id)
 
-				// Use batch API to check availability for all properties at once
-				const response = await fetch(`${baseUrl}/api/properties/availability`, {
+				const response = await fetch("/api/properties/availability-with-prices", {
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						startDate: startDateStr,
 						endDate: endDateStr,
@@ -167,46 +162,22 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 
 				if (response.ok) {
 					const data = await response.json()
-					const availableIds = new Set<number>((data.availablePropertyIds as number[]) || [])
-					setAvailablePropertyIds(availableIds)
-					setSearchedDateRange(currentFilterDateRange)
 
-					// After availability is known, fetch per-property NoBeds cache entries to compute total prices for the range
-					try {
-						const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
-						const startDateStr = currentFilterDateRange.start.toLocaleDateString("sv-SE")
-						const endDateStr = currentFilterDateRange.end.toLocaleDateString("sv-SE")
-						const sums: Record<number, number> = {}
-						const fetches = propertyIds
-							.filter((id) => availableIds.has(id))
-							.map(async (propId) => {
-								const property = properties.find((p) => p.id === propId)
-								if (!property || !property.room_id) return
-								try {
-									const resp = await fetch(`${baseUrl}/api/nobeds-cache/entries?id=${propId}&startDate=${startDateStr}&endDate=${endDateStr}`)
-									if (!resp.ok) return
-									const d = await resp.json()
-									const entries: { price?: number | string }[] = d.entries || []
-									const total = entries.reduce((acc: number, cur) => acc + (Number(cur.price) || 0), 0)
-									sums[propId] = total
-								} catch (e) {
-									console.error("Error fetching nobeds entries for property", propId, e)
-								}
-							})
-						await Promise.all(fetches)
-						setPropertyPriceSums(sums)
-					} catch (err) {
-						console.error("Error computing property price sums:", err)
-					}
+					const availableIds = new Set<number>(data.availablePropertyIds || [])
+
+					setAvailablePropertyIds(availableIds)
+					setPropertyPriceSums(data.priceSums ?? {})
+					setSearchedDateRange(currentFilterDateRange)
 				} else {
 					console.error("Failed to check properties availability")
-					// If API call fails, show all properties
+					// Fallback: wszystkie dostępne
 					setAvailablePropertyIds(new Set(properties.map((p) => p.id)))
+					setPropertyPriceSums({})
 				}
 			} catch (error) {
 				console.error("Error checking availability:", error)
-				// If there's an error, show all properties
 				setAvailablePropertyIds(new Set(properties.map((p) => p.id)))
+				setPropertyPriceSums({})
 			}
 		}
 
