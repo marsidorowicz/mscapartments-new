@@ -1,7 +1,7 @@
 /** @format */
 
 import { type Event, type Property } from "@/types"
-import { addDays, differenceInDays, format, subDays } from "date-fns"
+import { addDays, differenceInCalendarDays, differenceInDays, format, subDays } from "date-fns"
 export { differenceInDays, format }
 import type { ReservationFormData } from "../components/ReservationForm"
 
@@ -354,15 +354,20 @@ export const fetchCurrentNoBedsCachePrice = async (
 		}, 0)
 		const totalPrice = isMountain ? applyMountainCommission(rawTotal, commission) : rawTotal
 		const nights = Math.max(1, differenceInDays(end, start))
+		const expectedEntries = differenceInCalendarDays(end, start)
 		let errorMsg: string | undefined = undefined
 
+		if (entries.length !== expectedEntries) {
+			errorMsg = "Brak danych o dostępności dla wszystkich wybranych dni"
+		}
+
 		const available =
-			entries.length > 0 &&
+			!errorMsg &&
 			entries.every(
 				(entry: { quantity?: number | null; available?: boolean | null }) => entry.available !== false && !!entry.quantity && entry.quantity > 0,
 			)
 
-		if (!available) {
+		if (!available && !errorMsg) {
 			errorMsg = "Brak dostępności"
 		} else {
 			const hasValidMinStay = entries.every((entry: { minStay?: number | null }) => !entry.minStay || entry.minStay <= nights)

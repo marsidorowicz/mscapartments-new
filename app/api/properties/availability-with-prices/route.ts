@@ -45,8 +45,9 @@ export async function POST(req: NextRequest) {
 					const entries: NoBedsCacheEntry[] = await getCacheEntriesForDateRange(property.room_id!, startDate, endDate)
 
 					// === Sprawdzenie dostępności ===
+					const hasEntriesForAllNights = entries.length === nights
 					const hasAvailability =
-						entries.length > 0 &&
+						hasEntriesForAllNights &&
 						entries.every((entry) => {
 							const quantityOk = entry.quantity && entry.quantity > 0
 							const minStayOk = !entry.minStay || entry.minStay <= nights
