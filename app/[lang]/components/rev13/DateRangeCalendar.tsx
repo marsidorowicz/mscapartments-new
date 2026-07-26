@@ -149,7 +149,6 @@ export default function DateRangeCalendar({
 	brand,
 }: DateRangeCalendarProps) {
 	const isMountain = brand === "MOUNTAIN"
-	console.log("isMountain", isMountain)
 	// const
 	const params = useParams() as { lang?: string }
 	const currentLocale = (locale || (["en", "pl", "it", "de", "es"].includes(params?.lang || "") ? (params.lang as LocaleType) : "pl")) as LocaleType
