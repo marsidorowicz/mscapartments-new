@@ -19,7 +19,6 @@ import {
 import { EventEntryType } from "@/utilities/types"
 import { createEventEntry } from "@/utilities/functions"
 import { v4 as uuidv4 } from "uuid"
-import { sendMailSDC } from "@/utilities/functions/templates"
 import { Prisma } from "@prisma/client"
 
 registerEventHandlers()
@@ -156,8 +155,6 @@ export async function POST(req: NextRequest) {
 			})
 		}
 
-		let isOffline = false
-
 		if (room_id && property?.id) {
 			const checkin = resetHours(format(new Date(startDate), "yyyy-MM-dd'T'HH:mm:ss"))
 			const checkout = resetHours(format(new Date(endDate), "yyyy-MM-dd'T'HH:mm:ss"))
@@ -165,18 +162,15 @@ export async function POST(req: NextRequest) {
 			const available = await checkInternalAvailability(room_id, checkin, checkout)
 
 			if (!available) {
-				isOffline = true
-			} else {
-				try {
-					await reduceCacheQuantity(room_id, checkin, checkout)
-				} catch (cacheError) {
-					console.error("Failed to reduce NoBedsCache quantity:", cacheError)
-					isOffline = true
-				}
+				return NextResponse.json({ error: "Brak dostępności w NoBeds dla wybranego terminu" }, { status: 409 })
 			}
-		} else {
-			// No room_id - mark as offline
-			isOffline = true
+
+			try {
+				await reduceCacheQuantity(room_id, checkin, checkout)
+			} catch (cacheError) {
+				console.error("Failed to reduce NoBedsCache quantity:", cacheError)
+				return NextResponse.json({ error: "Nie udało się zaktualizować dostępności NoBeds" }, { status: 500 })
+			}
 		}
 
 		const getHour = (timeStr: string | undefined, fallback: number) => {
@@ -193,34 +187,6 @@ export async function POST(req: NextRequest) {
 
 		delete event.attributes
 		delete event.apartment
-
-		if (isOffline) {
-			event.extended = {
-				...event.extended,
-				offline: true,
-			}
-
-			await eventBus.publish({
-				id: uuidv4(),
-				timestamp: new Date(),
-				userId: user.id,
-				type: "EVENT_CREATED",
-				payload: {
-					propertyId: Number(event.propertyId),
-					startDate: event.startDate,
-					endDate: event.endDate,
-					room_id: room_id || undefined,
-					source: source || "unknown",
-				},
-				error: "No availability in NoBedsCache system",
-			})
-
-			await sendMailSDC({
-				to: "marsidorowicz@gmail.com",
-				subject: "Rezerwacja offline - brak dostępności w NoBedsCache",
-				html: `Utworzono rezerwację ID: ${event.id}  offline dla nieruchomości ${property?.name} w dniach ${format(event.startDate, "yyyy-MM-dd")} - ${format(event.endDate, "yyyy-MM-dd")}.`,
-			})
-		}
 
 		const accessToken = generateSecureToken()
 		const accessTokenExpiry = endDateFormatted
@@ -390,7 +356,7 @@ export async function POST(req: NextRequest) {
 			},
 		})
 
-		if (room_id && !isOffline) {
+		if (room_id) {
 			await eventBus.publish({
 				id: uuidv4(),
 				timestamp: new Date(),
