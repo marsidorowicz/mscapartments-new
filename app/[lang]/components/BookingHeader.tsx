@@ -58,6 +58,7 @@ const translations = {
 		bookNow: "Zarezerwuj",
 		closeMenu: "Zamknij",
 		reservationButton: "Rezerwuj",
+		selectDate: "Wybierz termin",
 	},
 	en: {
 		totalPrice: "Total Price",
@@ -67,6 +68,7 @@ const translations = {
 		bookNow: "Book Now",
 		closeMenu: "Close",
 		reservationButton: "Book",
+		selectDate: "Select date",
 	},
 	de: {
 		totalPrice: "Gesamtpreis",
@@ -76,6 +78,7 @@ const translations = {
 		bookNow: "Jetzt buchen",
 		closeMenu: "Schließen",
 		reservationButton: "Buchen",
+		selectDate: "Datum auswählen",
 	},
 	es: {
 		totalPrice: "Precio total",
@@ -85,6 +88,7 @@ const translations = {
 		bookNow: "Reservar",
 		closeMenu: "Cerrar",
 		reservationButton: "Reservar",
+		selectDate: "Seleccionar fecha",
 	},
 }
 

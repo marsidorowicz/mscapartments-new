@@ -11,10 +11,10 @@ import ModernNav from "../../../../homepage/components/ModernNav"
 import ImageGallery from "./ImageGallery"
 import PeopleIcon from "@mui/icons-material/People"
 import BedIcon from "@mui/icons-material/Bed"
-import { useState } from "react"
 import BookingHeader from "../../../../components/BookingHeader"
 import { NotificationComponent } from "@/app/[lang]/components/rev13/Notification"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { setNotification } from "@/state/action-creators"
 import { RootState } from "@/state/store"
 import { useLocalStorageNew } from "@/utilities/hooks/useLocalStorage"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
@@ -45,6 +45,7 @@ const translations = {
 		bookNow: "Zarezerwuj",
 		closeMenu: "Zamknij",
 		reservationButton: "Rezerwuj",
+		selectDate: "Wybierz termin",
 	},
 	en: {
 		totalPrice: "Total Price",
@@ -54,6 +55,7 @@ const translations = {
 		bookNow: "Book Now",
 		closeMenu: "Close",
 		reservationButton: "Book",
+		selectDate: "Select date",
 	},
 	de: {
 		totalPrice: "Gesamtpreis",
@@ -63,6 +65,7 @@ const translations = {
 		bookNow: "Jetzt buchen",
 		closeMenu: "Schließen",
 		reservationButton: "Buchen",
+		selectDate: "Datum auswählen",
 	},
 	es: {
 		totalPrice: "Precio total",
@@ -72,12 +75,14 @@ const translations = {
 		bookNow: "Reservar",
 		closeMenu: "Cerrar",
 		reservationButton: "Reservar",
+		selectDate: "Seleccionar fecha",
 	},
 }
 
 export default function PropertyDetails({ property, dictionary, lang }: PropertyDetailsProps) {
-	const [isExpanded, setIsExpanded] = useState(false)
 	const state = useSelector((state: RootState) => state.root)
+	const dispatch = useDispatch()
+
 	const router = useRouter()
 
 	const totalPrice = state?.filters?.totalPrice ?? null
@@ -112,8 +117,15 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 		}
 
 		if (!dateRangeParam) {
-			// Alert user to select date range?
-			alert(dictionary.apartments?.dateRangeRequired || "Please select date range first")
+			document.getElementById("availability-calendar")?.scrollIntoView({ behavior: "smooth" })
+			dispatch(
+				setNotification({
+					open: true,
+					message: dictionary.apartments?.dateRangeRequired || translation.selectDate,
+					severity: "success",
+					time: 3000,
+				}),
+			)
 			return
 		}
 
@@ -146,7 +158,7 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 			{/* Content */}
 			<div className="relative z-10">
 				{/* Modern Navigation */}
-				{!isExpanded && <ModernNav dictionary={dictionary} lang={lang} />}
+				{<ModernNav dictionary={dictionary} lang={lang} />}
 				{/* Full-width image slider */}
 				<div className="w-full overflow-hidden ">
 					<ImageGallery property={property} className="h-[46vh] w-full" dictionary={dictionary} />
@@ -168,26 +180,38 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 						</div>
 						{/* Side book button on md+ */}
 
-						<div
-							className={` bottom-0 left-0 right-0 bg-white p-1 hidden md:block z-30 ${isExpanded ? "top-0 h-screen md:fixed md:w-screen hidden md:block overflow-y-auto" : ""}`}>
+						<div className={` bottom-0 left-0 right-0 bg-white p-1 hidden md:block z-30 `}>
 							{" "}
-							<BookingHeader
-								color="#1D2430"
-								totalPrice={totalPrice}
-								minPrice={minPrice}
-								hasTotalPrice={Boolean(totalPrice)}
-								cleaningFee={property.cleaningFee || 0}
-								parkingFee={property.parkingFee || 0}
-								isExpanded={isExpanded}
-								onToggleExpanded={() => setIsExpanded((prev) => !prev)}
-								showDatePicker={!isExpanded}
-								showPriceFrom={true}
-								showBookButton={false}
-								onAddToBasket={handleAddToBasket}
-								isInBasket={isInBasket}
-								disableAddToBasket={!dateRangeParam}
-								showReservationPageButton={isInBasket}
-							/>
+							<div
+								onClick={() => {
+									document.getElementById("availability-calendar")?.scrollIntoView({ behavior: "smooth" })
+									if (!dateRangeParam) {
+										dispatch(
+											setNotification({
+												open: true,
+												message: dictionary.apartments?.dateRangeRequired || translation.selectDate,
+												severity: "success",
+											}),
+										)
+									}
+								}}>
+								<BookingHeader
+									color="#1D2430"
+									totalPrice={totalPrice}
+									minPrice={minPrice}
+									hasTotalPrice={Boolean(totalPrice)}
+									cleaningFee={property.cleaningFee || 0}
+									parkingFee={property.parkingFee || 0}
+									isExpanded={false}
+									showDatePicker={false}
+									showPriceFrom={true}
+									showBookButton={false}
+									onAddToBasket={handleAddToBasket}
+									isInBasket={isInBasket}
+									disableAddToBasket={false}
+									showReservationPageButton={isInBasket}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className="text-gray-500 flex flex-col md:flex-row md:items-center md:gap-4 text-sm">
@@ -252,10 +276,16 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 					<div className="space-y-8">
 						<div>
 							{/* Availability Calendar */}
-							<div className="mt-8 pl-1">
+							<div id="availability-calendar" className="mt-8 pl-1">
 								<h2 className="text-lg  text-gray-900 mb-3">{dictionary.calendar.title?.toUpperCase() || "Property Calendar"}</h2>
 
-								<DateRangeCalendar propertyId={property.id?.toString() || null} locale={lang} monthsToShow={3} commission={property.commission} brand={property.brand} />
+								<DateRangeCalendar
+									propertyId={property.id?.toString() || null}
+									locale={lang}
+									monthsToShow={3}
+									commission={property.commission}
+									brand={property.brand}
+								/>
 							</div>
 							{/* Property Map */}
 							<div className="mt-8 pl-1">
@@ -334,10 +364,22 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 						</div>
 					</div>{" "}
 					{/* Mobile Bottom Bar */}
-					<div
-						className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 p-1 z-30 ${isExpanded ? "top-0 h-screen md:hidden overflow-y-auto" : ""}`}>
+					<div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 p-1 z-30 `}>
 						<div className="flex p-1 ">
-							<div className="text-left w-2/3 md:flex md:flex-row md:space-x-2">
+							<div
+								className="text-left w-2/3 md:flex md:flex-row md:space-x-2 cursor-pointer"
+								onClick={() => {
+									document.getElementById("availability-calendar")?.scrollIntoView({ behavior: "smooth" })
+									if (!dateRangeParam) {
+										dispatch(
+											setNotification({
+												open: true,
+												message: dictionary.apartments?.dateRangeRequired || translation.selectDate,
+												severity: "success",
+											}),
+										)
+									}
+								}}>
 								<div className="text-md font-semibold text-gray-800 ">
 									{totalPrice ? dictionary.apartments?.totalPrice || "Total Price" : dictionary.apartments?.from || "from"}{" "}
 									<span className="text-2xl font-bold text-green-600">PLN {totalPrice ? totalPrice.toFixed(0) : minPrice}</span>{" "}
@@ -351,8 +393,7 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 							<div className="flex text-right items-center justify-end w-1/3 gap-2">
 								<button
 									onClick={handleAddToBasket}
-									disabled={!dateRangeParam}
-									className={`inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white text-gray-700 transition-colors duration-200 px-3 py-[6px] shadow-sm hover:bg-gray-100 ${!dateRangeParam ? "opacity-50 cursor-not-allowed" : ""}`}>
+									className={`inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white text-gray-700 transition-colors duration-200 px-3 py-[6px] shadow-sm hover:bg-gray-100`}>
 									{isInBasket ? (
 										<>
 											<CheckCircleIcon className="h-5 w-5 text-green-600" />
@@ -371,21 +412,6 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 								)}
 							</div>
 						</div>
-
-						{/* {isExpanded && (
-							<div className="mt-4 md:hidden">
-								{" "}
-								<ReservationEngine
-									id={"clok0rd6f0000kkdgyf1pd0t3"}
-									propertyId={property.id}
-									// propertyName={propertyName}
-									// booking={booking}
-									filterDictionary={dictionary.filters}
-									dictionary={dictionary}
-									onThemeChange={() => ({})}
-								/>
-							</div>
-						)} */}
 					</div>
 				</div>
 			</div>{" "}
