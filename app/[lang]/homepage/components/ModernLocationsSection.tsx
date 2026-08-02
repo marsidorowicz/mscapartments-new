@@ -53,7 +53,14 @@ export default function ModernLocationsSection({ dictionary, lang }: ModernLocat
 						<div key={location.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
 							{/* Image */}
 							<div className="relative aspect-[4/3] overflow-hidden">
-								<Image src={location.image} alt={location.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+								<Image
+									src={location.image}
+									alt={location.name}
+									unoptimized
+									fill
+									className="object-cover"
+									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+								/>
 								{/* Apartments count badge */}
 								<div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
 									{location.apartments} {dictionary.home.locationsSection?.apartments}
@@ -75,7 +82,9 @@ export default function ModernLocationsSection({ dictionary, lang }: ModernLocat
 								</div>
 
 								{/* View Button */}
-								<Link href={`/${lang}/zakopane-noclegi`} className="inline-block w-full text-center bg-[#cc9678] hover:bg-[#a6755a] text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+								<Link
+									href={`/${lang}/zakopane-noclegi`}
+									className="inline-block w-full text-center bg-[#cc9678] hover:bg-[#a6755a] text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
 									{dictionary.home.locationsSection?.viewApartments}
 								</Link>
 							</div>
@@ -85,7 +94,9 @@ export default function ModernLocationsSection({ dictionary, lang }: ModernLocat
 
 				{/* Call to Action */}
 				<div className="text-center mt-12">
-					<Link href={`/${lang}/zakopane-noclegi`} className="inline-flex items-center gap-2 bg-[#cc9678] hover:bg-[#a6755a] text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-200">
+					<Link
+						href={`/${lang}/zakopane-noclegi`}
+						className="inline-flex items-center gap-2 bg-[#cc9678] hover:bg-[#a6755a] text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-200">
 						<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 						</svg>

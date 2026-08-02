@@ -615,6 +615,7 @@ const ImageCarousel = ({ images, propertyName }: { images: Array<{ path: string;
 						borderRadius: "8px",
 						backgroundColor: "#f3f4f6",
 					}}
+					unoptimized
 					sizes="(max-width: 600px) 100vw, (max-width: 768px) 240px, 320px"
 				/>
 			</div>
@@ -664,6 +665,7 @@ const ImageCarousel = ({ images, propertyName }: { images: Array<{ path: string;
 							borderRadius: "8px",
 							backgroundColor: "#f3f4f6",
 						}}
+						unoptimized
 						sizes="(max-width: 600px) 100vw, (max-width: 768px) 240px, 320px"
 						priority={currentImageIndex === 0}
 					/>
@@ -758,6 +760,7 @@ const ImageCarousel = ({ images, propertyName }: { images: Array<{ path: string;
 								objectFit: "contain",
 								borderRadius: "8px",
 							}}
+							unoptimized
 							width={800}
 							height={600}
 							sizes="90vw"

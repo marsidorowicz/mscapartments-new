@@ -34,6 +34,7 @@ function FeatureCard({ feature, lang }: { feature: LocalFeature; lang: string })
 					src={feature.image}
 					alt={feature.text[lang as keyof typeof feature.text] || feature.text.en}
 					fill
+					unoptimized
 					sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
 					className={`object-cover transition-opacity duration-700 ease-in-out ${isLoaded ? "opacity-100" : "opacity-0"}`}
 					quality={70}

@@ -68,6 +68,7 @@ export default function PlaceDetails({ place, properties, dictionary, lang }: Pl
 					<div className="mb-12">
 						<div className="relative h-96 md:h-[600px] bg-gray-200 rounded-2xl overflow-hidden shadow-xl">
 							<Image
+								unoptimized
 								src={buildingImages[currentImageIndex]}
 								alt={`${place.name} apartment building`}
 								fill

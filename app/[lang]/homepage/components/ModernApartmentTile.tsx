@@ -106,6 +106,7 @@ export default function ModernApartmentTile({ property, dictionary, lang }: Mode
 						className={imageOrientations[currentImageIndex] === "portrait" ? "object-contain" : "object-cover"}
 						sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 70vw, 480px"
 						onError={() => handleImageError(currentImageIndex)}
+						unoptimized
 						onLoad={(e) => {
 							const target = e.currentTarget as HTMLImageElement
 							if (target.naturalWidth && target.naturalHeight) {

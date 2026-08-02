@@ -1084,6 +1084,7 @@ const AdditionalServices: React.FC<Props> = ({ arrivalDate, departureDate, guest
 										}}
 										width={150}
 										height={150}
+										unoptimized
 									/>
 								</Box>
 

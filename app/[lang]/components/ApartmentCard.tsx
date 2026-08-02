@@ -75,7 +75,10 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 	}
 	// Calculate pricing
 	const minPrice = (property as Property & { extended?: { minPrice?: number } }).extended?.minPrice ?? 0
-	const basePrice = property.lastMinuteOfferActive && minPrice > 0 && property.lastMinuteDiscountPercentage && property.lastMinuteDiscountPercentage > 0 ? minPrice / (1 - property.lastMinuteDiscountPercentage / 100) : minPrice
+	const basePrice =
+		property.lastMinuteOfferActive && minPrice > 0 && property.lastMinuteDiscountPercentage && property.lastMinuteDiscountPercentage > 0
+			? minPrice / (1 - property.lastMinuteDiscountPercentage / 100)
+			: minPrice
 	const finalPrice = Math.max(minPrice, basePrice * (1 - (property.lastMinuteDiscountPercentage || 0) / 100))
 	const hasPrice = minPrice > 0
 	const hasImages = property.images && property.images.length > 0
@@ -87,16 +90,30 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 		<div className={cardClasses} style={{ scrollSnapAlign: "start" }}>
 			{/* Image Carousel */}
 			<div className="relative h-32 sm:h-40 md:h-48 overflow-hidden flex-shrink-0">
-				<Image src={getImageSrc(currentImageIndex)} alt={property.name} fill className="object-cover" onError={() => handleImageError(currentImageIndex)} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 320px" />
+				<Image
+					src={getImageSrc(currentImageIndex)}
+					alt={property.name}
+					unoptimized
+					fill
+					className="object-cover"
+					onError={() => handleImageError(currentImageIndex)}
+					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 320px"
+				/>
 				{/* Image Navigation */}
 				{hasImages && property.images!.length > 1 && (
 					<>
-						<button onClick={handlePreviousImage} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-all z-20" aria-label="Previous image">
+						<button
+							onClick={handlePreviousImage}
+							className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-all z-20"
+							aria-label="Previous image">
 							<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
 							</svg>
 						</button>
-						<button onClick={handleNextImage} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-all z-20" aria-label="Next image">
+						<button
+							onClick={handleNextImage}
+							className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-all z-20"
+							aria-label="Next image">
 							<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
 							</svg>
@@ -126,9 +143,17 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 					</div>
 				)}
 				{/* Matching Filters Badge */}
-				{isMatching && <div className={`absolute ${property.lastMinuteOfferActive ? "top-10" : "top-2"} left-2 bg-[#b8856a] text-white px-2 py-1 rounded text-xs font-bold shadow-lg`}>✓ {dictionary.filters.matching}</div>} {/* Property Type Badge and Size */}
+				{isMatching && (
+					<div
+						className={`absolute ${property.lastMinuteOfferActive ? "top-10" : "top-2"} left-2 bg-[#b8856a] text-white px-2 py-1 rounded text-xs font-bold shadow-lg`}>
+						✓ {dictionary.filters.matching}
+					</div>
+				)}{" "}
+				{/* Property Type Badge and Size */}
 				<div className="absolute top-2 right-2 flex flex-col gap-1">
-					<div className="bg-[#cc9678] text-white px-2 py-1 rounded text-xs font-semibold">{dictionary.apartments.propertyTypes[property.type.toUpperCase() as keyof typeof dictionary.apartments.propertyTypes] || property.type}</div>
+					<div className="bg-[#cc9678] text-white px-2 py-1 rounded text-xs font-semibold">
+						{dictionary.apartments.propertyTypes[property.type.toUpperCase() as keyof typeof dictionary.apartments.propertyTypes] || property.type}
+					</div>
 					{/* Size Badge */}
 					{property.size && <div className="bg-[#a3745c] text-white px-2 py-1 rounded text-xs font-semibold">{property.size} m²</div>}
 				</div>
@@ -182,10 +207,14 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 					</div>{" "}
 					{/* Amenities */}
 					<div className="mb-3">
-						<div className={`${showAllAmenities ? "max-h-28 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100" : ""}`}>
+						<div
+							className={`${showAllAmenities ? "max-h-28 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100" : ""}`}>
 							<div className="flex flex-wrap gap-1">
 								{(showAllAmenities ? property.filters : property.filters.slice(0, 3)).map((filter) => (
-									<span key={filter} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-600 rounded text-xs leading-tight truncate max-w-[120px]" title={dictionary.filters.filters[filter] || filter.replace(/_/g, " ").toLowerCase()}>
+									<span
+										key={filter}
+										className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-600 rounded text-xs leading-tight truncate max-w-[120px]"
+										title={dictionary.filters.filters[filter] || filter.replace(/_/g, " ").toLowerCase()}>
 										{dictionary.filters.filters[filter] || filter.replace(/_/g, " ").toLowerCase()}
 									</span>
 								))}
@@ -222,13 +251,17 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 									</div>
 								)
 							) : (
-								<span className="text-base sm:text-lg font-bold text-gray-500 block mb-2">{dictionary?.apartments?.priceOnRequest || "Price on request"}</span>
+								<span className="text-base sm:text-lg font-bold text-gray-500 block mb-2">
+									{dictionary?.apartments?.priceOnRequest || "Price on request"}
+								</span>
 							)}
 							{hasPrice && <span className="text-xs sm:text-sm text-gray-500 block pl-1">/ {dictionary?.apartments?.night || "night"}</span>}
 						</div>
 					</div>
 					{/* Action Button - Full Width */}
-					<button onClick={handleViewDetails} className="w-full bg-[#cc9678] hover:bg-[#b8856a] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+					<button
+						onClick={handleViewDetails}
+						className="w-full bg-[#cc9678] hover:bg-[#b8856a] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
 						{dictionary?.apartments?.viewDetails || "View Details"}
 					</button>
 					{/* Additional Info */}{" "}
@@ -239,8 +272,17 @@ export default function ApartmentCard({ property, className = "", onViewDetails,
 						</div>{" "}
 						{property.parkingQuantity > 0 && (
 							<div className={`truncate ${property.parkingFee === 0 ? "text-green-500 font-semibold" : ""}`}>
-								<span className="font-medium">{property.filters.includes("PRIVATE_GARAGE") ? dictionary?.apartments?.garageFee || "Garage" : dictionary?.apartments?.parkingFee || "Parking"}:</span>
-								<span className="ml-1">{property.parkingFee === 0 ? dictionary?.apartments?.free || "Free" : `${property.parkingFee}/${dictionary?.apartments?.night || "night"} PLN`}</span>
+								<span className="font-medium">
+									{property.filters.includes("PRIVATE_GARAGE")
+										? dictionary?.apartments?.garageFee || "Garage"
+										: dictionary?.apartments?.parkingFee || "Parking"}
+									:
+								</span>
+								<span className="ml-1">
+									{property.parkingFee === 0
+										? dictionary?.apartments?.free || "Free"
+										: `${property.parkingFee}/${dictionary?.apartments?.night || "night"} PLN`}
+								</span>
 							</div>
 						)}
 					</div>
