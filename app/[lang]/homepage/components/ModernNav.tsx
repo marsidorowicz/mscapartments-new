@@ -10,6 +10,7 @@ import { Dictionary } from "../../../types/dictionary"
 import { Locale } from "../../../i18n-config"
 // import BookNowButton from "../../components/BookNowButton"
 import ReservationBasket from "./ReservationBasket"
+import AuthButton from "../../components/AuthButton"
 import { useLocalStorageNew } from "@/utilities/hooks/useLocalStorage"
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket"
 import { generateSlug } from "@/utilities/functions/propertyUrl"
@@ -263,6 +264,9 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 									</button>
 								</div>
 
+								{/* Sign In Button */}
+								<AuthButton dictionary={dictionary} />
+
 								{/* Reservation Basket Button */}
 								<button
 									onClick={() => setIsBasketOpen(true)}
@@ -486,6 +490,10 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 							onClick={() => setIsMenuOpen(false)}>
 							{dictionary.navigation?.aboutUs || "O nas"}
 						</Link>
+
+						<div className="block py-2">
+							<AuthButton dictionary={dictionary} className="!text-gray-700 hover:!text-[#7a4a35]" />
+						</div>
 
 						<button
 							onClick={() => {
