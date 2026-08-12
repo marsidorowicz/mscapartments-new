@@ -6,6 +6,7 @@ import type { Metadata } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import Image from "next/image"
 import ReduxProvider from "./components/ReduxProvider"
+import SessionProvider from "./components/SessionProvider"
 import MscapartmentsSchema from "../components/MountainApartmentsSchema"
 
 // Metadata is handled by locale-specific layouts and pages
@@ -63,7 +64,9 @@ fbq('track', 'PageView');
 				<MscapartmentsSchema />
 			</head>
 			<body>
-				<ReduxProvider>{children}</ReduxProvider>
+				<SessionProvider>
+					<ReduxProvider>{children}</ReduxProvider>
+				</SessionProvider>
 				{/* Google Analytics & Tag Manager - Only in production */}
 				{process.env.NODE_ENV === "production" && (
 					<>
