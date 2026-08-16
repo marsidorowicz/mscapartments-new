@@ -1067,7 +1067,7 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 
 	const firstRange = parseDateRange(basketItems[0]?.dateRange)
 	const sameRange = basketItems.every((item) => item.dateRange === basketItems[0]?.dateRange)
-	const apartmentSelectionHref = `/${lang}/apartamenty${basketItems[0]?.dateRange ? `?dateRange=${encodeURIComponent(basketItems[0].dateRange)}` : ""}`
+	const apartmentSelectionHref = `/${lang}/apartamenty${basketItems[0]?.dateRange ? `&dateRange=${encodeURIComponent(basketItems[0].dateRange)}` : ""}`
 
 	return (
 		<div className="min-h-screen bg-gray-50 pt-[100px] sm:pt-6 pb-[120px] sm:pb-6 px-2 sm:px-3 lg:px-5">

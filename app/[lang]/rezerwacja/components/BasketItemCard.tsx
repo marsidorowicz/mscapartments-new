@@ -58,7 +58,7 @@ export function BasketItemCard({
 	const localTax = (state.property?.localTax ?? 0) * nights * (state.guests ?? 1)
 	const itemTotal = getItemTotal(item, state.services) + localTax
 	const propertyUrl = buildPropertyUrl(item.id, state.property?.name ?? item.name, lang, state.property?.slugs)
-	const propertyUrlWithDateRange = item.dateRange ? `${propertyUrl}?dateRange=${encodeURIComponent(item.dateRange)}` : propertyUrl
+	const propertyUrlWithDateRange = item.dateRange ? `${propertyUrl}&dateRange=${encodeURIComponent(item.dateRange)}` : propertyUrl
 
 	return (
 		<div className="rounded-2xl border border-[#cc9678]/10 bg-white px-2 py-5 sm:px-5 shadow-sm shadow-[#cc9678]/10">
