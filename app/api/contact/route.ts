@@ -1,7 +1,7 @@
 /** @format */
 
 import { NextRequest, NextResponse } from "next/server"
-import { sendMailSDC } from "@/utilities/functions/templates"
+import { sendMailMSC } from "@/utilities/functions/templates"
 
 export async function POST(req: NextRequest) {
 	try {
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 		if (!name || !email || !message) {
 			return NextResponse.json({ error: "Wypełnij wymagane pola." }, { status: 400 })
 		}
-		await sendMailSDC({
+		await sendMailMSC({
 			to: "apartamentymsc@gmail.com",
 			subject: `Zapytanie ze strony MSC Apartments`,
 			html: `<b>Imię i nazwisko:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Telefon:</b> ${phone || "-"}<br/><b>Wiadomość:</b><br/>${message}`,

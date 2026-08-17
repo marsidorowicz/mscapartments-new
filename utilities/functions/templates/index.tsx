@@ -2,13 +2,13 @@
 
 import nodemailer from "nodemailer"
 
-const transporterSDC = nodemailer.createTransport({
-	host: "smtp.mscapartments.pl", // sprawdź dokładny adres w panelu SDC
+const transporter = nodemailer.createTransport({
+	service: "gmail",
 	port: 465,
 	secure: true,
 	auth: {
-		user: process.env.SDC_USER,
-		pass: process.env.SDC_PASS,
+		user: process.env.GOOGLE_GMAIL_CLIENT_ID_AI,
+		pass: process.env.GOOGLE_GMAIL_CLIENT_SECRET_AI,
 	},
 	tls: {
 		// Do not fail on invalid certs
@@ -22,13 +22,12 @@ interface SendMailOptions {
 	html: string
 }
 
-export async function sendMailSDC({ to, subject, html }: SendMailOptions) {
-	if (!process.env.SDC_USER || !process.env.SDC_PASS) {
-		console.log("Email service SDC is not configured.")
-		return
+export async function sendMailMSC({ to, subject, html }: SendMailOptions) {
+	if (!process.env.GOOGLE_GMAIL_CLIENT_ID_AI || !process.env.GOOGLE_GMAIL_CLIENT_SECRET_AI) {
+		console.log("Email service is not configured.")
 	}
-	return await transporterSDC.sendMail({
-		from: process.env.SDC_USER,
+	return await transporter.sendMail({
+		from: process.env.GOOGLE_GMAIL_CLIENT_ID,
 		to,
 		subject,
 		html,

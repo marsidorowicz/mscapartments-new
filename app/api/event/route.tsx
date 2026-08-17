@@ -16,7 +16,7 @@ import {
 } from "@/utilities/functions/auth/magicLink"
 import { getPropertyHour, formatEventDate, tokenNeedsRegeneration } from "@/utilities/functions/auth/reservationToken"
 import { v4 as uuidv4 } from "uuid"
-import { sendMailSDC } from "@/utilities/functions/templates"
+import { sendMailMSC } from "@/utilities/functions/templates"
 import { Prisma } from "@prisma/client"
 
 // Notification messages by language
@@ -378,7 +378,7 @@ export async function POST(req: NextRequest) {
 				error: "No availability in NoBeds system",
 			})
 
-			await sendMailSDC({
+			await sendMailMSC({
 				to: "marsidorowicz@gmail.com",
 				subject: "Rezerwacja offline - brak dostępności w NoBeds",
 				html: `Utworzono rezerwację ID: ${event.id}  offline dla nieruchomości ${property?.name} w dniach ${format(event.startDate, "yyyy-MM-dd")} - ${format(event.endDate, "yyyy-MM-dd")}.`,

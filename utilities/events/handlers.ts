@@ -2,7 +2,7 @@
 
 import prisma from "@/prisma/prisma"
 import { EventCreated, EventDeleted, EventHandler, EventUpdated, NoBedsAvailabilityUpdated, DomainEvent } from "../types/events"
-import { sendMailSDC } from "../functions/templates"
+import { sendMailMSC } from "../functions/templates"
 import { format, parseISO, startOfDay } from "date-fns"
 import { createMagicLink } from "../functions/auth/magicLink"
 
@@ -123,7 +123,7 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 			for (const recipient of eventDetails?.property?.emailNotification || []) {
 				if (!recipient) continue
 				await Promise.all([
-					sendMailSDC({
+					sendMailMSC({
 						to: recipient,
 						subject: `Nowa rezerwacja z ${eventDetails.source || ""}  || ID: ${event.payload.eventId || ""}`,
 						html: `Daty: ${format(new Date(event.payload.startDate), "yyyy-MM-dd")} - ${format(new Date(event.payload.endDate), "yyyy-MM-dd")}
@@ -135,12 +135,12 @@ export class EmailNotificationHandler implements EventHandler<EventCreated> {
 				])
 			}
 			await Promise.all([
-				sendMailSDC({
+				sendMailMSC({
 					to: eventDetails.email,
 					subject: "Potwierdzenie rezerwacji",
 					html: body,
 				}),
-				sendMailSDC({
+				sendMailMSC({
 					to: "apartamentymsc@gmail.com",
 					subject: `Nowa rezerwacja z ${eventDetails.source || ""} `,
 					html: body,
@@ -177,7 +177,7 @@ export class DeleteNotificationHandler implements EventHandler<EventDeleted> {
 		for (const recipient of eventDetails?.property?.emailNotification || []) {
 			if (!recipient) continue
 			await Promise.all([
-				sendMailSDC({
+				sendMailMSC({
 					to: recipient,
 					subject: `Nowa rezerwacja z ${eventDetails.source || ""}  || ID: ${event.payload.eventId || ""}`,
 					html: `Daty: ${format(new Date(event.payload.startDate), "yyyy-MM-dd")} - ${format(new Date(event.payload.endDate), "yyyy-MM-dd")}
@@ -189,12 +189,12 @@ export class DeleteNotificationHandler implements EventHandler<EventDeleted> {
 			])
 		}
 		await Promise.all([
-			sendMailSDC({
+			sendMailMSC({
 				to: eventDetails.email,
 				subject: "Potwierdzenie usunięcia rezerwacji",
 				html: body,
 			}),
-			sendMailSDC({
+			sendMailMSC({
 				to: "apartamentymsc@gmail.com",
 				subject: `Usunięta rezerwacja ${eventDetails.source || ""} ${eventDetails.sourceDescription || ""}`,
 				html: body,
