@@ -14,6 +14,13 @@ type NoBedsCacheEntry = {
 	// inne pola jeśli chcesz
 }
 
+const applyMountainCommission = (price: number, commission?: number): number => {
+	if (commission != null && commission > 0) {
+		return price * (1 + commission / 100)
+	}
+	return price
+}
+
 export async function POST(req: NextRequest) {
 	try {
 		const { startDate, endDate, propertyIds } = await req.json()
@@ -32,7 +39,7 @@ export async function POST(req: NextRequest) {
 					gt: 0, // room_id > 0
 				},
 			},
-			select: { id: true, room_id: true },
+			select: { id: true, room_id: true, brand: true, commission: true },
 		})
 
 		const availablePropertyIds: number[] = []
@@ -42,8 +49,13 @@ export async function POST(req: NextRequest) {
 		const results = await Promise.all(
 			properties.map(async (property) => {
 				try {
-					const entries: NoBedsCacheEntry[] = await getCacheEntriesForDateRange(property.room_id!, startDate, endDate)
+					const isMountain = property?.brand === "MOUNTAIN"
 
+					const entries: NoBedsCacheEntry[] = await getCacheEntriesForDateRange(property.room_id!, startDate, endDate)
+					const rawTotal = entries.reduce((sum: number, entry: { price?: number | string | null }) => {
+						const price = Number(entry.price) || 0
+						return sum + price
+					}, 0)
 					// === Sprawdzenie dostępności ===
 					const hasEntriesForAllNights = entries.length === nights
 					const hasAvailability =
@@ -60,9 +72,7 @@ export async function POST(req: NextRequest) {
 					}
 
 					// === Obliczenie sumy cen ===
-					const total = entries.reduce((sum, entry) => {
-						return sum + (Number(entry.price) || 0)
-					}, 0)
+					const total = isMountain ? applyMountainCommission(rawTotal, property?.commission) : rawTotal
 
 					priceSums[property.id] = total
 
