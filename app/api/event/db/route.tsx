@@ -280,7 +280,7 @@ export async function POST(req: NextRequest) {
 			})
 
 			if (propertyWithTelegram?.sendTelegram && propertyWithTelegram?.telegramChatIds?.length > 0) {
-				const message = `Nowa rezerwacja:\n${propertyWithTelegram.name}\nPrzyjazd: ${format(new Date(event.startDate), "yyyy-MM-dd")}\nWyjazd: ${format(new Date(event.endDate), "yyyy-MM-dd")}\nOsób: ${event.amountOfPeople}\nŹródło: ${source || "msc"}`
+				const message = `Nowa rezerwacja z mscapartments.pl:\n${propertyWithTelegram.name}\nPrzyjazd: ${format(new Date(event.startDate), "yyyy-MM-dd")}\nWyjazd: ${format(new Date(event.endDate), "yyyy-MM-dd")}\nOsób: ${event.amountOfPeople}`
 
 				const telegramResponse = await fetch("http://localhost:4000/api/send-telegram", {
 					method: "POST",
