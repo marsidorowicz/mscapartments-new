@@ -72,7 +72,7 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 								value={form.name}
 								onChange={handleChange}
 								placeholder={dictionary.contactForm?.nameLabel || "Full name *"}
-								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
+								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 text-[#1D2430] focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
 								required
 							/>
 							<input
@@ -81,7 +81,7 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 								value={form.email}
 								onChange={handleChange}
 								placeholder={dictionary.contactForm?.emailLabel || "Email address *"}
-								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
+								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 text-[#1D2430] focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
 								required
 							/>
 							<input
@@ -90,7 +90,7 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 								value={form.phone}
 								onChange={handleChange}
 								placeholder={dictionary.contactForm?.phoneLabel || "Phone number"}
-								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
+								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 text-[#1D2430] focus:outline-none focus:ring-2 focus:ring-[#1D2430]"
 							/>
 							<textarea
 								name="message"

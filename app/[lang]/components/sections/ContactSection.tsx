@@ -83,7 +83,7 @@ export default function ContactSection({ dictionary }: ContactSectionProps) {
 							value={form.name}
 							onChange={handleChange}
 							placeholder={contactForm.nameLabel}
-							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
+							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 text-[#a3745c] focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
 							required
 						/>
 						<input
@@ -92,7 +92,7 @@ export default function ContactSection({ dictionary }: ContactSectionProps) {
 							value={form.email}
 							onChange={handleChange}
 							placeholder={contactForm.emailLabel}
-							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
+							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 text-[#a3745c] focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
 							required
 						/>
 						<input
@@ -101,14 +101,14 @@ export default function ContactSection({ dictionary }: ContactSectionProps) {
 							value={form.phone}
 							onChange={handleChange}
 							placeholder={contactForm.phoneLabel}
-							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
+							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 text-[#a3745c] focus:outline-none focus:ring-2 focus:ring-[#cc9678]"
 						/>
 						<textarea
 							name="message"
 							value={form.message}
 							onChange={handleChange}
 							placeholder={contactForm.messageLabel}
-							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#cc9678] min-h-[120px]"
+							className="rounded-lg border border-[#cc9678] bg-white/80 px-4 py-3 text-[#a3745c] focus:outline-none focus:ring-2 focus:ring-[#cc9678] min-h-[120px]"
 							required
 						/>
 						<button
