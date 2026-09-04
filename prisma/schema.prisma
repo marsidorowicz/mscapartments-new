@@ -200,6 +200,7 @@ model Property {
   slugs                     Json?
   extended                  Json?          // Extended data storage for additional fields like title
   offerProperties           OfferProperty[] @relation("PropertyOfferProperties")
+  messages                  Message[]
 }
 
 model WeekPrices {
@@ -316,6 +317,7 @@ model Event {
   payments           Payment[]
   convertedOffer     Offer? @relation("ConvertedOffer")
   discountUsages     CampaignUsage[] // Użycia kodów rabatowych dla tej rezerwacji
+  messages           Message[] // Guest/thread messages linked to this reservation
 }
 
 model EventsDeleted {
@@ -992,4 +994,42 @@ model NoBedsCache {
   updatedAt   String
 
   @@unique([propertyId, room_id, rid, date])
+}
+
+model Message {
+  id                Int      @id @default(autoincrement())
+  rid               Int // NoBeds record ID (e.g., 613602). 0 for www contact-form messages
+  hotel_id          Int // NoBeds hotel ID. 0 for www contact-form messages
+  message_id        String   @unique // External message UUID
+  referral          String? // Referral source (e.g., "Booking", "www")
+  message           String // Message body content
+  reply             String? // Reply content (null when absent)
+  attachment        String   @default("") // Attachment reference
+  receivedTimestamp DateTime? // When the message was received
+  sentTimestamp     DateTime? // When the message was sent
+  thread_id         String? // Conversation thread UUID
+  referralOrderId   String? // Referral order ID
+  userId            String? // Sender/user account ID
+  userName          String? // Sender/user name
+  photo_url         String? // User photo URL
+  host_id           String? // Host account ID
+  host_name         String? // Host name
+  logo_url          String? // Host logo URL
+  isRead            Boolean? // Whether the message has been read
+  eventId           Int? // Optional link to the Event (reservation)
+  event             Event?   @relation(fields: [eventId], references: [id])
+  propertyId        Int? // Optional link to the Property
+  property          Property? @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([rid])
+  @@index([hotel_id])
+  @@index([thread_id])
+  @@index([userId])
+  @@index([isRead])
+  @@index([eventId])
+  @@index([propertyId])
+  @@index([createdAt])
 }
