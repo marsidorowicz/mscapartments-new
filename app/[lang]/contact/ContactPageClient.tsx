@@ -97,7 +97,7 @@ const ContactPageClient: React.FC<ContactPageClientProps> = ({ dictionary, lang 
 								value={form.message}
 								onChange={handleChange}
 								placeholder={dictionary.contactForm?.messageLabel || "Message *"}
-								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1D2430] min-h-[120px]"
+								className="rounded-lg border border-[#1D2430] bg-white/80 px-4 py-3 text-[#1D2430] focus:outline-none focus:ring-2 focus:ring-[#1D2430] min-h-[120px]"
 								required
 							/>
 							<button
