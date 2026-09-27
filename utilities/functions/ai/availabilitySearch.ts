@@ -84,11 +84,13 @@ export async function searchAvailableOffers(input: {
 			}
 		}
 
-		// All active properties (client-facing site shows the whole portfolio)
+		// All active properties (client-facing site shows the whole portfolio),
+		// excluding test properties so the assistant never recommends them.
 		const properties = await prisma.property.findMany({
 			where: {
 				state: "active",
 				room_id: { not: null, gt: 0 },
+				name: { not: { contains: "test", mode: "insensitive" } },
 			},
 			include: {
 				place: true,
