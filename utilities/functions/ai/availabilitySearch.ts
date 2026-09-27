@@ -86,11 +86,10 @@ export async function searchAvailableOffers(input: {
 
 		// All active properties (client-facing site shows the whole portfolio),
 		// excluding test properties so the assistant never recommends them.
-		const properties = await prisma.property.findMany({
+		const allProperties = await prisma.property.findMany({
 			where: {
 				state: "active",
 				room_id: { not: null, gt: 0 },
-				name: { not: { contains: "test", mode: "insensitive" } },
 			},
 			include: {
 				place: true,
@@ -98,6 +97,12 @@ export async function searchAvailableOffers(input: {
 				personBasedPricings: true,
 			},
 		})
+
+		// Filter out test properties by name (case-insensitive)
+		const properties = allProperties.filter(
+			(property): property is (typeof allProperties)[number] =>
+				!property.name.toLowerCase().includes("test")
+		)
 
 		const availablePropertyIds: number[] = []
 		const priceSums: Record<number, number> = {}
