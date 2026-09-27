@@ -13,7 +13,7 @@ module.exports = {
 	// Transform function to handle [lang] routes
 	transform: async (config, path) => {
 		// Extract locale from path
-		const localeMatch = path.match(/^\/([a-z]{2})\//)
+		const localeMatch = path.match(/^\/([a-z]{2})(?:\/|$)/)
 		const locale = localeMatch ? localeMatch[1] : "pl"
 
 		// Skip API routes and internal paths
@@ -44,26 +44,46 @@ module.exports = {
 				const locales = ["en", "pl", "de", "es"]
 
 				data.properties.forEach((property) => {
+					// Resolve the slug for every locale (fallback to generated slug from name)
+					const slugByLocale = {}
 					locales.forEach((locale) => {
 						let slug = null
 						if (property.slugs && typeof property.slugs === "object") {
 							slug = property.slugs[locale] || null
 						}
 						if (!slug && property.name) {
-							// Generate slug from name if not available
-							slug = property.name
-								.toLowerCase()
-								.replace(/[^a-z0-9\s-]/g, "")
-								.replace(/\s+/g, "-")
-								.replace(/-+/g, "-")
+							// Generate slug from name using the same logic as the app,
+							// so sitemap/hreflang URLs point to the final (non-redirecting) address
+							slug = generateSlug(property.name)
 						}
+						slugByLocale[locale] = slug
+					})
 
+					// Build absolute hreflang references for this apartment
+					const alternateRefs = locales
+						.filter((locale) => slugByLocale[locale])
+						.map((locale) => ({
+							href: `${baseUrl}/${locale}/apartamenty/${slugByLocale[locale]}`,
+							hreflang: locale,
+							hrefIsAbsolute: true,
+						}))
+					if (slugByLocale.pl) {
+						alternateRefs.push({
+							href: `${baseUrl}/pl/apartamenty/${slugByLocale.pl}`,
+							hreflang: "x-default",
+							hrefIsAbsolute: true,
+						})
+					}
+
+					locales.forEach((locale) => {
+						const slug = slugByLocale[locale]
 						if (slug) {
 							result.push({
 								loc: `/${locale}/apartamenty/${slug}`,
 								changefreq: "weekly",
 								priority: 0.9,
 								lastmod: new Date().toISOString(),
+								alternateRefs,
 							})
 						}
 					})
@@ -121,11 +141,62 @@ function getAlternateRefs(path, currentLocale) {
 	const locales = ["en", "pl", "de", "es"]
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 
-	// Remove current locale prefix to get the base path
-	const basePath = path.replace(new RegExp(`^/${currentLocale}`), "") || "/"
+	// Remove current locale prefix to get the base path (handles "/xx" and "/xx/...")
+	let suffix = path.replace(new RegExp(`^/${currentLocale}(?=/|$)`), "")
+	if (suffix === "/") suffix = ""
 
-	return locales.map((locale) => ({
-		href: `${baseUrl}/${locale}${basePath}`,
+	const refs = locales.map((locale) => ({
+		href: `${baseUrl}/${locale}${suffix}`,
 		hreflang: locale,
+		hrefIsAbsolute: true,
 	}))
+
+	// Default language fallback for search engines
+	refs.push({
+		href: `${baseUrl}/pl${suffix}`,
+		hreflang: "x-default",
+		hrefIsAbsolute: true,
+	})
+
+	return refs
+}
+
+/**
+ * Generates a URL-friendly slug from text.
+ * Kept identical to `utilities/functions/propertyUrl.ts` (generateSlug)
+ * so sitemap URLs match the addresses served by the app.
+ */
+function generateSlug(text) {
+	const polishChars = {
+		ą: "a",
+		ć: "c",
+		ę: "e",
+		ł: "l",
+		ń: "n",
+		ó: "o",
+		ś: "s",
+		ź: "z",
+		ż: "z",
+		Ą: "a",
+		Ć: "c",
+		Ę: "e",
+		Ł: "l",
+		Ń: "n",
+		Ó: "o",
+		Ś: "s",
+		Ź: "z",
+		Ż: "z",
+	}
+
+	return text
+		.toLowerCase()
+		.split("")
+		.map((char) => polishChars[char] || char)
+		.join("")
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.replace(/[^a-z0-9\s-]/g, "")
+		.trim()
+		.replace(/\s+/g, "-")
+		.replace(/-+/g, "-")
 }
