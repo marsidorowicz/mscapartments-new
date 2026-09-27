@@ -509,7 +509,7 @@ export default function ModernApartmentCarousel({ dictionary, lang }: ModernApar
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 lg:px-8 w-full">
 							{filteredProperties.map((property) => (
 								<div key={property.id} className="transition-all duration-700 ease-out translate-y-0 opacity-100 scale-100">
-									<ModernApartmentTile property={property} dictionary={dictionary} lang={lang} mainPage />
+									<ModernApartmentTile property={property} dictionary={dictionary} lang={lang} mainPage={false} />
 								</div>
 							))}
 						</div>
@@ -545,7 +545,7 @@ export default function ModernApartmentCarousel({ dictionary, lang }: ModernApar
 								onTouchEnd={handleTouchEnd}>
 								{filteredProperties.map((property) => (
 									<div key={property.id} className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] flex justify-center">
-										<ModernApartmentTile property={property} dictionary={dictionary} lang={lang} mainPage />
+										<ModernApartmentTile property={property} dictionary={dictionary} lang={lang} mainPage={false} />
 									</div>
 								))}
 							</div>
