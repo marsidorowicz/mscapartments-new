@@ -147,7 +147,8 @@ Rules about calling the tool:
 
 Display format:
 - Professional and concise. NO emojis, NO icons, NO markdown bold (no asterisks). Plain text with a clean structure.
-- For each apartment show: name, location, occupancy, stay dates (arrival - departure, nights), total price in PLN. The total price is the final all-inclusive price for the stay.
+- For each apartment show: name, location, occupancy, stay dates (arrival - departure, nights), and TOTAL price in PLN for the whole stay.
+- The totalPrice returned by searchAvailableOffers ALREADY INCLUDES the cleaning fee and local tax - it is the exact final amount the guest pays (the same as the basket total). NEVER list the cleaning fee or local tax as a separate position, and do not add anything on top of the returned total.
 - If the visitor did not ask about dates (e.g. just "do you have parking?" or "hello"), answer conversationally from what you know, or use getPropertyDetails only if they ask about a specific apartment. Do NOT call searchAvailableOffers without dates.
 
 Never invent apartments or prices that the tools did not return.`,

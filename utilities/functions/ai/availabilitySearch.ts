@@ -17,6 +17,9 @@ export interface AIAvailabilityOffer {
 	minOccupancy: number
 	maxOccupancy: number
 	totalPrice: number
+	basePrice: number
+	cleaningFee: number
+	localTax: number
 	currency: string
 	startDate: string
 	endDate: string
@@ -149,6 +152,16 @@ export async function searchAvailableOffers(input: {
 						total = getPersonAdjustedPrice(property as any, guests, basePrice)
 					}
 
+					// Match the basket's all-inclusive total: stay + cleaning fee + local tax.
+					const cleaningFee =
+						property.cleaningFeeDays === 0 ||
+						property.cleaningFeeDays === null ||
+						property.cleaningFeeDays > nights
+							? property.cleaningFee || 0
+							: 0
+					const localTax = (property.localTax || 0) * nights * guests
+					total = total + cleaningFee + localTax
+
 					// Round to 2 decimals to keep tool output small
 					total = Math.round(total * 100) / 100
 					basePrice = Math.round(basePrice * 100) / 100
@@ -166,6 +179,9 @@ export async function searchAvailableOffers(input: {
 							minOccupancy: property.minOccupancy,
 							maxOccupancy: property.maxOccupancy,
 							totalPrice: total,
+							basePrice,
+							cleaningFee,
+							localTax,
 							currency: "PLN",
 							startDate: fromdate,
 							endDate: todate,
