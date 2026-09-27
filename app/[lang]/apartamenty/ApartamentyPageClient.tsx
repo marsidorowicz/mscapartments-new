@@ -8,6 +8,7 @@ import { Dictionary } from "../../types/dictionary"
 import { Locale } from "../../i18n-config"
 import { Property } from "@/types"
 import SearchBar from "./components/SearchBar"
+import AISearchWidget, { AiSearchAction } from "./components/AISearchWidget"
 import ModernApartmentTile from "./components/ModernApartmentTile"
 import { sendGAEvent } from "@next/third-parties/google"
 import ModernNav from "../homepage/components/ModernNav"
@@ -45,6 +46,10 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 	// Advanced filter snapshot state (populated on explicit search click or initial load, mirroring date behavior)
 	const [searchedAdvancedFilters, setSearchedAdvancedFilters] = useState<AdvancedFiltersSnapshot | null>(null)
 	const [advancedFilterTick, setAdvancedFilterTick] = useState(0)
+	// AI assistant search results drive the tile list: restrict to returned ids, use returned prices, optional price sort
+	const [aiPropertyIds, setAiPropertyIds] = useState<Set<number> | null>(null)
+	const [aiPriceSums, setAiPriceSums] = useState<Record<number, number> | null>(null)
+	const [aiSortBy, setAiSortBy] = useState<"price_asc" | "default">("default")
 	const filterDateRangeRef = useRef(filterDateRange)
 
 	const propertiesInitialized = useRef(false)
@@ -107,6 +112,21 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 		setSearchedAdvancedFilters(currentAdv)
 		// Trigger availability re-check when search filters change
 		setSearchTrigger((prev) => prev + 1)
+	}
+
+	// Apply an AI assistant search result to the tile list (filter to matched ids, use returned prices, optional sort)
+	const handleApplyAiSearch = (action: AiSearchAction) => {
+		if (action.propertyIds && action.propertyIds.length > 0) {
+			setAiPropertyIds(new Set(action.propertyIds))
+		} else {
+			setAiPropertyIds(null)
+		}
+		if (action.priceSums) {
+			setAiPriceSums(action.priceSums)
+		} else {
+			setAiPriceSums(null)
+		}
+		setAiSortBy(action.sortBy || "default")
 	}
 
 	// Set date range filter when dateRange prop changes
@@ -255,9 +275,23 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 				dateRangeMatch = availablePropertyIds.size > 0 ? availablePropertyIds.has(property.id) : false
 			}
 
-			return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMatch
-		})
-	}, [properties, filterLocation, filterGuests, filterSearchName, searchedDateRange, availablePropertyIds, searchedAdvancedFilters])
+return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMatch
+			})
+		}, [properties, filterLocation, filterGuests, filterSearchName, searchedDateRange, availablePropertyIds, searchedAdvancedFilters])
+
+	// When the AI assistant returned a search result, restrict to the matched ids and optionally sort by price
+	const displayedProperties = useMemo(() => {
+		if (!aiPropertyIds) return filteredProperties
+		const result = filteredProperties.filter(p => aiPropertyIds.has(p.id))
+		if (aiSortBy === "price_asc" && aiPriceSums) {
+			return [...result].sort((a, b) => {
+				const pa = aiPriceSums[a.id] ?? Number.MAX_SAFE_INTEGER
+				const pb = aiPriceSums[b.id] ?? Number.MAX_SAFE_INTEGER
+				return pa - pb
+			})
+		}
+		return result
+	}, [filteredProperties, aiPropertyIds, aiPriceSums, aiSortBy])
 
 	const isSearchResultStale = Boolean(
 		filterDateRange?.start &&
@@ -363,32 +397,35 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 
 			{/* Bottom half: Content */}
 			<div className="bg-white flex flex-col px-0 sm:px-8 pt-1 min-h-screen">
-				<div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+				<div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 text-center">
 					<h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">{pageText.heading}</h1>
-					<p className="mt-3 text-lg md:text-xl text-slate-600 max-w-3xl">{pageText.subtitle}</p>
+					<p className="mt-3 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">{pageText.subtitle}</p>
 				</div>
-				{/* Search bar */}
-				<SearchBar
-					dictionary={_dictionary}
-					color="#1D2430"
-					dateRange={dateRange}
-					places={places}
-					onFilterChange={handleFilterChange}
-					initialLocation={initialLocation}
-				/>
-				{/* Results summary */}
-				<div className="flex justify-center text-center mt-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 px-2 py-3 text-xl text-slate-700 uppercase">
-					<div className="font-semibold text-slate-900">
-						{isFilterStale
-							? "Wybrano nowe filtry, wyszukaj ponownie"
-							: isSearchResultStale
-								? "Wykryto zmianę dat, wyszukaj ponownie"
-								: (_dictionary?.apartments?.searchResults || "Znaleziono apartamentów: {{total}} ").replace(
-										"{{total}}",
-										filteredProperties.length.toString(),
-									)}
-					</div>
+{/* AI assistant search - replaces the classic search bar */}
+			<AISearchWidget dictionary={_dictionary} lang={lang} onApplyAiSearch={handleApplyAiSearch} />
+			{/* Classic search bar (kept for reference / future re-enable)
+			<SearchBar
+				dictionary={_dictionary}
+				color="#1D2430"
+				dateRange={dateRange}
+				places={places}
+				onFilterChange={handleFilterChange}
+				initialLocation={initialLocation}
+			/>
+			*/}
+			{/* Results summary */}
+			<div className="flex justify-center text-center mt-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 px-2 py-3 text-xl text-slate-700 uppercase">
+				<div className="font-semibold text-slate-900">
+					{isFilterStale
+						? "Wybrano nowe filtry, wyszukaj ponownie"
+						: isSearchResultStale
+							? "Wykryto zmianę dat, wyszukaj ponownie"
+							: (_dictionary?.apartments?.searchResults || "Znaleziono apartamentów: {{total}} ").replace(
+									"{{total}}",
+									displayedProperties.length.toString(),
+								)}
 				</div>
+			</div>
 				{/* Properties Grid */}
 				<div className="flex-1 py-8">
 					{loading ? (
@@ -400,7 +437,7 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 								</div>
 							</div>
 						</div>
-					) : filteredProperties.length === 0 ? (
+					) : displayedProperties.length === 0 ? (
 						<div className="text-center py-24">
 							<div className="w-24 h-24 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center">
 								<svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,18 +449,21 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 						</div>
 					) : (
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-0 sm:px-7 lg:px-9 w-full">
-							{filteredProperties.map((property) => (
-								<div key={property.id} className="transition-all duration-700 ease-out translate-y-0 opacity-100 scale-100">
-									<ModernApartmentTile
-										property={property}
-										dictionary={_dictionary}
-										lang={lang}
-										mainPage={false}
-										priceForRange={propertyPriceSums[property.id]}
-										disableAddToBasket={isSearchResultStale || isFilterStale}
-									/>
-								</div>
-							))}
+							{displayedProperties.map((property) => {
+								const priceForRange = aiPriceSums?.[property.id] ?? propertyPriceSums[property.id]
+								return (
+									<div key={property.id} className="transition-all duration-700 ease-out translate-y-0 opacity-100 scale-100">
+										<ModernApartmentTile
+											property={property}
+											dictionary={_dictionary}
+											lang={lang}
+											mainPage={false}
+											priceForRange={priceForRange}
+											disableAddToBasket={isSearchResultStale || isFilterStale}
+										/>
+									</div>
+								)
+							})}
 						</div>
 					)}
 				</div>

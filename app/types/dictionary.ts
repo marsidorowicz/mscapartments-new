@@ -550,6 +550,9 @@ export type Dictionary = {
 		locationLabel: string
 		searchByNameLabel: string
 		searchByNamePlaceholder: string
+		aiSearchPlaceholder?: string
+		aiSearchResultsNote?: string
+		aiAssistantName?: string
 		checkAvailability: string
 		anyLabel: string
 		resultsFound: string
