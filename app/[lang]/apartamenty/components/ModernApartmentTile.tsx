@@ -249,7 +249,6 @@ export default function ModernApartmentTile({ property, dictionary, lang, mainPa
 				<span className={`text-xs ${isHovered ? "text-white" : "text-gray-600"}`}>{dictionary.apartments.totalPrice}</span>
 				<span className={`text-xl font-bold ${isHovered ? "text-green-400" : "text-green-600"}`}>{formatPrice(priceForRange)}</span>
 				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-600"}`}> {dictionary.apartments.basketItemPerStay}</span>
-				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-500"}`}>+ {dictionary.apartments.additionalFees}</span>
 			</div>
 		)
 	} else if (property.lastMinuteOfferActive) {
@@ -259,7 +258,6 @@ export default function ModernApartmentTile({ property, dictionary, lang, mainPa
 				<span className={`text-xl font-bold ${isHovered ? "text-green-400" : "text-green-600"}`}>{formatPrice(finalPrice)}</span>
 				<span className={`text-sm ${isHovered ? "text-white line-through" : "text-gray-500 line-through"}`}>{formatPrice(basePrice)}</span>
 				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-600"}`}>/ {dictionary.apartments.night}</span>
-				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-500"}`}>+ {dictionary.apartments.additionalFees}</span>
 			</div>
 		)
 	} else {
@@ -268,7 +266,6 @@ export default function ModernApartmentTile({ property, dictionary, lang, mainPa
 				<span className={`text-xs ${isHovered ? "text-white" : "text-gray-600"}`}>{dictionary.apartments.from}</span>
 				<span className={`text-xl font-bold ${isHovered ? "text-green-400" : "text-green-600"}`}>{formatPrice(finalPrice)}</span>
 				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-600"}`}>/ {dictionary.apartments.night}</span>
-				<span className={`text-sm ${isHovered ? "text-white" : "text-gray-500"}`}>+ {dictionary.apartments.additionalFees}</span>
 			</div>
 		)
 	}
