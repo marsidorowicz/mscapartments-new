@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 			languages: {
 				en: `${baseUrl}/en/payment-fail`,
 				pl: `${baseUrl}/pl/payment-fail`,
-				de: `${baseUrl}/de/payment-fail`,
-				es: `${baseUrl}/es/payment-fail`,
+				it: `${baseUrl}/it/payment-fail`,
+				"x-default": `${baseUrl}/pl/payment-fail`,
 			},
 		},
 		robots: {

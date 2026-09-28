@@ -598,7 +598,7 @@ export default function ModernApartmentCarousel({ dictionary, lang }: ModernApar
 					<div className="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4" onClick={(e) => e.stopPropagation()}>
 						<div className="flex justify-between items-center mb-4">
 							<h3 className="text-lg font-semibold text-gray-900">
-								{lang === "pl" ? "Tryb widoku" : lang === "de" ? "Ansichtsmodus" : lang === "es" ? "Modo de vista" : "View Mode"}
+								{lang === "pl" ? "Tryb widoku" : lang === "it" ? "Modalità vista" : "View Mode"}
 							</h3>
 							<button onClick={() => setIsSettingsOpen(false)} className="text-gray-400 hover:text-gray-600">
 								<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

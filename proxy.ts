@@ -3,7 +3,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-import { i18n } from "./app/i18n-config"
+import { allLocales } from "./app/i18n-config"
 
 export const config = {
 	matcher: [
@@ -16,7 +16,7 @@ export default async function proxy(req: NextRequest) {
 	const pathname = req.nextUrl.pathname
 
 	// Check if there is any supported locale in the pathname
-	const pathnameIsMissingLocale = i18n.locales.every((locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`)
+	const pathnameIsMissingLocale = allLocales.every((locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`)
 	// Redirect if there is no locale
 	if (pathnameIsMissingLocale) {
 		const locale = "pl"

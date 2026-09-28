@@ -390,6 +390,7 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 								{[
 									{ code: "pl", label: "PL" },
 									{ code: "en", label: "EN" },
+									{ code: "it", label: "IT" },
 									{ code: "de", label: "DE" },
 									{ code: "es", label: "ES" },
 								].map(({ code, label }) => (
@@ -525,6 +526,7 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 							{[
 								{ code: "pl", label: "PL" },
 								{ code: "en", label: "EN" },
+								{ code: "it", label: "IT" },
 								{ code: "de", label: "DE" },
 								{ code: "es", label: "ES" },
 							].map(({ code, label }) => (

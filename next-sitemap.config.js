@@ -7,7 +7,7 @@ module.exports = {
 	generateIndexSitemap: true,
 
 	// Multi-language configuration
-	locales: ["en", "pl", "de", "es"],
+	locales: ["en", "pl", "it"],
 	defaultLocale: "pl",
 
 	// Transform function to handle [lang] routes
@@ -41,7 +41,7 @@ module.exports = {
 			const data = await response.json()
 
 			if (data.properties) {
-				const locales = ["en", "pl", "de", "es"]
+				const locales = ["en", "pl", "it"]
 
 				data.properties.forEach((property) => {
 					// Resolve the slug for every locale (fallback to generated slug from name)
@@ -138,7 +138,7 @@ function getPriority(path, locale) {
  * Generate alternate language references
  */
 function getAlternateRefs(path, currentLocale) {
-	const locales = ["en", "pl", "de", "es"]
+	const locales = ["en", "pl", "it"]
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 
 	// Remove current locale prefix to get the base path (handles "/xx" and "/xx/...")

@@ -9,7 +9,7 @@ import type { Metadata } from "next"
 const ContactPage = async ({ params }: { params: Promise<{ lang: string }> }) => {
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
-	return <ContactPageClient dictionary={dictionary} lang={lang as "pl" | "en" | "de" | "es"} />
+	return <ContactPageClient dictionary={dictionary} lang={lang as "pl" | "en" | "it"} />
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -38,8 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 			languages: {
 				en: `${baseUrl}/en/contact`,
 				pl: `${baseUrl}/pl/contact`,
-				de: `${baseUrl}/de/contact`,
-				es: `${baseUrl}/es/contact`,
+				it: `${baseUrl}/it/contact`,
+				"x-default": `${baseUrl}/pl/contact`,
 			},
 		},
 		openGraph: {

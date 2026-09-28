@@ -133,6 +133,34 @@ const translations = {
 		terms_dialog_content_p4: 'Se pueden encontrar términos adicionales en el sitio web en la sección de "Términos".',
 		terms_dialog_close_button: "Cerrar",
 	},
+	it: {
+		reservationDetails: "Modulo di prenotazione",
+		name: "Nome e cognome",
+		phone: "Telefono",
+		email: "Email",
+		remarks: "Note",
+		invoice: "Fattura",
+		company_name: "Nome azienda",
+		street_address: "Via e numero",
+		postal_code: "Codice postale",
+		country: "Paese",
+		tax_number: "Partita IVA",
+		submit: "Invia richiesta",
+		thankYou: "Grazie. I tuoi dati sono stati salvati localmente per ulteriori modifiche.",
+
+		missingData: "Compila i dati mancanti nel modulo:",
+		acceptTerms: "Accetto i termini e le condizioni",
+		newsletter: "Iscriviti alla newsletter per restare aggiornato sulle promozioni attuali!",
+		reservation_terms: "Termini di prenotazione",
+		terms_dialog_title: "Termini di prenotazione",
+		terms_dialog_content_p1: "Utilizzando questo servizio accetti i seguenti termini e condizioni. Ti preghiamo di leggerli attentamente.",
+		terms_dialog_content_p2:
+			"Tutte le prenotazioni sono soggette a disponibilità e conferma. In caso di indisponibilità rilevata è possibile annullare la prenotazione, poiché il sistema potrebbe ricevere un'altra prenotazione da una fonte diversa ma non avere tempo sufficiente per bloccare la data. Il pagamento deve essere effettuato per intero al momento della prenotazione, salvo diversa indicazione. Le cancellazioni e le modifiche sono soggette alla politica della struttura.",
+		terms_dialog_content_p3:
+			"Non memorizziamo i numeri della tua carta di credito o debito. Se ne occupa il nostro fornitore di pagamenti conforme PCI DSS, Fiserv Polcard. In caso di consenso alla tokenizzazione della carta, accetti che venga salvata da Fiserv Polcard, che ci fornirà un token che la rappresenta. Questo token può essere utilizzato per preautorizzare la carta a garanzia di una caparra, addebitare costi aggiuntivi come per servizi extra o giorni di soggiorno aggiuntivi, sbloccare la preautorizzazione, completarla in caso di danni o di appartamento lasciato sporco, oggetti personali lasciati inclusi rifiuti, o mancata pulizia iniziale dopo il soggiorno, mancato lavaggio delle stoviglie, rimozione di macchie d'acqua, forte sporcizia di biancheria o asciugamani, o mancata segnalazione della presenza di un animale o di persone aggiuntive.",
+		terms_dialog_content_p4: 'Ulteriori termini sono disponibili sul sito nella sezione "Termini".',
+		terms_dialog_close_button: "Chiudi",
+	},
 }
 
 type ReservationFormProps = {

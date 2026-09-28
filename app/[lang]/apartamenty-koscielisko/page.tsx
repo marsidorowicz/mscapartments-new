@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 			languages: {
 				en: `${baseUrl}/en/apartamenty-koscielisko`,
 				pl: `${baseUrl}/pl/apartamenty-koscielisko`,
-				de: `${baseUrl}/de/apartamenty-koscielisko`,
-				es: `${baseUrl}/es/apartamenty-koscielisko`,
+				it: `${baseUrl}/it/apartamenty-koscielisko`,
+				"x-default": `${baseUrl}/pl/apartamenty-koscielisko`,
 			},
 		},
 	}

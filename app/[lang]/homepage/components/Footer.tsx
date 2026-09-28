@@ -30,7 +30,7 @@ type FooterTranslations = {
 	cookies: string
 }
 
-const footerTranslations: Record<Locale, FooterTranslations> = {
+const footerTranslations: Record<string, FooterTranslations> = {
 	pl: {
 		companyName: "MSC Apartments",
 		companyDescription:
@@ -78,6 +78,30 @@ const footerTranslations: Record<Locale, FooterTranslations> = {
 		privacy: "Privacy Policy",
 		terms: "Terms of Service",
 		cookies: "Cookies",
+	},
+	it: {
+		companyName: "MSC Apartments",
+		companyDescription:
+			"La nostra azienda si occupa di affitti a breve termine a Zakopane e Kościelisko. Offriamo inoltre automazione degli affitti, comunicazione con gli ospiti e strumenti come Channel Manager e PMS per ottimizzare la tua esperienza di affitto.",
+		phone: "+48 515 857 609",
+		officeAndReservations: "Ufficio e Prenotazioni",
+		businessHours: "Orari di apertura: Lun - Ven 8:00 - 20:00\nSab, Dom e Festivi 9:00 - 17:00",
+		email: "apartamentymsc@gmail.com",
+		quickLinksTitle: "Link rapidi",
+		home: "Home",
+		apartments: "Appartamenti",
+		apartmentsZakopane: "Appartamenti Zakopane",
+		apartmentsKoscielisko: "Appartamenti Kościelisko",
+		offers: "Offerte",
+		contact: "Contatti",
+		about: "Chi siamo",
+		locationTitle: "Località",
+		location: "Zakopane e Kościelisko",
+		region: "Voivodato della Piccola Polonia",
+		copyright: `© ${new Date().getFullYear()} MSC Apartments. Tutti i diritti riservati.`,
+		privacy: "Informativa sulla privacy",
+		terms: "Termini di servizio",
+		cookies: "Cookie",
 	},
 	de: {
 		companyName: "MSC Apartments",

@@ -4,13 +4,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { en, pl, de, es } from "./dictionaries"
+import { en, pl, it, de, es } from "./dictionaries"
 import { Locale } from "./i18n-config"
 
 export default function NotFound() {
 	const pathname = usePathname()
 	const lang = (pathname.split("/")[1] as Locale) || "pl"
-	const dictionaries = { en, pl, de, es }
+	const dictionaries = { en, pl, it, de, es }
 	const dictionary = dictionaries[lang] || dictionaries.pl
 
 	return (

@@ -61,6 +61,7 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Opłata rezerwacyjna",
 			en: "Reservation fee",
+			it: "Tassa di prenotazione",
 			de: "Reservierungsgebühr",
 			es: "Tarifa de reserva",
 		},
@@ -71,6 +72,7 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Śniadanie",
 			en: "Breakfast",
+			it: "Colazione",
 			de: "Frühstück",
 			es: "Desayuno",
 		},
@@ -81,6 +83,7 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Parking",
 			en: "Parking",
+			it: "Parcheggio",
 			de: "Parken",
 			es: "Aparcamiento",
 		},
@@ -91,6 +94,7 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Zwierzęta",
 			en: "Pets",
+			it: "Animali",
 			de: "Haustiere",
 			es: "Mascotas",
 		},
@@ -101,6 +105,7 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Łóżeczko dla dziecka",
 			en: "Baby Crib",
+			it: "Culla per neonati",
 			de: "Babybett",
 			es: "Cuna para bebé",
 		},
@@ -111,13 +116,14 @@ const serviceTemplates: ServiceOption[] = [
 		labels: {
 			pl: "Pościel dla dziecka",
 			en: "Baby Bed Linen",
+			it: "Biancheria per culla",
 			de: "Babybettwäsche",
 			es: "Ropa de cama para bebé",
 		},
 	},
 ]
 
-export const translations: Record<"pl" | "en" | "de" | "es", Record<string, string>> = {
+export const translations: Record<"pl" | "en" | "it" | "de" | "es", Record<string, string>> = {
 	pl: {
 		summary: "Podsumowanie",
 		reservationSummary: "Podsumowanie rezerwacji",
@@ -197,6 +203,47 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 		petsNotAllowed: "Pets are not accepted in this property",
 		breakfastNotAllowed: "Breakfast is not available in this property",
 		babyCribNotAllowed: "Baby crib service is not available in this property",
+	},
+	it: {
+		summary: "Riepilogo",
+		reservationSummary: "Riepilogo prenotazione",
+		arrivalDate: "Data di arrivo",
+		departureDate: "Data di partenza",
+		guestsLabel: "Ospiti",
+		checkInLabel: "Check-in",
+		checkInTime: "dalle 16:00",
+		stayLabel: "Soggiorno",
+		serviceFeeLabel: "Servizi aggiuntivi",
+		depositLabel: "Caparra",
+		totalCostLabel: "Costo totale",
+		propertyListLabel: "Appartamenti selezionati",
+		noneInBasket: "Nessun articolo nel carrello. Aggiungi un appartamento per continuare.",
+		removeLabel: "Rimuovi dal carrello",
+		servicesLabel: "Servizi aggiuntivi",
+		guestsAssignedLabel: "Ospiti assegnati",
+		localTaxLabel: "Tassa di soggiorno",
+		itemTotalLabel: "Totale articolo",
+		serviceOptionLabel: "Opzioni di servizio",
+		reservationFormLabel: "Modulo di prenotazione",
+		moreInfo: "Puoi aggiungere servizi e indicare il numero di ospiti.",
+		discountCodeUsed: "Il codice sconto è già stato utilizzato",
+		validationError: "Alcuni articoli non sono disponibili o i prezzi sono cambiati.",
+		noAvailability: "Nessuna disponibilità",
+		confirmPriceChangeTitle: "Conferma aggiornamento prezzo",
+		confirmPriceChangeDescription:
+			"I prezzi del soggiorno sono cambiati da quando hai aggiunto questi articoli al carrello. Controlla l'aggiornamento e conferma la prenotazione.",
+		checkingOfferDiscount: "Verifica della validità attuale dello sconto offerta",
+		offerDiscountVerified: "Lo sconto offerta è ancora valido",
+		stayPriceLabel: "Prezzo soggiorno",
+		totalEstimateLabel: "Stima totale",
+		confirmButton: "Conferma prenotazione",
+		cancelButton: "Annulla",
+		backHome: "Torna alla home",
+		apartmentSelectionLabel: "Selezione appartamento",
+		breakfastNote: "Numero totale di colazioni per l'intero soggiorno. Indica nelle note in quali giorni e quante colazioni sono richieste.",
+		petsNotAllowed: "Gli animali non sono ammessi in questa struttura",
+		breakfastNotAllowed: "La colazione non è disponibile in questa struttura",
+		babyCribNotAllowed: "Il servizio culla non è disponibile in questa struttura",
 	},
 	de: {
 		summary: "Zusammenfassung",
@@ -286,6 +333,7 @@ export const translations: Record<"pl" | "en" | "de" | "es", Record<string, stri
 export const localeMap: Record<string, string> = {
 	pl: "pl-PL",
 	en: "en-US",
+	it: "it-IT",
 	de: "de-DE",
 	es: "es-ES",
 }

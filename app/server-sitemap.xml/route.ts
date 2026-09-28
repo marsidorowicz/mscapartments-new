@@ -22,7 +22,7 @@ export async function GET() {
 		})
 
 		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
-		const locales = ["en", "pl", "de", "es"]
+		const locales = ["en", "pl", "it"]
 
 		const fields = []
 

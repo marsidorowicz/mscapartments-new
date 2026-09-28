@@ -24,6 +24,7 @@ interface CalendarProps {
 const monthNames: Record<string, string[]> = {
 	en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 	pl: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+	it: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
 	de: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
 	es: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
 }
@@ -31,6 +32,7 @@ const monthNames: Record<string, string[]> = {
 const buttonLabels: Record<string, { prev: string; next: string }> = {
 	en: { prev: "Prev", next: "Next" },
 	pl: { prev: "Poprzedni", next: "Następny" },
+	it: { prev: "Prec", next: "Succ" },
 	de: { prev: "Zurück", next: "Weiter" },
 	es: { prev: "Anterior", next: "Siguiente" },
 	// Add more languages as needed
@@ -39,6 +41,7 @@ const buttonLabels: Record<string, { prev: string; next: string }> = {
 const dayNames: Record<string, string[]> = {
 	en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 	pl: ["Pon", "Wt", "Śr", "Czw", "Pt", "Sb", "Nd"],
+	it: ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"],
 	de: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
 	es: ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
 }
@@ -213,9 +216,9 @@ const AvailabilityCalendar: React.FC<CalendarProps> = ({
 				<select value={currentLocale} onChange={(e) => setCurrentLocale(e.target.value)} className="  p-2 border rounded bg-gray-200">
 					<option value="en">English</option>
 					<option value="pl">Polski</option>
+					<option value="it">Italiano</option>
 					<option value="de">Deutsch</option>
 					<option value="es">Español</option>
-					{/* Add more languages as needed */}
 				</select>
 			</div>
 		</div>

@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 			languages: {
 				en: `${baseUrl}/en/apartamenty-zakopane`,
 				pl: `${baseUrl}/pl/apartamenty-zakopane`,
-				de: `${baseUrl}/de/apartamenty-zakopane`,
-				es: `${baseUrl}/es/apartamenty-zakopane`,
+				it: `${baseUrl}/it/apartamenty-zakopane`,
+				"x-default": `${baseUrl}/pl/apartamenty-zakopane`,
 			},
 		},
 	}

@@ -10,6 +10,7 @@ import { Dictionary } from "@/app/types/dictionary"
 const dashboardLabel: Record<string, string> = {
 	pl: "Panel",
 	en: "Dashboard",
+	it: "Pannello",
 	de: "Dashboard",
 	es: "Panel",
 }

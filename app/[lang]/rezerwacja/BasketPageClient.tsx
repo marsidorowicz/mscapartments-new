@@ -3,7 +3,7 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react"
+import { useEffect, useMemo, useRef, useState, Suspense, type FormEvent } from "react"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/navigation"
 import HomeIcon from "@mui/icons-material/Home"
@@ -11,6 +11,7 @@ import { useLocalStorageNew } from "@/utilities/hooks/useLocalStorage"
 import { type Event } from "@/types"
 import { upsertEventDb } from "@/utilities/functions/calendar"
 import { NotificationComponent } from "@/app/[lang]/components/rev13/Notification"
+import LanguageSwitcher from "@/app/[lang]/components/LanguageSwitcher"
 import { setNotification } from "@/state/action-creators"
 import ReservationForm, { type ReservationFormData } from "./components/ReservationForm"
 import { BasketItemCard } from "./components/BasketItemCard"
@@ -939,6 +940,19 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 				remarks: "Remarks",
 				missingData: "Please fill in missing form data:",
 			},
+			it: {
+				name: "Nome e cognome",
+				phone: "Telefono",
+				email: "Email",
+				company_name: "Nome azienda",
+				street_address: "Via e numero",
+				postal_code: "Codice postale",
+				country: "Paese",
+				tax_number: "Partita IVA",
+				acceptTerms: "Accetto i termini e le condizioni",
+				remarks: "Note",
+				missingData: "Compila i dati mancanti nel modulo:",
+			},
 			de: {
 				name: "Name",
 				phone: "Telefon",
@@ -1089,6 +1103,9 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 							className="inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-gray-200 px-4 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-300">
 							{t.apartmentSelectionLabel}
 						</Link>
+						<Suspense fallback={null}>
+							<LanguageSwitcher lang={lang} className="shrink-0 px-1" />
+						</Suspense>
 					</div>
 				</div>
 

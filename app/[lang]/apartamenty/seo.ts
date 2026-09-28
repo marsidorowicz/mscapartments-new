@@ -12,7 +12,7 @@ type ApartmentPageText = {
 	subtitle: string
 }
 
-const apartmentPageTexts: Record<Locale, { default: ApartmentPageText; zakopane: ApartmentPageText; koscielisko: ApartmentPageText }> = {
+const apartmentPageTexts: Record<string, { default: ApartmentPageText; zakopane: ApartmentPageText; koscielisko: ApartmentPageText }> = {
 	pl: {
 		default: {
 			title: "Apartamenty w Zakopanem i Kościelisku",
@@ -134,6 +134,32 @@ const apartmentPageTexts: Record<Locale, { default: ApartmentPageText; zakopane:
 			],
 			heading: "Apartamentos en Kościelisko",
 			subtitle: "Encuentra cómodos apartamentos en Kościelisko — cerca de la naturaleza, senderos y pistas de esquí.",
+		},
+	},
+	it: {
+		default: {
+			title: "Appartamenti MSC a Zakopane e Kościelisko",
+			description:
+				"Cerchi appartamenti MSC sui Tatra? Scopri le nostre offerte a Zakopane e Kościelisko — appartamenti MSC, appartamenti Zakopane, appartamenti Kościelisko e appartamenti hotel in montagna a Zakopane.",
+			keywords: ["Appartamenti MSC", "appartamenti Zakopane", "appartamenti Kościelisko", "appartamenti hotel montagna Zakopane", "alloggio in montagna"],
+			heading: "Appartamenti MSC a Zakopane e Kościelisko",
+			subtitle: "Trova confortevoli appartamenti MSC a Zakopane e Kościelisko — appartamenti MSC e appartamenti hotel in montagna in un unico posto.",
+		},
+		zakopane: {
+			title: "Appartamenti Zakopane",
+			description:
+				"Appartamenti a Zakopane — soggiorni confortevoli e appartamenti hotel in montagna a Zakopane. Scopri le nostre offerte di appartamenti a Zakopane e alloggio in località sciistica.",
+			keywords: ["appartamenti Zakopane", "Appartamenti MSC Zakopane", "apart hotel Zakopane", "alloggio Zakopane", "alloggio in montagna"],
+			heading: "Appartamenti a Zakopane",
+			subtitle: "Cerchi appartamenti MSC a Zakopane? Scopri soggiorni confortevoli vicino al centro e ai Tatra.",
+		},
+		koscielisko: {
+			title: "Appartamenti Kościelisko",
+			description:
+				"Appartamenti a Kościelisko — confortevoli soggiorni in montagna vicino a sentieri e piste da sci. Scopri i nostri appartamenti a Kościelisko per una fuga perfetta in montagna.",
+			keywords: ["appartamenti Kościelisko", "Appartamenti MSC Kościelisko", "alloggio Kościelisko", "alloggio in montagna", "appartamenti Tatra"],
+			heading: "Appartamenti a Kościelisko",
+			subtitle: "Scopri confortevoli appartamenti MSC a Kościelisko — ideali per escursioni e soggiorni invernali.",
 		},
 	},
 }

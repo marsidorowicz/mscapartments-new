@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 			languages: {
 				en: `${baseUrl}/en/privacy`,
 				pl: `${baseUrl}/pl/privacy`,
-				de: `${baseUrl}/de/privacy`,
-				es: `${baseUrl}/es/privacy`,
+				it: `${baseUrl}/it/privacy`,
+				"x-default": `${baseUrl}/pl/privacy`,
 			},
 		},
 		openGraph: {
@@ -72,7 +72,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 	}
 }
 
-const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
+// Italian legal text is not translated yet - falls back to English below.
+const content: Record<string, React.JSX.Element> = {
 	pl: (
 		<>
 			<h2 className="text-2xl font-semibold mt-6 mb-4 text-gray-800">Ustawienia prywatności</h2>
@@ -372,7 +373,7 @@ const content: Record<"pl" | "en" | "de" | "es", React.JSX.Element> = {
 export default async function PrivacyPage(props: { params: Promise<{ lang: Locale }> }) {
 	const { params } = props
 	const { lang } = await params
-	const langKey: Locale = ["pl", "en", "de", "es"].includes(lang) ? (lang as Locale) : "pl"
+	const langKey = (["pl", "en", "it", "de", "es"].includes(lang) ? lang : "pl") as Locale
 	const dictionary = await getDictionary(langKey)
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-[#e4d9c7] via-white to-[#f5f0eb]">
@@ -389,11 +390,13 @@ export default async function PrivacyPage(props: { params: Promise<{ lang: Local
 							<h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-[#cc9678] via-[#b8856a] to-[#a3745c] bg-clip-text text-transparent mb-8 leading-tight">
 								{langKey === "pl"
 									? "Polityka prywatności"
-									: langKey === "en"
-										? "Privacy Policy"
-										: langKey === "de"
-											? "Datenschutzrichtlinie"
-											: "Política de Privacidad"}
+									: langKey === "it"
+										? "Informativa sulla privacy"
+										: langKey === "en"
+											? "Privacy Policy"
+											: langKey === "de"
+												? "Datenschutzrichtlinie"
+												: "Política de Privacidad"}
 							</h1>
 						</div>
 					</div>
@@ -402,7 +405,7 @@ export default async function PrivacyPage(props: { params: Promise<{ lang: Local
 					<div className="space-y-12">
 						{/* Privacy Policy Content */}
 						<section className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-							<div className="text-gray-800">{content[langKey]}</div>
+							<div className="text-gray-800">{content[langKey] || content.en}</div>
 						</section>
 					</div>
 				</div>
