@@ -42,6 +42,16 @@ const staticTranslations: Record<string, Record<string, string>> = {
 		successMsgPaymentLinkText: "pay",
 		close: "Close",
 	},
+	it: {
+		title: "Assegnazione della prenotazione",
+		stepAvailability: "Verifica disponibilità",
+		stepPrice: "Conferma prezzo",
+		stepReservation: "Prenotazione in corso",
+		successMsg: "Grazie per la tua prenotazione, abbiamo inviato un'email di conferma all'indirizzo indicato.",
+		successMsgPaymentPrefix: "Ora puoi pagare la prenotazione in modo sicuro",
+		successMsgPaymentLinkText: "paga",
+		close: "Chiudi",
+	},
 	de: {
 		title: "Reservierung wird zugewiesen",
 		stepAvailability: "Verfügbarkeit prüfen",

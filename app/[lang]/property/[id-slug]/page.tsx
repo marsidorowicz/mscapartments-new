@@ -158,7 +158,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 
 	// Build alternate language URLs with their respective slugs
 	const alternateLanguages: Record<string, string> = {}
-	const languages = ["en", "pl", "de", "es"]
+	const languages = ["en", "pl", "it"]
 
 	languages.forEach((language) => {
 		let langSlug: string | null = null

@@ -31,7 +31,7 @@ interface ITranslation {
 	weekdays: string[]
 }
 
-const translations: Record<"en" | "pl" | "de" | "es", ITranslation> = {
+const translations: Record<"en" | "pl" | "it" | "de" | "es", ITranslation> = {
 	en: {
 		selectDateRange: "Select date range",
 		startDate: "Start Date",
@@ -57,6 +57,19 @@ const translations: Record<"en" | "pl" | "de" | "es", ITranslation> = {
 		year: "Rok",
 		months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
 		weekdays: ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	},
+	it: {
+		selectDateRange: "Seleziona il periodo",
+		startDate: "Data di inizio",
+		endDate: "Data di fine",
+		selectDate: "Seleziona le date",
+		prev: "Prec",
+		next: "Succ",
+		day: "Giorno",
+		month: "Mese",
+		year: "Anno",
+		months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+		weekdays: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
 	},
 	de: {
 		selectDateRange: "Zeitraum auswählen",
@@ -103,14 +116,14 @@ const SimpleDateRangePicker: React.FC<SimpleDateRangePickerProps> = ({ onDateRan
 	const params = useParams() as { lang?: string }
 	const [startDate, setStartDate] = useState<Date | null>(initialStartDate ?? null)
 	const [endDate, setEndDate] = useState<Date | null>(initialEndDate ?? null)
-	const [locale, setLocale] = useState<"pl" | "en" | "de" | "es">("pl")
+	const [locale, setLocale] = useState<"pl" | "en" | "it" | "de" | "es">("pl")
 	const [isOpen, setIsOpen] = useState(false)
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 	const [currentMonth, setCurrentMonth] = useState(startOfMonth(startOfToday()))
 
 	useEffect(() => {
 		// Set locale based on URL parameter or default to 'pl'
-		const lang = (params.lang as "pl" | "en" | "de" | "es") || "pl"
+		const lang = (params.lang as "pl" | "en" | "it" | "de" | "es") || "pl"
 		setLocale(lang)
 	}, [params.lang])
 
@@ -185,16 +198,18 @@ const SimpleDateRangePicker: React.FC<SimpleDateRangePickerProps> = ({ onDateRan
 		setAnchorEl(null)
 	}
 
-	const shortWeekdays: Record<"pl" | "en" | "de" | "es", string[]> = {
+	const shortWeekdays: Record<"pl" | "en" | "it" | "de" | "es", string[]> = {
 		pl: ["nd", "pn", "wt", "śr", "cz", "pt", "so"],
 		en: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+		it: ["do", "lu", "ma", "me", "gi", "ve", "sa"],
 		de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
 		es: ["do", "lu", "ma", "mi", "ju", "vi", "sa"],
 	}
 
-	const shortMonths: Record<"pl" | "en" | "de" | "es", string[]> = {
+	const shortMonths: Record<"pl" | "en" | "it" | "de" | "es", string[]> = {
 		pl: ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"],
 		en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		it: ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"],
 		de: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
 		es: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
 	}

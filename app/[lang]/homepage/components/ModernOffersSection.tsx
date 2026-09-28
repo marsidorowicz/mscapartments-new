@@ -20,6 +20,7 @@ type LocalFeature = {
 	text: {
 		pl: string
 		en: string
+		it: string
 		de: string
 		es: string
 	}
@@ -55,6 +56,7 @@ export default function ModernOffersSection({ dictionary, lang }: ModernOffersSe
 			text: {
 				pl: "Widok na Tatry",
 				en: "View of the Tatra Mountains",
+				it: "Vista sui Monti Tatra",
 				de: "Blick auf die Hohe Tatra",
 				es: "Vistas a los montes Tatras",
 			},
@@ -65,6 +67,7 @@ export default function ModernOffersSection({ dictionary, lang }: ModernOffersSe
 			text: {
 				pl: "Śniadania pod drzwi",
 				en: "Breakfast delivered to your door",
+				it: "Colazione consegnata alla porta",
 				de: "Frühstück an die Tür geliefert",
 				es: "Desayuno a la puerta",
 			},
@@ -75,6 +78,7 @@ export default function ModernOffersSection({ dictionary, lang }: ModernOffersSe
 			text: {
 				pl: "Strefa SPA",
 				en: "SPA zones",
+				it: "Aree SPA",
 				de: "SPA-Bereiche",
 				es: "Zonas de SPA",
 			},
@@ -85,6 +89,7 @@ export default function ModernOffersSection({ dictionary, lang }: ModernOffersSe
 			text: {
 				pl: "Kominek w apartamencie",
 				en: "Fireplace in the apartment",
+				it: "Camino nell'appartamento",
 				de: "Kamin im Apartment",
 				es: "Chimenea en el apartamento",
 			},
@@ -95,6 +100,7 @@ export default function ModernOffersSection({ dictionary, lang }: ModernOffersSe
 			text: {
 				pl: "Najlepsze lokalizacje",
 				en: "Best locations",
+				it: "Le migliori posizioni",
 				de: "Beste Standorte",
 				es: "Las mejores ubicaciones",
 			},

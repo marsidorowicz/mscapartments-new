@@ -105,6 +105,7 @@ export default function ReservationPage({ dictionary }: ReservationPageProps) {
 	const instructionCountdownLabels: Record<string, string> = {
 		pl: "Czas do wyświetlenia instrukcji zameldowania:",
 		en: "Time until check-in instructions are shown:",
+		it: "Tempo prima della visualizzazione delle istruzioni di check-in:",
 		de: "Zeit bis zur Anzeige der Check-in-Anweisungen:",
 		es: "Tiempo hasta que se muestren las instrucciones de registro:",
 	}

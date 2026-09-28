@@ -70,6 +70,16 @@ const translations = {
 		reservationButton: "Book",
 		selectDate: "Select date",
 	},
+	it: {
+		totalPrice: "Prezzo totale",
+		from: "da",
+		night: "notte",
+		additionalFees: "Costi aggiuntivi",
+		bookNow: "Prenota ora",
+		closeMenu: "Chiudi",
+		reservationButton: "Prenota",
+		selectDate: "Seleziona data",
+	},
 	de: {
 		totalPrice: "Gesamtpreis",
 		from: "ab",

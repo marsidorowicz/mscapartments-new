@@ -5,14 +5,13 @@
 import { usePathname, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
-import { i18n } from "../../i18n-config"
-import { Locale } from "../../i18n-config"
+import { i18n, allLocales, type AnyLocale } from "../../i18n-config"
 
 export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 	const pathName = usePathname()
 	const searchParams = useSearchParams()
 	const [isOpen, setIsOpen] = useState(false)
-	const [currentLocale, setCurrentLocale] = useState<Locale>(i18n.defaultLocale)
+	const [currentLocale, setCurrentLocale] = useState<AnyLocale>(i18n.defaultLocale)
 	const [isHydrated, setIsHydrated] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -27,8 +26,8 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 
 		const segments = pathName?.split("/")
 		if (segments && segments.length > 1) {
-			const urlLocale = segments[1] as Locale
-			if (i18n.locales.includes(urlLocale)) {
+			const urlLocale = segments[1] as AnyLocale
+			if (allLocales.includes(urlLocale)) {
 				setCurrentLocale(urlLocale)
 				// Save to localStorage for persistence
 				if (typeof window !== "undefined") {
@@ -38,8 +37,8 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 		} else {
 			// Check localStorage for saved locale
 			if (typeof window !== "undefined") {
-				const savedLocale = localStorage.getItem("selectedLocale") as Locale
-				if (savedLocale && i18n.locales.includes(savedLocale)) {
+				const savedLocale = localStorage.getItem("selectedLocale") as AnyLocale
+				if (savedLocale && allLocales.includes(savedLocale)) {
 					setCurrentLocale(savedLocale)
 				} else {
 					// Default to the i18n defaultLocale
@@ -76,7 +75,7 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 		return `${segments.join("/")}${query ? `?${query}` : ""}`
 	}
 
-	const handleLocaleClick = (locale: Locale) => {
+	const handleLocaleClick = (locale: AnyLocale) => {
 		if (locale === currentLocale) {
 			// Toggle dropdown if clicking the current locale
 			setIsOpen(!isOpen)
@@ -94,6 +93,7 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 		const localeMap: Record<string, string> = {
 			en: "English",
 			pl: "Polski",
+			it: "Italiano",
 			de: "Deutsch",
 			es: "Español",
 		}
@@ -113,7 +113,7 @@ export default function LocaleSwitcher({}: { showAvatar?: boolean }) {
 							{
 								// Show all locales when open
 
-								i18n.locales.map((locale) => (
+								allLocales.map((locale) => (
 									<div className="flex justify-between space-x-2" key={locale}>
 										<Link
 											href={redirectedPathName(locale)}

@@ -2,12 +2,14 @@
 
 import { en } from "./en"
 import { pl } from "./pl"
+import { it } from "./it"
 import { de } from "./de"
 import { es } from "./es"
 
 const dictionaries = {
 	en,
 	pl,
+	it,
 	de,
 	es,
 }
@@ -31,4 +33,4 @@ export const getDictionary = async (locale: string) => {
 	}
 }
 
-export { en, pl, de, es }
+export { en, pl, it, de, es }
