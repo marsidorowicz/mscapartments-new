@@ -36,6 +36,7 @@ export interface AIAvailabilityResult {
 	startDate: string
 	endDate: string
 	guests: number
+	filters: string[]
 	message?: string
 }
 
@@ -55,8 +56,9 @@ export async function searchAvailableOffers(input: {
 	fromdate: string
 	todate: string
 	guests: number
+	filters?: string[]
 }): Promise<AIAvailabilityResult> {
-	const { fromdate, todate, guests } = input
+	const { fromdate, todate, guests, filters } = input
 
 	if (!fromdate || !todate || !guests || guests < 1) {
 		return {
@@ -67,6 +69,7 @@ export async function searchAvailableOffers(input: {
 			startDate: fromdate,
 			endDate: todate,
 			guests,
+			filters: filters || [],
 			message:
 				"Missing or invalid search parameters: fromdate, todate and guests are required.",
 		}
@@ -83,6 +86,7 @@ export async function searchAvailableOffers(input: {
 				startDate: fromdate,
 				endDate: todate,
 				guests,
+				filters: filters || [],
 				message: "The departure date must be after the arrival date.",
 			}
 		}
@@ -102,10 +106,21 @@ export async function searchAvailableOffers(input: {
 		})
 
 		// Filter out test properties by name (case-insensitive)
-		const properties = allProperties.filter(
+		let properties = allProperties.filter(
 			(property): property is (typeof allProperties)[number] =>
 				!property.name.toLowerCase().includes("test")
 		)
+
+		// Filter by required amenities (filters) if provided, e.g. SWIMMING_POOL
+		if (filters && filters.length > 0) {
+			const wanted = new Set(filters.map(f => f.toUpperCase()))
+			properties = properties.filter(
+				(property): property is (typeof allProperties)[number] => {
+					const propFilters = (property.filters || []).map(f => f.toUpperCase())
+					return [...wanted].every(f => propFilters.includes(f))
+				}
+			)
+		}
 
 		const availablePropertyIds: number[] = []
 		const priceSums: Record<number, number> = {}
@@ -206,6 +221,7 @@ export async function searchAvailableOffers(input: {
 			startDate: fromdate,
 			endDate: todate,
 			guests,
+			filters: filters || [],
 			...(availablePropertyIds.length === 0 && {
 				message: "No rooms available for the selected dates and number of guests.",
 			}),
@@ -220,6 +236,7 @@ export async function searchAvailableOffers(input: {
 			startDate: fromdate,
 			endDate: todate,
 			guests,
+			filters: filters || [],
 			message: "Failed to search availability.",
 		}
 	}

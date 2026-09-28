@@ -65,16 +65,20 @@ export async function POST(req: NextRequest) {
 
 		const searchTool = tool({
 			description:
-				"Searches the database for apartments available for a given date range and number of guests. Returns availablePropertyIds, priceSums (total stay price per property) and detailed offers sorted by total price. Use ISO date strings (YYYY-MM-DD) for fromdate and todate.",
+				"Searches the database for apartments available for a given date range and number of guests. Returns availablePropertyIds, priceSums (total stay price per property) and detailed offers sorted by total price. Use ISO date strings (YYYY-MM-DD) for fromdate and todate. Pass filters (e.g. SWIMMING_POOL, SAUNA, JACUZZI, PET_FRIENDLY, WIFI, PARKING) when the visitor asks for specific amenities - only properties with ALL of those filters are returned.",
 			inputSchema: zodSchema(
 				z.object({
 					fromdate: z.string().describe("Arrival date in YYYY-MM-DD format"),
 					todate: z.string().describe("Departure date in YYYY-MM-DD format"),
 					guests: z.number().int().positive().describe("Number of persons"),
+					filters: z
+						.array(z.string())
+						.optional()
+						.describe("Optional amenity filter codes the visitor asked for, e.g. SWIMMING_POOL, SAUNA, JACUZZI, PET_FRIENDLY, WIFI, PARKING"),
 				})
 			),
-			execute: async ({ fromdate, todate, guests }) => {
-				return searchAvailableOffers({ fromdate, todate, guests })
+			execute: async ({ fromdate, todate, guests, filters }) => {
+				return searchAvailableOffers({ fromdate, todate, guests, filters })
 			},
 		})
 		const detailsTool = tool({
@@ -127,9 +131,10 @@ Today's date is ${new Date().toISOString().slice(0, 10)}.
 
 When the visitor asks for an apartment for a stay (e.g. "pokój dla 4 osób na 15-20.12.2026", "room for 2 people tomorrow"), you MUST:
 1. Extract arrival date, departure date and number of guests. If the date is ambiguous (e.g. "tomorrow") compute it relative to today. "one night from today" means arrival = today, departure = today + 1.
-2. Call the searchAvailableOffers tool with those parameters.
-3. Present the matching apartments clearly in the visitor's language: apartment name, location, occupancy (min-max persons), dates, number of nights and TOTAL price for the whole stay in PLN. Sort by total price from lowest to highest. If the visitor asked for the cheapest option, highlight the lowest-priced apartment.
-4. If nothing matches, say no apartment is available for those dates and suggest trying other dates.
+2. If the visitor asks for specific amenities (pool, sauna, jacuzzi, parking, pet-friendly, Wi-Fi, air conditioning, balcony, etc.), also map them to filter codes and pass them in the filters parameter. Common codes: SWIMMING_POOL, SAUNA, JACUZZI, PET_FRIENDLY, WIFI, PARKING, AIR_CONDITIONING, BALCONY, TERRACE, FIREPLACE, TV, DISHWASHER.
+3. Call the searchAvailableOffers tool with those parameters (dates, guests, and filters when requested).
+4. Present the matching apartments clearly in the visitor's language: apartment name, location, occupancy (min-max persons), dates, number of nights and TOTAL price for the whole stay in PLN. Sort by total price from lowest to highest. If the visitor asked for the cheapest option, highlight the lowest-priced apartment.
+5. If nothing matches, say no apartment is available for those dates and suggest trying other dates.
 
 Tone (IMPORTANT):
 - ALWAYS be positive, warm and encouraging. Never sound apologetic, never say the result is "unfortunate", "poor", "limited" or that the visitor gets "only" one option as if it were bad.
