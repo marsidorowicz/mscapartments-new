@@ -28,6 +28,7 @@ type AISearchWidgetProps = {
 const thinkingLabels: Record<string, string> = {
 	pl: "Szukam dostępnych apartamentów...",
 	en: "Searching for available apartments...",
+	it: "Cerco appartamenti disponibili...",
 	de: "Suche nach verfügbaren Apartments...",
 	es: "Buscando apartamentos disponibles...",
 }
