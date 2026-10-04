@@ -11,6 +11,7 @@ model PersonBasedPricing {
 model BrandSettings {
   id        Int       @id @default(autoincrement())
   name      String    @unique
+  token     String?   @unique
   settings  Json
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

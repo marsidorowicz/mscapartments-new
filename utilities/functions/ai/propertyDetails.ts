@@ -80,20 +80,26 @@ const AMENITY_LABELS: Record<string, string> = {
 	GROUND_FLOOR: "ground floor",
 }
 
-export async function getPropertyDetails(input: { propertyId: number }): Promise<{
+export async function getPropertyDetails(input: {
+	propertyId: number
+	scope?: { brandId?: number }
+}): Promise<{
 	success: boolean
 	property?: AIPropertyDetails
 	message?: string
 }> {
-	const { propertyId } = input
+	const { propertyId, scope } = input
 
 	if (!propertyId || isNaN(propertyId)) {
 		return { success: false, message: "A valid numeric propertyId is required." }
 	}
 
 	try {
-		const property = await prisma.property.findUnique({
-			where: { id: propertyId },
+		const property = await prisma.property.findFirst({
+			where: {
+				id: propertyId,
+				...(scope?.brandId ? { brandId: scope.brandId } : {}),
+			},
 			include: {
 				images: { orderBy: { order: "asc" } },
 				place: true,

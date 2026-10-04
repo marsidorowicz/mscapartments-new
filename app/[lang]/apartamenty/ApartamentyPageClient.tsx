@@ -2,13 +2,13 @@
 
 "use client"
 
-import React, { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import Image from "next/image"
 import { Dictionary } from "../../types/dictionary"
 import { Locale } from "../../i18n-config"
 import { Property } from "@/types"
-import SearchBar from "./components/SearchBar"
-import AISearchWidget, { AiSearchAction } from "./components/AISearchWidget"
+// import SearchBar from "./components/SearchBar"
+import AISearchWidget, { type AiSearchAction } from "@marsidorowicz/simplevent-sdk"
 import ModernApartmentTile from "./components/ModernApartmentTile"
 import { sendGAEvent } from "@next/third-parties/google"
 import ModernNav from "../homepage/components/ModernNav"
@@ -34,17 +34,16 @@ type AdvancedFiltersSnapshot = {
 export default function ApartamentyPageClient({ dictionary: _dictionary, lang, dateRange, initialLocation }: ApartamentyPageClientProps) {
 	const [properties, setProperties] = useState<Property[]>([])
 	const [loading, setLoading] = useState(true)
-	const [filterLocation, setFilterLocation] = useState(initialLocation || "")
-	const [filterGuests, setFilterGuests] = useState("")
-	const [filterSearchName, setFilterSearchName] = useState("")
+	const [filterLocation] = useState(initialLocation || "")
+	const [filterGuests] = useState("")
+	const [filterSearchName] = useState("")
 	const [filterDateRange, setFilterDateRange] = useState<{ start: Date | null; end: Date | null } | null>(null)
 	const [searchedDateRange, setSearchedDateRange] = useState<{ start: Date | null; end: Date | null } | null>(null)
 	const [availablePropertyIds, setAvailablePropertyIds] = useState<Set<number>>(new Set())
 	const [propertyPriceSums, setPropertyPriceSums] = useState<Record<number, number>>({})
-	const [places, setPlaces] = useState<{ id: number; name: string; location: string }[]>([])
-	const [searchTrigger, setSearchTrigger] = useState(0)
+	const [searchTrigger] = useState(0)
 	// Advanced filter snapshot state (populated on explicit search click or initial load, mirroring date behavior)
-	const [searchedAdvancedFilters, setSearchedAdvancedFilters] = useState<AdvancedFiltersSnapshot | null>(null)
+	const [searchedAdvancedFilters] = useState<AdvancedFiltersSnapshot | null>(null)
 	const [advancedFilterTick, setAdvancedFilterTick] = useState(0)
 	// AI assistant search results drive the tile list: restrict to returned ids, use returned prices, optional price sort
 	const [aiPropertyIds, setAiPropertyIds] = useState<Set<number> | null>(null)
@@ -98,20 +97,6 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 		} catch {
 			return null
 		}
-	}
-
-	const handleFilterChange = ({ location, guests, searchName }: { location: string; guests: string; searchName: string }) => {
-		setFilterLocation(location)
-		setFilterGuests(guests)
-		setFilterSearchName(searchName)
-		if (!filterDateRange?.start || !filterDateRange?.end) {
-			setSearchedDateRange(null)
-		}
-		// Snapshot current advanced filters (from rev13 FilterButtonSearch LS) so they only apply after explicit search click (like dates)
-		const currentAdv = getCurrentAdvancedFilters()
-		setSearchedAdvancedFilters(currentAdv)
-		// Trigger availability re-check when search filters change
-		setSearchTrigger((prev) => prev + 1)
 	}
 
 	// Apply an AI assistant search result to the tile list (filter to matched ids, use returned prices, optional sort)
@@ -275,14 +260,14 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 				dateRangeMatch = availablePropertyIds.size > 0 ? availablePropertyIds.has(property.id) : false
 			}
 
-return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMatch
-			})
-		}, [properties, filterLocation, filterGuests, filterSearchName, searchedDateRange, availablePropertyIds, searchedAdvancedFilters])
+			return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMatch
+		})
+	}, [properties, filterLocation, filterGuests, filterSearchName, searchedDateRange, availablePropertyIds, searchedAdvancedFilters])
 
 	// When the AI assistant returned a search result, restrict to the matched ids and optionally sort by price
 	const displayedProperties = useMemo(() => {
 		if (!aiPropertyIds) return filteredProperties
-		const result = filteredProperties.filter(p => aiPropertyIds.has(p.id))
+		const result = filteredProperties.filter((p) => aiPropertyIds.has(p.id))
 		if (aiSortBy === "price_asc" && aiPriceSums) {
 			return [...result].sort((a, b) => {
 				const pa = aiPriceSums[a.id] ?? Number.MAX_SAFE_INTEGER
@@ -357,12 +342,6 @@ return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMa
 				}
 
 				setProperties(fetchedProperties)
-
-				// Extract unique places
-				const uniquePlaces = Array.from(
-					new Map((fetchedProperties as Property[]).filter((p) => p.place?.id && p.place).map((p: Property) => [p.place!.id, p.place!])).values(),
-				) as { id: number; name: string; location: string }[]
-				setPlaces(uniquePlaces)
 			} catch (error) {
 				console.error("Error fetching properties:", error)
 				propertiesInitialized.current = false
@@ -401,9 +380,17 @@ return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMa
 					<h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">{pageText.heading}</h1>
 					<p className="mt-3 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">{pageText.subtitle}</p>
 				</div>
-{/* AI assistant search - replaces the classic search bar */}
-			<AISearchWidget dictionary={_dictionary} lang={lang} onApplyAiSearch={handleApplyAiSearch} />
-			{/* Classic search bar (kept for reference / future re-enable)
+				{/* AI assistant search - replaces the classic search bar */}
+				<AISearchWidget
+					lang={lang}
+					labels={{
+						assistantName: _dictionary.apartamenty.aiAssistantName,
+						placeholder: _dictionary.apartamenty.aiSearchPlaceholder || _dictionary.apartamenty.searchByNamePlaceholder,
+						resultsNote: _dictionary.apartamenty.aiSearchResultsNote,
+					}}
+					onApplyAiSearch={handleApplyAiSearch}
+				/>
+				{/* Classic search bar (kept for reference / future re-enable)
 			<SearchBar
 				dictionary={_dictionary}
 				color="#1D2430"
@@ -413,19 +400,19 @@ return locationMatch && guestsMatch && nameMatch && dateRangeMatch && advancedMa
 				initialLocation={initialLocation}
 			/>
 			*/}
-			{/* Results summary */}
-			<div className="flex justify-center text-center mt-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 px-2 py-3 text-xl text-slate-700 uppercase">
-				<div className="font-semibold text-slate-900">
-					{isFilterStale
-						? "Wybrano nowe filtry, wyszukaj ponownie"
-						: isSearchResultStale
-							? "Wykryto zmianę dat, wyszukaj ponownie"
-							: (_dictionary?.apartments?.searchResults || "Znaleziono apartamentów: {{total}} ").replace(
-									"{{total}}",
-									displayedProperties.length.toString(),
-								)}
+				{/* Results summary */}
+				<div className="flex justify-center text-center mt-4 mb-4 rounded-2xl border border-slate-200 bg-slate-50 px-2 py-3 text-xl text-slate-700 uppercase">
+					<div className="font-semibold text-slate-900">
+						{isFilterStale
+							? "Wybrano nowe filtry, wyszukaj ponownie"
+							: isSearchResultStale
+								? "Wykryto zmianę dat, wyszukaj ponownie"
+								: (_dictionary?.apartments?.searchResults || "Znaleziono apartamentów: {{total}} ").replace(
+										"{{total}}",
+										displayedProperties.length.toString(),
+									)}
+					</div>
 				</div>
-			</div>
 				{/* Properties Grid */}
 				<div className="flex-1 py-8">
 					{loading ? (

@@ -12,7 +12,7 @@ import ModernHeroSection from "./components/ModernHeroSection"
 import ModernApartmentCarousel from "./components/ModernApartmentCarousel"
 import Footer from "./components/Footer"
 import OfferBookingModal from "./components/OfferBookingModal"
-import AISearchWidget, { AiSearchAction } from "../apartamenty/components/AISearchWidget"
+import AISearchWidget, { type AiSearchAction } from "@marsidorowicz/simplevent-sdk"
 import ModernApartmentTile from "../apartamenty/components/ModernApartmentTile"
 
 type HomepagePageClientProps = {
@@ -177,7 +177,15 @@ export default function HomepagePageClient({ dictionary, lang }: HomepagePageCli
 			<ModernHeroSection dictionary={dictionary} lang={lang} />
 
 			{/* AI booking assistant */}
-			<AISearchWidget dictionary={dictionary} lang={lang} onApplyAiSearch={handleApplyAiSearch} />
+			<AISearchWidget
+				lang={lang}
+				labels={{
+					assistantName: dictionary.apartamenty.aiAssistantName,
+					placeholder: dictionary.apartamenty.aiSearchPlaceholder || dictionary.apartamenty.searchByNamePlaceholder,
+					resultsNote: dictionary.apartamenty.aiSearchResultsNote,
+				}}
+				onApplyAiSearch={handleApplyAiSearch}
+			/>
 
 			{/* AI search results - same tiles and design as /apartamenty */}
 			{aiResults !== null && (

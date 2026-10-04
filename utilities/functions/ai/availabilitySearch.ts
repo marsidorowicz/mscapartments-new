@@ -57,8 +57,9 @@ export async function searchAvailableOffers(input: {
 	todate: string
 	guests: number
 	filters?: string[]
+	scope?: { brandId?: number }
 }): Promise<AIAvailabilityResult> {
-	const { fromdate, todate, guests, filters } = input
+	const { fromdate, todate, guests, filters, scope } = input
 
 	if (!fromdate || !todate || !guests || guests < 1) {
 		return {
@@ -97,6 +98,7 @@ export async function searchAvailableOffers(input: {
 			where: {
 				state: "active",
 				room_id: { not: null, gt: 0 },
+				...(scope?.brandId ? { brandId: scope.brandId } : {}),
 			},
 			include: {
 				place: true,
