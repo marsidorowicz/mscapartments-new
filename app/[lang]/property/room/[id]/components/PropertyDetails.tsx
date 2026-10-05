@@ -5,7 +5,7 @@ import { Property } from "@/types"
 import { Dictionary } from "../../../../../types/dictionary"
 import { Locale } from "../../../../../i18n-config"
 // import BookNowButton from "@/app/[lang]/components/BookNowButton"
-import DateRangeCalendar from "@/app/[lang]/components/rev13/DateRangeCalendar"
+import { DateRangeCalendar } from "@marsidorowicz/simplevent-sdk"
 import PropertyMap from "./PropertyMap"
 import ModernNav from "../../../../homepage/components/ModernNav"
 import ImageGallery from "./ImageGallery"
@@ -14,12 +14,13 @@ import BedIcon from "@mui/icons-material/Bed"
 import BookingHeader from "../../../../components/BookingHeader"
 import { NotificationComponent } from "@/app/[lang]/components/rev13/Notification"
 import { useSelector, useDispatch } from "react-redux"
-import { setNotification } from "@/state/action-creators"
+import { setNotification, Actions } from "@/state/action-creators"
 import { RootState } from "@/state/store"
 import { useLocalStorageNew } from "@/utilities/hooks/useLocalStorage"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import { format } from "date-fns"
 
 type BasketItem = {
 	id: string | number
@@ -112,6 +113,52 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 			: minPrice
 	const finalPrice = Math.max(minPrice, basePrice * (1 - (property.lastMinuteDiscountPercentage || 0) / 100))
 	const hasPrice = minPrice > 0
+
+	const searchParams = useSearchParams()
+	const urlDateRange = searchParams.get("dateRange")
+	const urlRangeParts = urlDateRange ? urlDateRange.split("_") : null
+	const initialCalendarStart = urlRangeParts?.[0] ? new Date(urlRangeParts[0]) : undefined
+	const initialCalendarEnd = urlRangeParts?.[1] ? new Date(urlRangeParts[1]) : undefined
+
+	// Availability entries for the SDK calendar (its own /api/nobeds-cache endpoint).
+	const fetchCalendarEntries = async ({
+		propertyId,
+		from,
+		to,
+	}: {
+		propertyId: string
+		from: string
+		to: string
+	}) => {
+		const res = await fetch(`/api/nobeds-cache/entries?id=${propertyId}&startDate=${from}&endDate=${to}`)
+		const data = await res.json().catch(() => ({}))
+		return data.entries || []
+	}
+
+	// Reproduce the Redux/basket side effects the old in-app calendar performed.
+	const handleDateRangeChange = (start: Date | null, end: Date | null, total: number) => {
+		const startStr = start ? format(start, "yyyy-MM-dd") : undefined
+		const endStr = end ? format(end, "yyyy-MM-dd") : undefined
+		dispatch({
+			type: Actions.SET_FILTERS,
+			payload: {
+				byCreatedAt: false,
+				startDate: startStr,
+				endDate: endStr,
+				totalPrice: start && end ? total : null,
+			},
+		})
+		if (start && end) {
+			const range = `${startStr}_${endStr}`
+			setBasketItems(prev =>
+				prev.map(item =>
+					item.id?.toString() === property.id?.toString()
+						? { ...item, dateRange: range, totalPrice: total }
+						: item
+				)
+			)
+		}
+	}
 
 	const handleAddToBasket = (e?: React.MouseEvent) => {
 		if (e) {
@@ -295,6 +342,11 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 									monthsToShow={3}
 									commission={property.commission}
 									brand={property.brand}
+									startDate={initialCalendarStart}
+									endDate={initialCalendarEnd}
+									fetchEntries={fetchCalendarEntries}
+									onDateRangeChange={handleDateRangeChange}
+									syncUrl
 								/>
 							</div>
 							{/* Property Map */}

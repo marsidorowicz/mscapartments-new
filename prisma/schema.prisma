@@ -11,11 +11,36 @@ model PersonBasedPricing {
 model BrandSettings {
   id        Int       @id @default(autoincrement())
   name      String    @unique
-  token     String?   @unique
   settings  Json
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   properties Property[]
+  sites      SiteBrand[]
+}
+
+// A Site is an external website/channel that embeds the AI widget.
+// Its token is public (lives in the customer's HTML); access is enforced by
+// origin allowlist + rate limiting, and it can expose one or more brands.
+model Site {
+  id            Int         @id @default(autoincrement())
+  name          String
+  token         String      @unique
+  aiEnvSuffix   String?
+  aiModel       String?
+  settings      Json
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  brands        SiteBrand[]
+}
+
+model SiteBrand {
+  site    Site          @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId  Int
+  brand   BrandSettings @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  brandId Int
+
+  @@id([siteId, brandId])
+  @@index([brandId])
 }
 generator client {
   provider = "prisma-client-js"
