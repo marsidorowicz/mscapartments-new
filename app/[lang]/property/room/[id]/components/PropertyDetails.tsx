@@ -166,13 +166,6 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 			e.preventDefault()
 		}
 
-		if (isInBasket) {
-			if (typeof window !== "undefined") {
-				window.dispatchEvent(new Event("open-basket"))
-			}
-			return
-		}
-
 		if (!dateRangeParam) {
 			document.getElementById("availability-calendar")?.scrollIntoView({ behavior: "smooth" })
 			dispatch(
@@ -195,11 +188,9 @@ export default function PropertyDetails({ property, dictionary, lang }: Property
 			currency: "PLN",
 		}
 
-		setBasketItems((prev) => {
-			const exists = prev.some((i) => i.id?.toString() === item.id?.toString())
-			if (exists) return prev
-			return [...prev, item]
-		})
+		// Upsert: refresh an existing basket item's dates and price for the current
+		// selection instead of keeping a stale cached item.
+		setBasketItems((prev) => [...prev.filter((i) => i.id?.toString() !== item.id?.toString()), item])
 
 		if (typeof window !== "undefined") {
 			window.dispatchEvent(new Event("open-basket"))

@@ -781,6 +781,44 @@ export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [basketItems])
 
+	// Re-price items once their property details are loaded, so a stale cached
+	// basket item (e.g. added in an earlier session) shows the current price
+	// immediately instead of a misleading total until the submit-time check.
+	const revalidatedBasketRef = useRef<Set<string>>(new Set())
+	useEffect(() => {
+		if (!basketItems.length) return
+		let cancelled = false
+		const revalidate = async () => {
+			for (const item of basketItems) {
+				if (item.fromOffer) continue
+				const state = itemStates[item.id.toString()]
+				const property = state?.property
+				if (!property?.room_id) continue
+				const range = parseDateRange(item.dateRange)
+				if (!range) continue
+				const key = `${item.id}_${item.dateRange}`
+				if (revalidatedBasketRef.current.has(key)) continue
+				revalidatedBasketRef.current.add(key)
+				try {
+					const result = await fetchCurrentNoBedsCachePrice(property.id, range.start, range.end, property.commission, property.brand)
+					if (cancelled) return
+					if (result.available && Math.abs(result.totalPrice - (item.totalPrice ?? 0)) > 0.01) {
+						setBasketItems((prev) =>
+							prev.map((i) => (i.id.toString() === item.id.toString() ? { ...i, totalPrice: result.totalPrice } : i)),
+						)
+					}
+				} catch {
+					/* transient error; submit-time check still applies */
+				}
+			}
+		}
+		revalidate()
+		return () => {
+			cancelled = true
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [basketItems, itemStates])
+
 	const updateGuests = (itemId: string, value: number) => {
 		setItemStates((prev) => {
 			const existing = prev[itemId]

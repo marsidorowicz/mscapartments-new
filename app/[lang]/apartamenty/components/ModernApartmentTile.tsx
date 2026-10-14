@@ -199,12 +199,6 @@ export default function ModernApartmentTile({ property, dictionary, lang, mainPa
 	const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation()
 		e.preventDefault()
-		if (isInBasket) {
-			if (typeof window !== "undefined") {
-				window.dispatchEvent(new Event("open-basket"))
-			}
-			return
-		}
 		if (!dateRangeParam) {
 			setIsDateDialogOpen(true)
 			return
@@ -219,12 +213,13 @@ export default function ModernApartmentTile({ property, dictionary, lang, mainPa
 			currency: "PLN",
 		}
 
-		setBasketItems((prev) => {
-			if (prev.some((existing) => existing.id === item.id)) {
-				return prev
-			}
-			return [...prev, item]
-		})
+		// Upsert: if the property is already in the basket, refresh its dates and
+		// price for the current selection instead of keeping a stale cached item.
+		setBasketItems((prev) => [...prev.filter((existing) => existing.id !== item.id), item])
+
+		if (isInBasket && typeof window !== "undefined") {
+			window.dispatchEvent(new Event("open-basket"))
+		}
 	}
 
 	// Format price
