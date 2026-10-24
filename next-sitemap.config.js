@@ -1,7 +1,7 @@
 /** @format */
 
 /** @type {import('next-sitemap').IConfig} */
-module.exports = {
+const config = {
 	siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl",
 	generateRobotsTxt: true,
 	generateIndexSitemap: true,
@@ -105,6 +105,8 @@ module.exports = {
 		additionalSitemaps: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"}/server-sitemap.xml`],
 	},
 }
+
+export default config
 
 /**
  * Get priority based on path and locale
