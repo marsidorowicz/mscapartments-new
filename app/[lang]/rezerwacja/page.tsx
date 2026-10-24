@@ -1,6 +1,7 @@
 /** @format */
 
 import BasketPageClient from "./BasketPageClient"
+import { getDictionary } from "../../dictionaries"
 import { Locale } from "../../i18n-config"
 
 type RezerwacjaProps = {
@@ -16,5 +17,6 @@ export const metadata = {
 
 export default async function RezerwacjaPage({ params }: RezerwacjaProps) {
 	const { lang } = await params
-	return <BasketPageClient lang={lang} />
+	const dictionary = await getDictionary(lang)
+	return <BasketPageClient lang={lang} dictionary={dictionary} />
 }

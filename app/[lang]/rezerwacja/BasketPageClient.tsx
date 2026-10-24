@@ -10,7 +10,11 @@ import {
 	type BookingLocale,
 	type BookingProperty,
 } from "@marsidorowicz/simplevent-sdk"
+import { Suspense } from "react"
 import { buildPropertyUrl } from "@/utilities/functions/propertyUrl"
+import ModernNav from "../homepage/components/ModernNav"
+import { Dictionary } from "../../types/dictionary"
+import { Locale } from "../../i18n-config"
 
 // Reservation owner used by the legacy basket flow.
 const DEFAULT_USER_ID = "clok0rd6f0000kkdgyf1pd0t3"
@@ -158,18 +162,23 @@ const mscApi: Partial<BookingApi> = {
  * picker, basket, offer/discount and checkout all live in the SDK; this file
  * only supplies mscapartments' data adapters and branding.
  */
-export default function BasketPageClient({ lang = "pl" }: { lang?: string }) {
+export default function BasketPageClient({ lang = "pl", dictionary }: { lang?: string; dictionary: Dictionary }) {
 	return (
-		<BookingEngine
-			lang={lang as BookingLocale}
-			brand={["MSC", "MOUNTAIN"]}
-			applyCommission
-			commissionBrands={["MOUNTAIN"]}
-			source="msc"
-			userId={DEFAULT_USER_ID}
-			storageKey="rootBasket"
-			api={mscApi}
-			propertyUrl={(item, property) => buildPropertyUrl(item.id, property?.name ?? item.name, lang, property?.slugs)}
-		/>
+		<>
+			<Suspense fallback={null}>
+				<ModernNav dictionary={dictionary} lang={lang as Locale} />
+			</Suspense>
+			<BookingEngine
+				lang={lang as BookingLocale}
+				brand={["MSC", "MOUNTAIN"]}
+				applyCommission
+				commissionBrands={["MOUNTAIN"]}
+				source="msc"
+				userId={DEFAULT_USER_ID}
+				storageKey="rootBasket"
+				api={mscApi}
+				propertyUrl={(item, property) => buildPropertyUrl(item.id, property?.name ?? item.name, lang, property?.slugs)}
+			/>
+		</>
 	)
 }
