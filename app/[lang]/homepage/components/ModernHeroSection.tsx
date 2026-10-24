@@ -48,7 +48,17 @@ export default function ModernHeroSection({ dictionary, lang }: ModernHeroSectio
 		<div className="relative bg-white">
 			{/* Hero Image Background */}
 			<div className="relative h-[700px] md:h-[800px] lg:h-[900px] overflow-hidden">
-				<Image src="/images/tlo.jpg" alt="Mountain landscape background" fill className="object-cover" quality={100} sizes="100vw" priority />
+				<Image
+					src="/images/tlo.jpg"
+					alt="Mountain landscape background"
+					fill
+					className="object-cover"
+					quality={75}
+					placeholder="blur"
+					blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
+					sizes="100vw"
+					priority
+				/>
 				{/* Dark overlay */}
 				<div className="absolute inset-0 " />
 

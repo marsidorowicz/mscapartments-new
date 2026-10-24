@@ -157,83 +157,83 @@ export default function HomepagePageClient({ dictionary, lang }: HomepagePageCli
 		return result
 	}, [properties, aiPropertyIds, aiPriceSums, aiSortBy])
 
-	if (!mounted) {
-		return (
-			<div className="min-h-screen flex items-center justify-center bg-white">
-				<div className="text-center">
-					<div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-					<p className="text-gray-600 font-medium">{dictionary.home.loading || "Loading..."}</p>
-				</div>
-			</div>
-		)
-	}
-
 	return (
 		<div className="min-h-screen bg-white overflow-x-hidden">
 			{/* Modern Navigation */}
 			<ModernNav dictionary={dictionary} lang={lang} />
 
-			{/* Hero Section with parallax */}
+			{/* Hero Section - rendered on the server so the LCP image is preloaded */}
 			<ModernHeroSection dictionary={dictionary} lang={lang} />
 
-			{/* AI booking assistant */}
-			<AISearchWidget
-				lang={lang}
-				labels={{
-					assistantName: dictionary.apartamenty.aiAssistantName,
-					placeholder: dictionary.apartamenty.aiSearchPlaceholder || dictionary.apartamenty.searchByNamePlaceholder,
-					resultsNote: dictionary.apartamenty.aiSearchResultsNote,
-				}}
-				onApplyAiSearch={handleApplyAiSearch}
-			/>
+			{!mounted ? (
+				<div className="min-h-[50vh] flex items-center justify-center bg-white">
+					<div className="text-center">
+						<div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+						<p className="text-gray-600 font-medium">{dictionary.home.loading || "Loading..."}</p>
+					</div>
+				</div>
+			) : (
+				<>
+					{/* AI booking assistant */}
+					<AISearchWidget
+						lang={lang}
+						labels={{
+							assistantName: dictionary.apartamenty.aiAssistantName,
+							placeholder: dictionary.apartamenty.aiSearchPlaceholder || dictionary.apartamenty.searchByNamePlaceholder,
+							resultsNote: dictionary.apartamenty.aiSearchResultsNote,
+						}}
+						onApplyAiSearch={handleApplyAiSearch}
+					/>
 
-			{/* AI search results - same tiles and design as /apartamenty */}
-			{aiResults !== null && (
-				<div className="bg-white py-8">
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-0 sm:px-7 lg:px-9 w-full">
-						{aiResults.map(property => (
-							<div key={property.id} className="transition-all duration-700 ease-out translate-y-0 opacity-100 scale-100">
-								<ModernApartmentTile
-									property={property}
-									dictionary={dictionary}
-									lang={lang}
-									mainPage={false}
-									priceForRange={aiPriceSums?.[property.id]}
-								/>
+					{/* AI search results - same tiles and design as /apartamenty */}
+					{aiResults !== null && (
+						<div className="bg-white py-8">
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-0 sm:px-7 lg:px-9 w-full">
+								{aiResults.map(property => (
+									<div key={property.id} className="transition-all duration-700 ease-out translate-y-0 opacity-100 scale-100">
+										<ModernApartmentTile
+											property={property}
+											dictionary={dictionary}
+											lang={lang}
+											mainPage={false}
+											priceForRange={aiPriceSums?.[property.id]}
+										/>
+									</div>
+								))}
 							</div>
-						))}
-					</div>
-				</div>
-			)}
+						</div>
+					)}
 
-			{/* Apartment Carousel Section - hidden while AI results are shown */}
-			{aiResults === null && (
-				<div id="apartments" className="py-4 bg-white">
-					<div className="container mx-auto px-4">
-						<ModernApartmentCarousel dictionary={dictionary} lang={lang} />
-					</div>
-				</div>
-			)}
+					{/* Apartment Carousel Section - hidden while AI results are shown */}
+					{aiResults === null && (
+						<div id="apartments" className="py-4 bg-white">
+							<div className="container mx-auto px-4">
+								<ModernApartmentCarousel dictionary={dictionary} lang={lang} />
+							</div>
+						</div>
+					)}
 
-			{/* Locations Section */}
-			{/* <ModernLocationsSection dictionary={dictionary} lang={lang} /> */}
+					{/* Locations Section */}
+					{/* <ModernLocationsSection dictionary={dictionary} lang={lang} /> */}
 
-			{/* Offers Section */}
-			{/* <ModernOffersSection dictionary={dictionary} lang={lang} /> */}
+					{/* Offers Section */}
+					{/* <ModernOffersSection dictionary={dictionary} lang={lang} /> */}
 
-			{/* Reviews Section */}
-			{/* <ModernReviewsSection dictionary={dictionary} /> */}
+					{/* Reviews Section */}
+					{/* <ModernReviewsSection dictionary={dictionary} /> */}
 
-			{/* Footer */}
-			<Footer lang={lang} />
-			{isOfferModalOpen && offerData && (
-				<OfferBookingModal
-					offerData={offerData}
-					isOpen={isOfferModalOpen}
-					onClose={() => setIsOfferModalOpen(false)}
-					dictionary={dictionary}
-					lang={lang}
-				/>
+					{/* Footer */}
+					<Footer lang={lang} />
+					{isOfferModalOpen && offerData && (
+						<OfferBookingModal
+							offerData={offerData}
+							isOpen={isOfferModalOpen}
+							onClose={() => setIsOfferModalOpen(false)}
+							dictionary={dictionary}
+							lang={lang}
+						/>
+					)}
+				</>
 			)}
 		</div>
 	)
