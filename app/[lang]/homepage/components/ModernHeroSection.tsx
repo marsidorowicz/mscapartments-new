@@ -2,7 +2,6 @@
 
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 
 import { Dictionary } from "../../../types/dictionary"
@@ -13,6 +12,9 @@ type ModernHeroSectionProps = {
 	dictionary: Dictionary
 	lang: Locale
 }
+
+const HERO_BLUR =
+	"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
 
 // Component for animated letter splits
 const AnimatedText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
@@ -47,18 +49,21 @@ export default function ModernHeroSection({ dictionary, lang }: ModernHeroSectio
 	return (
 		<div className="relative bg-white">
 			{/* Hero Image Background */}
-			<div className="relative h-[700px] md:h-[800px] lg:h-[900px] overflow-hidden">
-				<Image
-					src="/images/tlo.jpg"
-					alt="Mountain landscape background"
-					fill
-					className="object-cover"
-					quality={75}
-					placeholder="blur"
-					blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
-					sizes="100vw"
-					priority
-				/>
+			<div
+				className="relative h-[700px] md:h-[800px] lg:h-[900px] overflow-hidden bg-cover bg-center"
+				style={{ backgroundImage: `url("${HERO_BLUR}")` }}>
+				{/* Static, pre-optimized hero: bypasses /_next/image so the LCP image is a plain cached file */}
+				<link rel="preload" as="image" href="/images/tlo-hero.avif" type="image/avif" fetchPriority="high" />
+				<picture>
+					<source srcSet="/images/tlo-hero.avif" type="image/avif" />
+					<img
+						src="/images/tlo.jpg"
+						alt="Mountain landscape background"
+						className="absolute inset-0 h-full w-full object-cover"
+						fetchPriority="high"
+						decoding="async"
+					/>
+				</picture>
 				{/* Dark overlay */}
 				<div className="absolute inset-0 " />
 

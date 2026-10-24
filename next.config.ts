@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
 	experimental: {
 		scrollRestoration: false,
 	},
+	async headers() {
+		return [
+			{
+				// Pre-optimized static hero image - hashed only by name, so cache it forever.
+				source: "/images/tlo-hero.avif",
+				headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+			},
+		]
+	},
 	images: {
 		qualities: [50, 70, 75, 80],
 		remotePatterns: [
