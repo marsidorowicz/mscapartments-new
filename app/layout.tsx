@@ -3,7 +3,7 @@
 import "./globals.css"
 import { ReactNode } from "react"
 import type { Metadata } from "next"
-import { GoogleAnalytics } from "@next/third-parties/google"
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
 import Image from "next/image"
 import ReduxProvider from "./components/ReduxProvider"
 import SessionProvider from "./components/SessionProvider"
@@ -14,6 +14,9 @@ export const metadata: Metadata = {
 	title: "MSC Apartments",
 	description: "Znajdź komfortowy apartament w górach dla swojej Rodziny",
 	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"),
+	verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+		? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+		: undefined,
 }
 
 type LayoutProps = {
@@ -70,6 +73,7 @@ fbq('track', 'PageView');
 				{/* Google Analytics & Tag Manager - Only in production */}
 				{process.env.NODE_ENV === "production" && (
 					<>
+						{process.env.NEXT_PUBLIC_GTM_ID ? <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} /> : null}
 						<GoogleAnalytics gaId="G-42139CJM3V" />
 					</>
 				)}

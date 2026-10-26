@@ -183,20 +183,6 @@ const TopBar: React.FC<TopBarProps> = ({ dictionary }) => {
 									{dictionary.navigation.offers}
 								</button>
 
-								{/* Zakopane Rooms */}
-								<button
-									onClick={() => {
-										if (isHydrated) {
-											window.open(`/${locale}/zakopane-noclegi`, "_self")
-										}
-									}}
-									className="text-gray-700 hover:text-amber-600 px-2 lg:px-3 py-2 rounded-md font-medium transition-colors h-10 flex items-center whitespace-nowrap"
-									style={{
-										fontSize: "clamp(0.875rem, 1.2vw, 1.25rem)",
-									}}>
-									{dictionary.navigation.zakopaneRooms}
-								</button>
-
 								{/* Join Us */}
 								<button
 									onClick={() => {

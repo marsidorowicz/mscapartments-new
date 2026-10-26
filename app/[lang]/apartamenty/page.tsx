@@ -13,14 +13,13 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
 	const { lang } = await params
-	const dictionary = await getDictionary(lang)
 
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/apartamenty`
 	const pageText = getApartamentyPageText(lang)
 
 	return {
-		title: `${pageText.title} - ${dictionary.title}`,
+		title: pageText.title,
 		description: pageText.description,
 		keywords: pageText.keywords.join(", "),
 		authors: [

@@ -471,13 +471,6 @@ export default function ModernNav({ dictionary, lang }: ModernNavProps) {
 						</Link>
 
 						<Link
-							href={`/${lang}/zakopane-noclegi`}
-							className="block py-2 text-gray-700 hover:text-[#7a4a35] font-medium"
-							onClick={() => setIsMenuOpen(false)}>
-							{dictionary.navigation?.zakopaneRooms || "Przewodnik"}
-						</Link>
-
-						<Link
 							href="/join-us.pdf"
 							target="_blank"
 							className="block py-2 text-gray-700 hover:text-[#7a4a35] font-medium"

@@ -7,8 +7,8 @@ Disallow: /_next/
 Disallow: /login
 
 # Host
-Host: http://localhost:3000
+Host: https://mscapartments.pl
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
-Sitemap: http://localhost:3000/server-sitemap.xml
+Sitemap: https://mscapartments.pl/sitemap.xml
+Sitemap: https://mscapartments.pl/server-sitemap.xml

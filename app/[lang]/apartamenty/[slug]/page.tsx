@@ -156,6 +156,21 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/apartamenty/${expectedSlug || slug}`
 
+	const alternateLanguages: Record<string, string> = {}
+	const languages = ["en", "pl", "it"]
+
+	languages.forEach((language) => {
+		let langSlug: string | null = null
+		if (property.slugs && typeof property.slugs === "object") {
+			langSlug = property.slugs[language as keyof typeof property.slugs] || null
+		}
+		if (!langSlug && property.name) {
+			langSlug = generateSlug(property.name)
+		}
+		alternateLanguages[language] = `${baseUrl}/${language}/apartamenty/${langSlug || slug}`
+	})
+	alternateLanguages["x-default"] = alternateLanguages.pl || currentUrl
+
 	const title = property.name || "Property"
 	const description = property.htmlDetails
 		? property.htmlDetails.replace(/<[^>]*>/g, "").substring(0, 160)
@@ -179,6 +194,7 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
 		},
 		alternates: {
 			canonical: currentUrl,
+			languages: alternateLanguages,
 		},
 	}
 }

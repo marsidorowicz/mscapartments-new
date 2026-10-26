@@ -228,21 +228,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ dictionary }) => {
 								<span className="font-medium text-gray-800 hover:text-amber-800 transition-colors">{dictionary.navigation.offers}</span>
 							</button>
 
-							{/* Zakopane Rooms */}
-							<button
-								onClick={() => {
-									window.open(`/${locale}/zakopane-noclegi`, "_self")
-									setIsOpen(false)
-								}}
-								className="w-full text-left p-3 rounded-lg hover:bg-amber-50 hover:text-amber-800 active:bg-amber-100 transition-all duration-200 border border-transparent hover:border-amber-200"
-								style={{
-									pointerEvents: "auto",
-									zIndex: 10001,
-									position: "relative",
-								}}>
-								<span className="font-medium text-gray-800 hover:text-amber-800 transition-colors">{dictionary.navigation.zakopaneRooms}</span>
-							</button>
-
 							{/* Join Us */}
 							<button
 								onClick={() => {

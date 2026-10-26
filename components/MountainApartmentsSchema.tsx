@@ -27,7 +27,7 @@ export default function MscapartmentsSchema() {
 				name: "MSC Apartments",
 				url: "https://mscapartments.pl",
 				telephone: "+48 515 857 609",
-				email: "contact@cyberwealth.pro",
+				email: "apartamentymsc@gmail.com",
 				description: "Apartamenty w Zakopanem i okolicach dla 2–7 osób z dostępem do basenu, sauny i jacuzzi. Komfortowe noclegi z WiFi i parkingiem.",
 				areaServed: {
 					"@type": "Place",
@@ -72,7 +72,7 @@ export default function MscapartmentsSchema() {
 					reviewCount: "120",
 				},
 				brand: {
-					"@id": "https://mscapartments.pl",
+					"@id": "https://mscapartments.pl/#brand",
 				},
 			},
 		],

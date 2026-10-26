@@ -14,8 +14,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	// Add safety checks for dictionary properties
-	const title = dictionary?.title || "MSC Apartments"
+	// Keep the homepage title within search-result limits.
+	const homepageTitles: Record<string, string> = {
+		pl: "MSC Apartments | Apartamenty w Zakopanem i Kościelisku",
+		en: "MSC Apartments | Apartments in Zakopane & Kościelisko",
+		it: "MSC Apartments | Appartamenti a Zakopane e Kościelisko",
+		de: "MSC Apartments | Apartments in Zakopane & Kościelisko",
+		es: "MSC Apartments | Apartamentos en Zakopane y Kościelisko",
+	}
+	const title = homepageTitles[lang] || dictionary?.title || "MSC Apartments"
 	const description = dictionary?.description || "Comfortable mountain accommodation"
 	const keywords = dictionary?.keywords || []
 

@@ -455,6 +455,38 @@ export default function ApartamentyPageClient({ dictionary: _dictionary, lang, d
 					)}
 				</div>
 			</div>
+			{pageText.content && (
+				<article className="mx-auto w-full max-w-6xl bg-white px-4 pb-14 sm:px-6 lg:px-8">
+					<div>
+						{pageText.content.intro.map((paragraph, index) => (
+							<p key={`intro-${index}`} className="mb-4 text-base md:text-lg text-[#1D2430] leading-relaxed">
+								{paragraph}
+							</p>
+						))}
+						{pageText.content.sections.map((section, index) => (
+							<div key={`section-${index}`} className="mt-10">
+								<h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1D2430]">{section.heading}</h2>
+								{section.paragraphs.map((paragraph, paragraphIndex) => (
+									<p key={paragraphIndex} className="mt-4 text-[#1D2430] leading-relaxed">
+										{paragraph}
+									</p>
+								))}
+							</div>
+						))}
+						<div className="mt-12">
+							<h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1D2430]">{pageText.content.faqHeading}</h2>
+							<div className="mt-6 space-y-4">
+								{pageText.content.faq.map((item, index) => (
+									<div key={`faq-${index}`} className="border border-[#1D2430] bg-white p-6">
+										<h3 className="text-lg font-semibold text-[#1D2430]">{item.question}</h3>
+										<p className="mt-2 text-[#1D2430] leading-relaxed">{item.answer}</p>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</article>
+			)}
 			<Footer lang={lang} />
 		</div>
 	)

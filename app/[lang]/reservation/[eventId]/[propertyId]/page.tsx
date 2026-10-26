@@ -12,7 +12,7 @@ export async function generateMetadata({
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 	const baseUrl =
-		process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.com"
+		process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 
 	return {
 		title: `${dictionary.reservation.title} - ${dictionary.title}`,
