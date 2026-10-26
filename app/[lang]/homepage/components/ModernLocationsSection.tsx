@@ -83,7 +83,7 @@ export default function ModernLocationsSection({ dictionary, lang }: ModernLocat
 
 								{/* View Button */}
 								<Link
-									href={`/${lang}/zakopane-noclegi`}
+									href={`/${lang}/apartamenty`}
 									className="inline-block w-full text-center bg-[#cc9678] hover:bg-[#a6755a] text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
 									{dictionary.home.locationsSection?.viewApartments}
 								</Link>
@@ -95,7 +95,7 @@ export default function ModernLocationsSection({ dictionary, lang }: ModernLocat
 				{/* Call to Action */}
 				<div className="text-center mt-12">
 					<Link
-						href={`/${lang}/zakopane-noclegi`}
+						href={`/${lang}/apartamenty`}
 						className="inline-flex items-center gap-2 bg-[#cc9678] hover:bg-[#a6755a] text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-200">
 						<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

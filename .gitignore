@@ -50,3 +50,6 @@ next-env.d.ts
 
 # symlink uploads
 public/uploads
+
+# generated sitemaps
+public/sitemap*.xml

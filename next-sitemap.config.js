@@ -16,8 +16,30 @@ const config = {
 		const localeMatch = path.match(/^\/([a-z]{2})(?:\/|$)/)
 		const locale = localeMatch ? localeMatch[1] : "pl"
 
-		// Skip API routes and internal paths
-		if (path.includes("/api/") || path.includes("/_next/") || path.includes("/admin/")) {
+		// Only advertise locales that have content and slug coverage.
+		if (!["en", "pl", "it"].includes(locale)) {
+			return null
+		}
+
+		// Skip API routes, internal paths, the root redirect and static assets.
+		if (
+			path.includes("/api/") ||
+			path.includes("/_next/") ||
+			path.includes("/admin/") ||
+			path === "/" ||
+			/\.(ico|png|jpe?g|svg|webp|avif|gif|pdf|txt|xml)$/i.test(path)
+		) {
+			return null
+		}
+
+		// Skip redirects, private areas and transactional pages. These paths are
+		// locale-prefixed in the sitemap, so match on the path without the locale.
+		const pathWithoutLocale = path.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/"
+		const excludedPrefixes = ["/login", "/rezerwacja", "/reservation", "/dashboard", "/homepage", "/payment-"]
+		const isExcluded = excludedPrefixes.some(prefix =>
+			prefix.endsWith("-") ? pathWithoutLocale.startsWith(prefix) : pathWithoutLocale === prefix || pathWithoutLocale.startsWith(`${prefix}/`),
+		)
+		if (isExcluded) {
 			return null
 		}
 
@@ -33,6 +55,29 @@ const config = {
 	// Additional paths to include
 	additionalPaths: async () => {
 		const result = []
+		const locales = ["en", "pl", "it"]
+		const lastmod = new Date().toISOString()
+
+		// Dynamic listing pages are not discovered by next-sitemap from the
+		// build manifest, so add the core landing pages explicitly.
+		const corePages = [
+			{ path: "/apartamenty", priority: 0.9, changefreq: "weekly" },
+			{ path: "/apartamenty-zakopane", priority: 0.9, changefreq: "weekly" },
+			{ path: "/apartamenty-koscielisko", priority: 0.9, changefreq: "weekly" },
+			{ path: "/houses", priority: 0.7, changefreq: "monthly" },
+		]
+
+		locales.forEach((locale) => {
+			corePages.forEach(({ path, priority, changefreq }) => {
+				result.push({
+					loc: `/${locale}${path}`,
+					changefreq,
+					priority,
+					lastmod,
+					alternateRefs: getAlternateRefs(`/${locale}${path}`, locale),
+				})
+			})
+		})
 
 		try {
 			// Fetch properties to generate sitemap URLs
@@ -44,12 +89,18 @@ const config = {
 				const locales = ["en", "pl", "it"]
 
 				data.properties.forEach((property) => {
-					// Resolve the slug for every locale. Only locales with a real stored
-					// slug are emitted: the by-slug API resolves slugs from property.slugs
-					// only, so a slug generated from the sanitized name would 404.
+					// Resolve the slug for every locale (fallback to generated slug from name)
 					const slugByLocale = {}
 					locales.forEach((locale) => {
-						const slug = property.slugs && typeof property.slugs === "object" ? property.slugs[locale] || null : null
+						let slug = null
+						if (property.slugs && typeof property.slugs === "object") {
+							slug = property.slugs[locale] || null
+						}
+						if (!slug && property.name) {
+							// Generate slug from name using the same logic as the app,
+							// so sitemap/hreflang URLs point to the final (non-redirecting) address
+							slug = generateSlug(property.name)
+						}
 						slugByLocale[locale] = slug
 					})
 
@@ -155,4 +206,44 @@ function getAlternateRefs(path, currentLocale) {
 	})
 
 	return refs
+}
+
+/**
+ * Generates a URL-friendly slug from text.
+ * Kept identical to `utilities/functions/propertyUrl.ts` (generateSlug)
+ * so sitemap URLs match the addresses served by the app.
+ */
+function generateSlug(text) {
+	const polishChars = {
+		ą: "a",
+		ć: "c",
+		ę: "e",
+		ł: "l",
+		ń: "n",
+		ó: "o",
+		ś: "s",
+		ź: "z",
+		ż: "z",
+		Ą: "a",
+		Ć: "c",
+		Ę: "e",
+		Ł: "l",
+		Ń: "n",
+		Ó: "o",
+		Ś: "s",
+		Ź: "z",
+		Ż: "z",
+	}
+
+	return text
+		.toLowerCase()
+		.split("")
+		.map((char) => polishChars[char] || char)
+		.join("")
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.replace(/[^a-z0-9\s-]/g, "")
+		.trim()
+		.replace(/\s+/g, "-")
+		.replace(/-+/g, "-")
 }

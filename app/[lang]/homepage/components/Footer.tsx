@@ -34,7 +34,7 @@ const footerTranslations: Record<string, FooterTranslations> = {
 	pl: {
 		companyName: "MSC Apartments",
 		companyDescription:
-			"Nasza firma zajmuje się najmem którtkoterminowym w Zakopanem i Kościelisku. Zajmujemy się równie automatyzacją wynajmu, podsyłaniem gości, w celu zapełnienia luk w wynajmie oraz udostępnianiem narzędzi Channel Manager i PMS",
+			"Nasza firma zajmuje się najmem krótkoterminowym w Zakopanem i Kościelisku. Zajmujemy się również automatyzacją wynajmu, podsyłaniem gości, w celu zapełnienia luk w wynajmie oraz udostępnianiem narzędzi Channel Manager i PMS",
 		phone: "+48 515 857 609",
 		officeAndReservations: "biuro i rezerwacje",
 		businessHours: "Godziny pracy: Pon - Pt 8:00 - 20:00\nSo, Ndz i Święta 9:00 - 17:00",

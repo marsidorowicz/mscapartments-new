@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 	const { lang } = await params
 	const dictionary = await getDictionary(lang)
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mountainapartments.com"
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mscapartments.pl"
 	const currentUrl = `${baseUrl}/${lang}/payment-success`
 
 	return {

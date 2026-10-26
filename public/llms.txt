@@ -1,0 +1,32 @@
+# MSC Apartments
+
+> MSC Apartments offers comfortable apartments in Zakopane and Kościelisko in the Tatra Mountains. We also support property owners with short-term rental automation, guest acquisition, occupancy gap filling, and Channel Manager and PMS tools.
+
+## Home
+
+- [Strona główna](https://mscapartments.pl/pl)
+- [Home](https://mscapartments.pl/en)
+- [Home IT](https://mscapartments.pl/it)
+
+## Apartments
+
+- [Apartamenty](https://mscapartments.pl/pl/apartamenty)
+- [Apartamenty Zakopane](https://mscapartments.pl/pl/apartamenty-zakopane)
+- [Apartamenty Kościelisko](https://mscapartments.pl/pl/apartamenty-koscielisko)
+- [Apartments](https://mscapartments.pl/en/apartamenty)
+- [Appartamenti](https://mscapartments.pl/it/apartamenty)
+
+## Offers
+
+- [Oferty i promocje](https://mscapartments.pl/pl/offers)
+- [Offers](https://mscapartments.pl/en/offers)
+- [Offerte](https://mscapartments.pl/it/offers)
+
+## Information
+
+- [O nas](https://mscapartments.pl/pl/o-nas)
+- [Kontakt](https://mscapartments.pl/pl/contact)
+- [Regulamin](https://mscapartments.pl/pl/regulamin)
+- [Polityka prywatności](https://mscapartments.pl/pl/privacy)
+- [About us](https://mscapartments.pl/en/o-nas)
+- [Contact](https://mscapartments.pl/en/contact)
